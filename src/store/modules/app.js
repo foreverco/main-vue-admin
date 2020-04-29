@@ -56,9 +56,9 @@ const actions = {
   loginOut({ commit }) {
     return new Promise((resolve, reject) => {
       removeToken();
-      removeUserName();
+      // removeUserName();
       commit("SET_TOKEN", "");
-      commit("SET_USERNAME", "");
+      // commit("SET_USERNAME", "");
       resolve();
     });
   }

@@ -2,14 +2,33 @@
   <div id="main-wrap">
     <div class="main-content">
       <div class="content">
+        <div class="mainHeader">
+          <div class="header-icon pull-left" @click="colspseState">
+            <svg-icon iconClass="menu" className="menu"></svg-icon>
+          </div>
+          <breadcrumb class="breadcrumb-container" />
+        </div>
         <router-view></router-view>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { computed } from "@vue/composition-api";
+import Breadcrumb from "./Test";
 export default {
-  name: "mainBody"
+  name: "mainBody",
+  components: {
+    Breadcrumb
+  },
+  setup(props, { root }) {
+    const colspseState = () => {
+      root.$store.commit("app/SET_ISCOLLAPSE");
+    };
+    return {
+      colspseState
+    };
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -42,10 +61,24 @@ export default {
 }
 .content {
   width: 98%;
-  height: 98%;
+  height: 99%;
   // padding: 30px 30px 0 0;
-  border: 1px solid red;
+  // border: 1px solid red;
   box-sizing: border-box;
+  .mainHeader {
+    border-bottom: 1px solid #ccc;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    svg {
+      margin-bottom: -3px;
+      margin-right: 10px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
 }
 .open {
   .main-content {

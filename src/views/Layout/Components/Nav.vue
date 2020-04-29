@@ -21,13 +21,32 @@
             <span slot="title">{{ item.meta.title }}</span>
           </template>
           <!-- 子菜单 -->
-          <el-menu-item
-            v-for="(subitem, index) in item.children"
-            :key="index"
-            :index="subitem.path"
-          >
-            {{ subitem.meta.title }}
-          </el-menu-item>
+          <template v-for="(subitem, index) in item.children">
+            <el-menu-item
+              v-if="!subitem.children"
+              :key="index"
+              :index="subitem.path"
+            >
+              {{ subitem.meta.title }}
+            </el-menu-item>
+          </template>
+          <!-- 子菜单有三级 -->
+          <template v-for="(subitem, index) in item.children">
+            <el-submenu
+              v-if="subitem.children"
+              :key="index"
+              :index="subitem.path"
+              class="threeNav"
+            >
+              <span slot="title">{{ subitem.meta.title }}</span>
+              <el-menu-item
+                index="1-4-1"
+                v-for="(miniItem, index) in subitem.children"
+                :key="index"
+                >{{ miniItem.meta.title }}</el-menu-item
+              >
+            </el-submenu>
+          </template>
         </el-submenu>
       </template>
     </el-menu>
@@ -70,6 +89,19 @@ export default {
 }
 .el-submenu {
   text-align: -webkit-auto !important;
+  .threeNav {
+    .el-submenu__title {
+      span {
+        font-size: 12px;
+        margin-left: 8px;
+      }
+    }
+    .el-menu {
+      .el-menu-item {
+        margin-left: 8px !important;
+      }
+    }
+  }
 }
 #nav-wrap {
   svg {

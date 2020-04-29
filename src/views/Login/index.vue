@@ -53,7 +53,7 @@
 <script>
 import md5 from "js-md5";
 import { Login } from "@/api/login.js";
-import { reactive, ref, onMounted } from "@vue/composition-api";
+import { reactive, ref, onMounted, computed } from "@vue/composition-api";
 import { stripscript } from "@/utils/validate";
 export default {
   name: "login",
@@ -99,7 +99,7 @@ export default {
     const loginButtonStatus = ref(true);
     /* 表单绑定数据 */
     const ruleForm = reactive({
-      username: "",
+      username: root.$store.state.app.username || "",
       password: ""
     });
     /* 表单验证 */
@@ -107,6 +107,7 @@ export default {
       username: [{ validator: validateUsername, trigger: "blur" }],
       password: [{ validator: validatePass, trigger: "blur" }]
     });
+    // const username = computed(() => root.$store.state.app.username);
     /* 生命周期 */
     /* 自定义函数 */
     const submitForm = formName => {

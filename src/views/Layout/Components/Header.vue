@@ -2,9 +2,9 @@
   <div id="header-wrap">
     <div class="pull-left logoBox">
       <!-- <svg-icon iconClass="menu" className="menu"></svg-icon> -->
-      <div class="header-icon pull-left" @click="colspseState">
+      <!-- <div class="header-icon pull-left" @click="colspseState">
         <svg-icon iconClass="menu" className="menu"></svg-icon>
-      </div>
+      </div> -->
       <img src="@/assets/logo.png" alt="" />
       <p>国草园智慧农业监控平台</p>
     </div>
@@ -65,10 +65,10 @@ export default {
   name: "layoutHeader",
   setup(props, { root }) {
     const username = computed(() => root.$store.state.app.username);
-    const colspseState = () => {
-      root.$store.commit("app/SET_ISCOLLAPSE");
-      // root.$store.dispatch("colspseState", { name: "aaa" });
-    };
+    // const colspseState = () => {
+    //   root.$store.commit("app/SET_ISCOLLAPSE");
+    //   // root.$store.dispatch("colspseState", { name: "aaa" });
+    // };
     // 登出
     const loginOut = () => {
       root
@@ -93,7 +93,7 @@ export default {
         });
     };
     return {
-      colspseState,
+      // colspseState,
       username,
       loginOut
     };

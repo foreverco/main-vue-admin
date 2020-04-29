@@ -91,6 +91,73 @@ const routes = [
         }
       }
     ]
+  },
+
+  /* 视频中心 */
+  {
+    path: "/video",
+    name: "video",
+    component: layout,
+    meta: {
+      title: "视频中心",
+      icon: "menu"
+    },
+    children: [
+      {
+        path: "/video1",
+        name: "video1",
+        component: () => import("@/views/User"),
+        meta: {
+          title: "视频中心"
+        }
+      },
+      {
+        path: "/video2",
+        name: "video2",
+        component: () => import("@/views/User"),
+        meta: {
+          title: "视频中心2"
+        },
+        children: [
+          {
+            path: "/video3",
+            name: "video3",
+            component: () => import("@/views/User"),
+            meta: {
+              title: "视频中心3"
+            }
+          },
+          {
+            path: "/video4",
+            name: "video4",
+            component: () => import("@/views/User"),
+            meta: {
+              title: "视频中心4"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  /* 控制中心 */
+  {
+    path: "/control",
+    name: "control",
+    component: layout,
+    meta: {
+      title: "控制中心",
+      icon: "menu"
+    },
+    children: [
+      {
+        path: "/control1",
+        name: "control1",
+        component: () => import("@/views/User"),
+        meta: {
+          title: "控制中心"
+        }
+      }
+    ]
   }
 ];
 
