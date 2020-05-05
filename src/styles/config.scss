@@ -7,11 +7,23 @@ $layoutHeader: 65px;
 /* 主色调 */
 $maincolor: #11966b;
 /* 辅助色 */
-
+$navcolor: #344a5f;
 @mixin webkit($type, $value) {
   -webkit-#{$type}: $value;
   -moz-#{$type}: $value;
   -o-#{$type}: $value;
   -m-#{$type}: $value;
   #{$type}: $value;
+}
+
+@mixin babelDom($algin, $width, $line-height: "nomal") {
+  label {
+    float: left;
+    line-height: $line-height + px;
+    width: $width + px;
+    text-align: $algin;
+  }
+  .warp-content {
+    margin-left: $width + px;
+  }
 }

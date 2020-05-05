@@ -1,6 +1,6 @@
 <template>
   <div id="layout" :class="menuStatus ? 'close' : 'open'">
-    <LayoutHeader />
+    <LayoutHeader class="headerClass" />
     <LayoutNav />
     <LayoutMain />
   </div>
@@ -25,4 +25,9 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.headerClass {
+  position: fixed;
+  z-index: 1001;
+}
+</style>

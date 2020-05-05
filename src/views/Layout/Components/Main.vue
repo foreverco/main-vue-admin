@@ -67,6 +67,7 @@ export default {
   box-sizing: border-box;
   .mainHeader {
     border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
     height: 30px;
     display: flex;
     align-items: center;

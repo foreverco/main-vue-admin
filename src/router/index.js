@@ -40,7 +40,8 @@ const routes = [
         name: "Index",
         component: () => import("@/views/Home"),
         meta: {
-          title: "主页"
+          title: "主页",
+          icon: "navmenu"
         }
       }
     ]
@@ -59,7 +60,8 @@ const routes = [
         name: "InfoIndex",
         component: () => import("@/views/Info"),
         meta: {
-          title: "信息列表"
+          title: "信息列表",
+          icon: "navmenu"
         }
       },
       {
@@ -67,7 +69,8 @@ const routes = [
         name: "InfoCategory",
         component: () => import("@/views/Info/category"),
         meta: {
-          title: "信息分类"
+          title: "信息分类",
+          icon: "navmenu"
         }
       }
     ]
@@ -79,7 +82,7 @@ const routes = [
     component: layout,
     meta: {
       title: "用户管理",
-      icon: "menu"
+      icon: "navmenu"
     },
     children: [
       {
@@ -87,7 +90,8 @@ const routes = [
         name: "UserIndex",
         component: () => import("@/views/User"),
         meta: {
-          title: "用户列表"
+          title: "用户列表",
+          icon: "navmenu"
         }
       }
     ]
@@ -95,44 +99,59 @@ const routes = [
 
   /* 视频中心 */
   {
-    path: "/video",
-    name: "video",
+    path: "/configcenter",
+    name: "Configcenter",
     component: layout,
     meta: {
-      title: "视频中心",
-      icon: "menu"
+      title: "配置中心",
+      icon: "navmenu"
     },
     children: [
       {
-        path: "/video1",
-        name: "video1",
-        component: () => import("@/views/User"),
+        path: "/plantingarea",
+        name: "Plantingarea",
+        component: () => import("@/views/ConfigCenter/Plantingarea"),
         meta: {
-          title: "视频中心"
+          title: "种植区域划分",
+          icon: "navmenu"
         }
       },
       {
-        path: "/video2",
-        name: "video2",
-        component: () => import("@/views/User"),
+        path: "/deviceconfig",
+        name: "Deviceconfig",
+        component: () => import("@/views/ConfigCenter/Deviceconfig"),
         meta: {
-          title: "视频中心2"
+          title: "前端设备配置",
+          icon: "navmenu"
+        }
+      },
+      {
+        path: "/agricultural",
+        name: "agricultural",
+        component: () => import("@/views/ConfigCenter/Agricultural"),
+        meta: {
+          title: "农机农具",
+          icon: "navmenu"
         },
         children: [
           {
-            path: "/video3",
-            name: "video3",
-            component: () => import("@/views/User"),
+            path: "/agricultural/stockList",
+            name: "StockList",
+            component: () =>
+              import("@/views/ConfigCenter/Agricultural/StockList"),
             meta: {
-              title: "视频中心3"
+              title: "备案列表"
+              // icon: "navmenu"
             }
           },
           {
-            path: "/video4",
-            name: "video4",
-            component: () => import("@/views/User"),
+            path: "/agricultural/useList",
+            name: "UseList",
+            component: () =>
+              import("@/views/ConfigCenter/Agricultural/UseList"),
             meta: {
-              title: "视频中心4"
+              title: "使用记录"
+              // icon: "navmenu"
             }
           }
         ]
@@ -154,7 +173,8 @@ const routes = [
         name: "control1",
         component: () => import("@/views/User"),
         meta: {
-          title: "控制中心"
+          title: "控制中心",
+          icon: "menu"
         }
       }
     ]
