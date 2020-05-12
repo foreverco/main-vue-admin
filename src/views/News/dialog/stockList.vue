@@ -152,6 +152,7 @@ export default {
     /* watch */
 
     watch(() => {
+      console.log(123);
       dialog_stock_flag.value = props.flag;
     });
     /* methods */

@@ -34,6 +34,8 @@ export default {
 <style lang="scss" scoped>
 @import "../../../styles/main.scss";
 #main-wrap {
+  // height: 100%;
+  // height: 100%;
   height: 100vh;
   // position: fixed;
   // top: 65px;

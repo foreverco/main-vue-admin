@@ -115,11 +115,19 @@ module.exports = {
     hotOnly: false,
     proxy: {
       "/api": {
-        target: "http://192.168.1.151:9001", //API服务器的地址
-        // target: "http://localhost:9001", //API服务器的地址
+        // target: "http://192.168.1.151:9001", //API服务器的地址
+        target: "http://localhost:9001", //API服务器的地址
         changeOrigin: true,
         pathRewrite: {
           "^/api": ""
+        }
+      },
+      "/hr": {
+        // target: "http://192.168.1.142:8081", //API服务器的地址
+        target: "http://localhost:8081", //API服务器的地址
+        changeOrigin: true,
+        pathRewrite: {
+          "^/hr": ""
         }
       }
     },

@@ -15,6 +15,7 @@
     "element-ui": "^2.13.1",
     "fibers": "^3.1.0",
     "js-md5": "^0.7.3",
+    "moment": "^2.25.3",
     "path-to-regexp": "^6.1.0",
     "sass": "^1.26.3",
     "svg-sprite-loader": "^4.2.5",

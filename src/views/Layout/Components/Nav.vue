@@ -10,7 +10,12 @@
       router
     >
       <template v-for="(item, index) in routers">
-        <el-submenu :index="index + ''" v-if="!item.hidden" :key="index">
+        <el-submenu
+          :index="index + ''"
+          v-if="!item.hidden"
+          :key="index"
+          class="fatherNav"
+        >
           <!-- 一级菜单 -->
           <template slot="title">
             <!-- <i class="el-icon-location"></i> -->

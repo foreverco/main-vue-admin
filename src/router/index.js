@@ -178,6 +178,27 @@ const routes = [
         }
       }
     ]
+  },
+  /* 新闻 */
+  {
+    path: "",
+    name: "News",
+    component: layout,
+    meta: {
+      title: "新闻中心",
+      icon: "menu"
+    },
+    children: [
+      {
+        path: "/news",
+        name: "NewsList",
+        component: () => import("@/views/News"),
+        meta: {
+          title: "新闻列表",
+          icon: "menu"
+        }
+      }
+    ]
   }
 ];
 
