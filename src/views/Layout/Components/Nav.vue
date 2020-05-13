@@ -102,7 +102,7 @@ export default {
   width: $navMenuWidth;
   height: calc(100vh - 65px);
   overflow-y: auto;
-  background: #344a5f;
+  background: #262b40;
   @include webkit(transition, all 0.3s ease 0s);
   &::-webkit-scrollbar {
     display: none;

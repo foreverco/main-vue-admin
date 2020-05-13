@@ -1,6 +1,12 @@
 <template>
   <div>
-    <el-table :data="data.tableData" border style="width: 100%">
+    <el-table
+      :data="data.tableData"
+      border
+      style="width: 100%;margin-top:10px;"
+      :header-cell-style="{ background: '#262B40', color: '#fff' }"
+      class="tableClass"
+    >
       <!-- 多选框 -->
       <el-table-column
         v-if="data.tableConfig.selection"
@@ -44,6 +50,7 @@
       </template>
     </el-table>
     <el-pagination
+      style="margin-top:10px;"
       v-if="data.tableConfig.pagination.show"
       background
       @size-change="handleSizeChange"

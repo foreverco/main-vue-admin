@@ -53,7 +53,7 @@ const routes = [
     component: layout,
     meta: {
       title: "监测中心",
-      icon: "navmenu"
+      icon: "jiance"
     },
     children: [
       {
@@ -103,7 +103,7 @@ const routes = [
     component: layout,
     meta: {
       title: "视频中心",
-      icon: "navmenu"
+      icon: "video"
     },
     children: [
       {
@@ -125,7 +125,7 @@ const routes = [
     component: layout,
     meta: {
       title: "控制中心",
-      icon: "menu"
+      icon: "control"
     },
     children: [
       {
@@ -164,7 +164,7 @@ const routes = [
     component: layout,
     meta: {
       title: "预警中心",
-      icon: "menu"
+      icon: "yujing"
     },
     children: [
       {
@@ -188,36 +188,6 @@ const routes = [
     ]
   },
 
-  {
-    path: "/info",
-    name: "Info",
-    component: layout,
-    meta: {
-      title: "信息管理",
-      icon: "jiance"
-    },
-    children: [
-      {
-        path: "/infoIndex",
-        name: "InfoIndex",
-        component: () => import("@/views/Info"),
-        meta: {
-          title: "信息列表",
-          icon: "navmenu"
-        }
-      },
-      {
-        path: "/infoCategory",
-        name: "InfoCategory",
-        component: () => import("@/views/Info/category"),
-        meta: {
-          title: "信息分类",
-          icon: "navmenu"
-        }
-      }
-    ]
-  },
-
   /* 配置中心 */
   {
     path: "/configcenter",
@@ -225,7 +195,7 @@ const routes = [
     component: layout,
     meta: {
       title: "配置中心",
-      icon: "navmenu"
+      icon: "config"
     },
     children: [
       {
@@ -286,7 +256,7 @@ const routes = [
     component: layout,
     meta: {
       title: "用户管理",
-      icon: "navmenu"
+      icon: "user"
     },
     children: [
       {
@@ -307,7 +277,7 @@ const routes = [
     component: layout,
     meta: {
       title: "远程专家",
-      icon: "navmenu"
+      icon: "remote"
     },
     children: [
       {
@@ -321,7 +291,37 @@ const routes = [
       }
     ]
   },
-  /* 新闻 */
+  /* 信息管理 */
+  // {
+  //   path: "/info",
+  //   name: "Info",
+  //   component: layout,
+  //   meta: {
+  //     title: "信息管理",
+  //     icon: "jiance"
+  //   },
+  //   children: [
+  //     {
+  //       path: "/infoIndex",
+  //       name: "InfoIndex",
+  //       component: () => import("@/views/Info"),
+  //       meta: {
+  //         title: "信息列表",
+  //         icon: "navmenu"
+  //       }
+  //     },
+  //     {
+  //       path: "/infoCategory",
+  //       name: "InfoCategory",
+  //       component: () => import("@/views/Info/category"),
+  //       meta: {
+  //         title: "信息分类",
+  //         icon: "navmenu"
+  //       }
+  //     }
+  //   ]
+  // }
+  // /* 新闻 */
   {
     path: "",
     name: "News",

@@ -15,16 +15,18 @@
   border-right: 0;
 }
 /* 修改一级菜单样式 */
-li.el-submenu {
+li.el-submenu.fatherNav {
   &.is-active.is-opened .el-submenu__title {
     // background: linear-gradient(
     //   to right,
     //   rgba(17, 150, 107, 0.2),
     //   rgba(17, 150, 107, 0)
     // ) !important;
-    background: rgba(0, 0, 0, 0.2) !important;
-    // border-left: 6px solid #11966b;
+    // background: rgba(0, 0, 0, 0.2) !important;
   }
+}
+.threeNav {
+  background: transparent !important;
 }
 
 .el-badge__content.is-fixed {
@@ -155,4 +157,12 @@ li.el-submenu {
     -webkit-line-clamp: 2; /*可以显示的行数，超出部分用...表示 */
     -webkit-box-orient: vertical;
   }
+}
+
+.el-input__inner {
+  height: 30px;
+  line-height: 30px;
+}
+.el-input__icon {
+  line-height: 30px;
 }
