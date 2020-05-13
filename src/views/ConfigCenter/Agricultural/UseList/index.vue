@@ -27,7 +27,7 @@ export default {
       /* table组件配置参数 */
       configTable: {
         // 多选框
-        selection: false,
+        selection: true,
         // 翻页记录
         recordCheckbox: true,
         // 表头
@@ -71,8 +71,14 @@ export default {
           method: "get",
           data: {
             page: 1,
-            pageSize: 10
+            pageSize: 5
           }
+        },
+        pagination: {
+          show: true
+        },
+        paginationLayout: {
+          layout: "prev, pager, next, jumper,total, sizes"
         }
       }
     });

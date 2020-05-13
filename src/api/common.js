@@ -34,6 +34,6 @@ export function loadTableData(params) {
   return service.request({
     method: params.method || "get",
     url: params.url,
-    data: params.data || {}
+    params: params.data
   });
 }

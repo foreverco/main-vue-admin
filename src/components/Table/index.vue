@@ -44,13 +44,14 @@
       </template>
     </el-table>
     <el-pagination
+      v-if="data.tableConfig.pagination.show"
       background
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="pageData.currentPage"
       :page-sizes="pageData.pageSizes"
       :page-size="pageData.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
+      :layout="data.tableConfig.paginationLayout.layout"
       :total="pageData.total"
     >
     </el-pagination>
@@ -93,7 +94,13 @@ export default {
         // 请求接口参数
         requestData: {},
         // 表头
-        tHead: []
+        tHead: [],
+        pagination: {
+          show: true
+        },
+        paginationLayout: {
+          layout: "prev, pager, next, jumper,total, sizes"
+        }
       },
       tableData: [
         {
@@ -150,6 +157,7 @@ export default {
     /* onBeforeMount */
     onBeforeMount(() => {
       initTaleConfig();
+      console.log(data.tableConfig.requestData);
       tableLoadData(data.tableConfig.requestData);
     });
     return { data, pageData, handleSizeChange, handleCurrentChange };

@@ -46,6 +46,148 @@ const routes = [
       }
     ]
   },
+  /* 配置中心 */
+  {
+    path: "/monitoring",
+    name: "Monitoring",
+    component: layout,
+    meta: {
+      title: "监测中心",
+      icon: "navmenu"
+    },
+    children: [
+      {
+        path: "/collect",
+        name: "Collect",
+        component: () => import("@/views/Monitoring/Collect"),
+        meta: {
+          title: "设备采集",
+          icon: "navmenu"
+        },
+        children: [
+          {
+            path: "/collect/type",
+            name: "Type",
+            component: () => import("@/views/Monitoring/Collect/Type"),
+            meta: {
+              title: "类别统计"
+              // icon: "navmenu"
+            }
+          },
+          {
+            path: "/collect/place",
+            name: "Place",
+            component: () => import("@/views/Monitoring/Collect/Place"),
+            meta: {
+              title: "区域统计"
+              // icon: "navmenu"
+            }
+          }
+        ]
+      },
+      {
+        path: "/mapView",
+        name: "MapView",
+        component: () => import("@/views/Monitoring/MapView"),
+        meta: {
+          title: "地图展示",
+          icon: "navmenu"
+        }
+      }
+    ]
+  },
+  /* 视频中心 */
+  {
+    path: "/video",
+    name: "Video",
+    component: layout,
+    meta: {
+      title: "视频中心",
+      icon: "navmenu"
+    },
+    children: [
+      {
+        path: "/videoIndex",
+        name: "VideoIndex",
+        component: () => import("@/views/Video"),
+        meta: {
+          title: "视频中心",
+          icon: "navmenu"
+        }
+      }
+    ]
+  },
+
+  /* 控制中心 */
+  {
+    path: "/control",
+    name: "Control",
+    component: layout,
+    meta: {
+      title: "控制中心",
+      icon: "menu"
+    },
+    children: [
+      {
+        path: "/control/manual",
+        name: "Manual",
+        component: () => import("@/views/Control/Manual"),
+        meta: {
+          title: "手动控制",
+          icon: "menu"
+        }
+      },
+      {
+        path: "/control/relay",
+        name: "Relay",
+        component: () => import("@/views/Control/Relay"),
+        meta: {
+          title: "模拟量控制",
+          icon: "menu"
+        }
+      },
+      {
+        path: "/control/plan",
+        name: "Plan",
+        component: () => import("@/views/Control/Plan"),
+        meta: {
+          title: "计划任务控制",
+          icon: "menu"
+        }
+      }
+    ]
+  },
+  /* 预警中心 */
+  {
+    path: "/warning",
+    name: "Warning",
+    component: layout,
+    meta: {
+      title: "预警中心",
+      icon: "menu"
+    },
+    children: [
+      {
+        path: "/warning/config",
+        name: "Config",
+        component: () => import("@/views/Warning/Config"),
+        meta: {
+          title: "预警设置",
+          icon: "menu"
+        }
+      },
+      {
+        path: "/warning/record",
+        name: "Record",
+        component: () => import("@/views/Warning/Record"),
+        meta: {
+          title: "预警日志",
+          icon: "menu"
+        }
+      }
+    ]
+  },
+
   {
     path: "/info",
     name: "Info",
@@ -75,29 +217,8 @@ const routes = [
       }
     ]
   },
-  /* 用户管理 */
-  {
-    path: "/user",
-    name: "User",
-    component: layout,
-    meta: {
-      title: "用户管理",
-      icon: "navmenu"
-    },
-    children: [
-      {
-        path: "/userIndex",
-        name: "UserIndex",
-        component: () => import("@/views/User"),
-        meta: {
-          title: "用户列表",
-          icon: "navmenu"
-        }
-      }
-    ]
-  },
 
-  /* 视频中心 */
+  /* 配置中心 */
   {
     path: "/configcenter",
     name: "Configcenter",
@@ -158,23 +279,44 @@ const routes = [
       }
     ]
   },
-  /* 控制中心 */
+  /* 用户管理 */
   {
-    path: "/control",
-    name: "control",
+    path: "/user",
+    name: "User",
     component: layout,
     meta: {
-      title: "控制中心",
-      icon: "menu"
+      title: "用户管理",
+      icon: "navmenu"
     },
     children: [
       {
-        path: "/control1",
-        name: "control1",
+        path: "/userIndex",
+        name: "UserIndex",
         component: () => import("@/views/User"),
         meta: {
-          title: "控制中心",
-          icon: "menu"
+          title: "用户列表",
+          icon: "navmenu"
+        }
+      }
+    ]
+  },
+  /* 远程专家 */
+  {
+    path: "/remote",
+    name: "Remote",
+    component: layout,
+    meta: {
+      title: "远程专家",
+      icon: "navmenu"
+    },
+    children: [
+      {
+        path: "/remoteIndex",
+        name: "RemoteIndex",
+        component: () => import("@/views/Remote"),
+        meta: {
+          title: "远程专家",
+          icon: "navmenu"
         }
       }
     ]

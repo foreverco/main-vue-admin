@@ -34,6 +34,7 @@ service.interceptors.request.use(
     // 最终目的，在请求头添加参数
     config.headers["token"] = getToken();
     // config.headers["token"] = getToken();
+    console.log(config);
     return config;
   },
   function(error) {
