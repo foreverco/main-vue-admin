@@ -117,7 +117,7 @@ export default {
   .threeNav {
     .el-submenu__title {
       span {
-        font-size: 12px;
+        font-size: 13px;
         margin-left: 8px;
       }
     }

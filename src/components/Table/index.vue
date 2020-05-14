@@ -152,6 +152,7 @@ export default {
     // 匹配相同的key 相同则替换
     const initTaleConfig = () => {
       let configData = props.config;
+      console.log(configData);
       let keys = Object.keys(data.tableConfig);
       for (let key in configData) {
         if (keys.includes(key)) {

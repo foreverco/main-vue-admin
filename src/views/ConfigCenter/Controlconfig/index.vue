@@ -5,7 +5,9 @@
         <div class="label-wrap category">
           <label for="">设备名称:</label>
           <div class="warp-content">
-            <el-select
+            <SelectVue style="width:100%" :config="data.configSelect">
+            </SelectVue>
+            <!-- <el-select
               v-model="data.sb_value"
               placeholder="请选择"
               style="width:100%"
@@ -17,7 +19,7 @@
                 :value="item.value"
               >
               </el-option>
-            </el-select>
+            </el-select> -->
           </div>
         </div>
       </el-col>
@@ -64,18 +66,36 @@
         >
       </el-col>
     </el-row>
-    <TableVue :config="data.configTable"></TableVue>
+    <TableVue :config="data.configTable">
+      <template v-slot:status="slotData">
+        <el-switch active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
+        <span v-if="false">{{ slotData }}</span>
+      </template>
+      <template v-slot:operation="slotData">
+        <el-button size="mini" type="danger" @click="operation(slotData.data)"
+          >删除</el-button
+        >
+        <el-button size="mini" type="success" @click="operation(slotData.data)"
+          >编辑</el-button
+        >
+      </template>
+    </TableVue>
   </div>
 </template>
 <script>
 import TableVue from "@/components/Table";
+import SelectVue from "@/components/Select";
 import { reactive } from "@vue/composition-api";
 export default {
   components: {
-    TableVue
+    TableVue,
+    SelectVue
   },
   setup(props, { root }) {
     const data = reactive({
+      configSelect: {
+        init: ["name"]
+      },
       sb_value: "",
       hadper_value: "",
       user_per: "",
@@ -114,19 +134,25 @@ export default {
         // 表头
         tHead: [
           { label: "ID", field: "id" },
-          { label: "用户名", field: "identify", width: "150" },
-          { label: "角色名", field: "roleName" },
-          { label: "权限", field: "remark" },
-          {
-            label: "状态",
-            field: "status",
-            columnType: "slot",
-            slotname: "status"
-          },
+          { label: "设备名称", field: "identify" },
+          { label: "设备型号", field: "roleName" },
+          { label: "设备类型", field: "remark" },
+          { label: "设备状态", field: "remark" },
+          { label: "安装时间", field: "remark" },
+          { label: "生产产家", field: "remark" },
+          { label: "所在区域", field: "remark" },
+          { label: "负责人", field: "remark9" },
+          // {
+          //   label: "状态",
+          //   field: "status",
+          //   columnType: "slot",
+          //   slotname: "status"
+          // },
           {
             label: "操作",
             columnType: "slot",
-            slotname: "operation"
+            slotname: "operation",
+            width: "170"
           }
         ],
         // 请求接口参数
@@ -135,7 +161,7 @@ export default {
           method: "get",
           data: {
             page: 1,
-            pageSize: 5
+            pageSize: 3
           }
         },
         pagination: {
@@ -146,8 +172,13 @@ export default {
         }
       }
     });
+    /* methods 方法 */
+    let operation = params => {
+      console.log(params);
+    };
     return {
-      data
+      data,
+      operation
     };
   }
 };

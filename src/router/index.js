@@ -46,7 +46,7 @@ const routes = [
       }
     ]
   },
-  /* 配置中心 */
+  /* 监测中心 */
   {
     path: "/monitoring",
     name: "Monitoring",
@@ -208,14 +208,42 @@ const routes = [
         }
       },
       {
-        path: "/deviceconfig",
-        name: "Deviceconfig",
-        component: () => import("@/views/ConfigCenter/Deviceconfig"),
+        path: "/sensorconfig",
+        name: "Sensorconfig",
+        component: () => import("@/views/ConfigCenter/Sensorconfig"),
         meta: {
-          title: "前端设备配置",
+          title: "传感器配置",
           icon: "navmenu"
         }
       },
+      {
+        path: "/controlconfig",
+        name: "Controlconfig",
+        component: () => import("@/views/ConfigCenter/Controlconfig"),
+        meta: {
+          title: "控制器配置",
+          icon: "navmenu"
+        }
+      },
+      {
+        path: "/relayconfig",
+        name: "Relayconfig",
+        component: () => import("@/views/ConfigCenter/Relayconfig"),
+        meta: {
+          title: "继电器配置",
+          icon: "navmenu"
+        }
+      },
+      {
+        path: "/stationconfig",
+        name: "Stationconfig",
+        component: () => import("@/views/ConfigCenter/Stationconfig"),
+        meta: {
+          title: "采集站配置",
+          icon: "navmenu"
+        }
+      },
+
       {
         path: "/agricultural",
         name: "agricultural",

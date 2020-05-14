@@ -76,7 +76,7 @@ export default {
 @import "@/styles/main.scss";
 .app-breadcrumb.el-breadcrumb {
   display: inline-block;
-  font-size: 0.5vw;
+  font-size: 0.7vw;
   line-height: 50px;
   margin-left: 8px;
 
