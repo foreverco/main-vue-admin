@@ -1,7 +1,7 @@
 import { MessageBox, Message } from "element-ui";
 import { ref } from "@vue/composition-api";
 export function global() {
-  const str = ref("");
+  const str = ref("4444444");
   const confirm = params => {
     MessageBox.confirm(params.content, params.tip || "提示", {
       confirmButtonText: "确定",

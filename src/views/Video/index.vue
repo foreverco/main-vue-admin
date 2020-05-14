@@ -1,6 +1,6 @@
 <template>
   <div>
-    前端设备配置
+    视频中心
   </div>
 </template>
 <script>

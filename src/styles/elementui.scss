@@ -1,5 +1,5 @@
 .el-submenu .el-menu-item {
-  font-size: 12px;
+  font-size: 13px;
   padding-left: 50px !important;
   &.is-active {
     background: linear-gradient(
@@ -11,20 +11,30 @@
     border-left: 6px solid $maincolor;
   }
 }
+.el-submenu__title {
+  font-size: 15px;
+  color: #303133;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: border-color .3s,background-color .3s,color .3s;
+  box-sizing: border-box;
+}
 .el-menu {
   border-right: 0;
 }
 /* 修改一级菜单样式 */
-li.el-submenu {
+li.el-submenu.fatherNav {
   &.is-active.is-opened .el-submenu__title {
     // background: linear-gradient(
     //   to right,
     //   rgba(17, 150, 107, 0.2),
     //   rgba(17, 150, 107, 0)
     // ) !important;
-    background: rgba(0, 0, 0, 0.2) !important;
-    // border-left: 6px solid #11966b;
+    // background: rgba(0, 0, 0, 0.2) !important;
   }
+}
+.threeNav {
+  background: transparent !important;
 }
 
 .el-badge__content.is-fixed {
@@ -46,7 +56,7 @@ li.el-submenu {
   border-radius: 10px;
   color: #fff;
   display: inline-block;
-  font-size: 12px;
+  font-size: 14px;
   height: 14px;
   line-height: 14px;
   padding: 2px;
@@ -143,4 +153,36 @@ li.el-submenu {
 .el-switch__label--left.is-active {
   z-index: 1111;
   color: #9c9c9c !important;
+}
+
+.el-table th,
+.el-table td {
+  text-align: center;
+  .cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /*可以显示的行数，超出部分用...表示 */
+    -webkit-box-orient: vertical;
+  }
+}
+
+.el-input__inner {
+  height: 30px;
+  line-height: 30px;
+}
+.el-input__icon {
+  line-height: 30px;
+}
+
+/* 按钮样式 */
+.el-button--success {
+  color: #fff;
+  background-color: #3abf94;
+  border-color: #3abf94;
+}
+.el-button--danger {
+  color: #FFF;
+  background-color: #CA1C29;
+  border-color: #CA1C29;
 }

@@ -2,7 +2,7 @@
   <div>
     <!-- <el-form :inline="true" class="demo-form-inline"> -->
     <el-row :gutter="10">
-      <el-col :span="4">
+      <!-- <el-col :span="4">
         <div class="label-wrap category">
           <label for="">设备名称:</label>
           <div class="warp-content">
@@ -65,8 +65,8 @@
       </el-col>
       <el-col :span="1" style="line-height:40px">
         <el-button size="mini">搜索</el-button>
-      </el-col>
-      <el-col :span="5" :offset="1">
+      </el-col> -->
+      <el-col :span="5" :offset="20">
         <el-button
           type="success"
           icon="el-icon-circle-plus-outline"
@@ -82,7 +82,7 @@
     <div class="black-space-20"></div>
     <el-table
       :data="table_data"
-      height="400"
+      :height="tableHeight"
       border
       style="width: 100%"
       :header-cell-style="{ background: '#344a5f', color: '#fff' }"
@@ -90,12 +90,16 @@
     >
       <el-table-column type="selection" width="45"> </el-table-column>
       <el-table-column type="index" width="50" label="ID"> </el-table-column>
-      <el-table-column prop="facility" label="设备名称"> </el-table-column>
-      <el-table-column prop="number" label="编号"> </el-table-column>
-      <el-table-column prop="type" label="型号"> </el-table-column>
-      <el-table-column prop="hadper" label="责任人"> </el-table-column>
-      <el-table-column prop="adress" label="所在地"> </el-table-column>
-      <el-table-column label="使用状态">
+      <el-table-column prop="newsTitle" label="新闻标题"> </el-table-column>
+      <el-table-column prop="newsCon" label="新闻内容"> </el-table-column>
+      <el-table-column label="新闻时间">
+        <template slot-scope="scope">
+          <span>{{ scope.row.newsTime | datefmt("YYYY-MM-DD") }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="newsPic" label="新闻图片"> </el-table-column>
+      <el-table-column prop="newsMsg" label="备注"> </el-table-column>
+      <!-- <el-table-column label="使用状态">
         <el-switch
           style="display: block"
           v-model="use_status"
@@ -106,7 +110,7 @@
         >
         </el-switch>
       </el-table-column>
-      <el-table-column prop="uerper" label="领用人"> </el-table-column>
+      <el-table-column prop="uerper" label="领用人"> </el-table-column> -->
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <el-button
@@ -139,13 +143,24 @@
   </div>
 </template>
 <script>
-import { reactive, ref, onMounted, computed } from "@vue/composition-api";
+import {
+  reactive,
+  ref,
+  onMounted,
+  computed,
+  watch
+} from "@vue/composition-api";
 import DialogStock from "./dialog/stockList";
-import { global } from "../../../../utils/global_V3.0";
+import { global } from "@/utils/global_V3.0";
+import { common } from "@/api/common";
+import { newsList } from "@/api/news";
 export default {
   name: "stock",
   components: { DialogStock },
   setup(props, { root }) {
+    const tableHeight = ref(window.innerHeight - 250);
+    const { getNewsList, newsObj } = common();
+    console.log(tableHeight.value);
     const { confirm, str } = global();
     /* data数据 */
     // 弹框状态
@@ -184,76 +199,11 @@ export default {
     // 表格数据
     const table_data = reactive([
       {
-        facility: "哈哈1",
-        number: "9527",
-        type: "SB-125",
-        hadper: "王伟",
-        adress: "A区-75",
-        status: true,
-        uerper: "陈赫"
-      },
-      {
-        facility: "哈哈1",
-        number: "9527",
-        type: "SB-125",
-        hadper: "王伟",
-        adress: "A区-75",
-        status: true,
-        uerper: "陈赫"
-      },
-      {
-        facility: "哈哈1",
-        number: "9527",
-        type: "SB-125",
-        hadper: "王伟",
-        adress: "A区-75",
-        status: true,
-        uerper: "陈赫"
-      },
-      {
-        facility: "哈哈1",
-        number: "9527",
-        type: "SB-125",
-        hadper: "王伟",
-        adress: "A区-75",
-        status: true,
-        uerper: "陈赫"
-      },
-      {
-        facility: "哈哈1",
-        number: "9527",
-        type: "SB-125",
-        hadper: "王伟",
-        adress: "A区-75",
-        status: true,
-        uerper: "陈赫"
-      },
-      {
-        facility: "哈哈1",
-        number: "9527",
-        type: "SB-125",
-        hadper: "王伟",
-        adress: "A区-75",
-        status: true,
-        uerper: "陈赫"
-      },
-      {
-        facility: "哈哈1",
-        number: "9527",
-        type: "SB-125",
-        hadper: "王伟",
-        adress: "A区-75",
-        status: true,
-        uerper: "陈赫"
-      },
-      {
-        facility: "哈哈1",
-        number: "9527",
-        type: "SB-125",
-        hadper: "王伟",
-        adress: "A区-75",
-        status: true,
-        uerper: "陈赫"
+        newsTitle: "哈哈1",
+        newsCon: "9527",
+        newsTime: "SB-125",
+        newsPic: "王伟",
+        newsMsg: "A区-75"
       }
     ]);
     /* methods */
@@ -295,9 +245,56 @@ export default {
     const confirmDel = value => {
       console.log(value);
     };
-
+    /* 获取新闻列表 */
+    // const getNewsList = () => {
+    //   newsList()
+    //     .then(res => {
+    //       console.log(res);
+    //       table_data.splice(0, table_data.length);
+    //       res.data.data.forEach(item => {
+    //         let obj = {};
+    //         obj.newsTitle = item.news.title;
+    //         obj.newsTime = item.news.updateTime;
+    //         obj.newsCon = item.news.context;
+    //         // obj.newsMsg = item.news.context;
+    //         // obj.newsPic = item.news.context;
+    //         table_data.push(obj);
+    //       });
+    //       console.log(table_data);
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     });
+    // };
+    /**
+     * 生命周期
+     */
+    onMounted(() => {
+      getNewsList();
+    });
+    /**
+     * 监听
+     */
+    watch(
+      () => newsObj.item,
+      value => {
+        console.log("watch");
+        console.log(value);
+        table_data.splice(0, table_data.length);
+        value.forEach(item => {
+          let obj = {};
+          obj.newsTitle = item.news.title;
+          obj.newsTime = item.news.updateTime;
+          obj.newsCon = item.news.context;
+          // obj.newsMsg = item.news.context;
+          // obj.newsPic = item.news.context;
+          table_data.push(obj);
+        });
+      }
+    );
     return {
       /* data数据 ref */
+      tableHeight,
       // 弹框状态
       dialog_stock,
       hadper_value,
@@ -321,6 +318,7 @@ export default {
       handleCurrentChange,
       delMsg,
       delmanyMsg
+      // getNewsList
     };
   }
 };

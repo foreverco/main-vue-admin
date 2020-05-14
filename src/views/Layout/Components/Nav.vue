@@ -10,7 +10,12 @@
       router
     >
       <template v-for="(item, index) in routers">
-        <el-submenu :index="index + ''" v-if="!item.hidden" :key="index">
+        <el-submenu
+          :index="index + ''"
+          v-if="!item.hidden"
+          :key="index"
+          class="fatherNav"
+        >
           <!-- 一级菜单 -->
           <template slot="title">
             <!-- <i class="el-icon-location"></i> -->
@@ -97,7 +102,7 @@ export default {
   width: $navMenuWidth;
   height: calc(100vh - 65px);
   overflow-y: auto;
-  background: #344a5f;
+  background: #262b40;
   @include webkit(transition, all 0.3s ease 0s);
   &::-webkit-scrollbar {
     display: none;
@@ -112,7 +117,7 @@ export default {
   .threeNav {
     .el-submenu__title {
       span {
-        font-size: 12px;
+        font-size: 13px;
         margin-left: 8px;
       }
     }
