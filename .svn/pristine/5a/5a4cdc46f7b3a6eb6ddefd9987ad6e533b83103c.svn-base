@@ -1,0 +1,10 @@
+0000000000000000000000000000000000000000 6e64a1e84542ac18837deb62142dd0b53f7d615c forever <huaxinlwm@163.com> 1587363882 +0800	clone: from git@github.com:foreverco/main-vue-admin.git
+6e64a1e84542ac18837deb62142dd0b53f7d615c 6e64a1e84542ac18837deb62142dd0b53f7d615c forever <huaxinlwm@163.com> 1587364236 +0800	checkout: moving from master to dev
+6e64a1e84542ac18837deb62142dd0b53f7d615c 6e64a1e84542ac18837deb62142dd0b53f7d615c forever <huaxinlwm@163.com> 1587364998 +0800	checkout: moving from dev to feature-mainVueAdmin-V1.0.0-20200420
+6e64a1e84542ac18837deb62142dd0b53f7d615c 5dd8f6748cdd0c05fe87bece085c5507c41be179 forever <huaxinlwm@163.com> 1587375112 +0800	commit: 创建项目，配置样式，路由
+5dd8f6748cdd0c05fe87bece085c5507c41be179 7180b87e3e78e1b664b02acdcaec63f4f2d057b7 forever <huaxinlwm@163.com> 1587992652 +0800	commit: 登陆 token
+7180b87e3e78e1b664b02acdcaec63f4f2d057b7 6e64a1e84542ac18837deb62142dd0b53f7d615c forever <huaxinlwm@163.com> 1587992764 +0800	checkout: moving from feature-mainVueAdmin-V1.0.0-20200420 to master
+6e64a1e84542ac18837deb62142dd0b53f7d615c 91c16facb97277efcbe3f3f68a56e6ae4d318d5e forever <huaxinlwm@163.com> 1587992841 +0800	merge feature-mainVueAdmin-V1.0.0-20200420: Merge made by the 'recursive' strategy.
+91c16facb97277efcbe3f3f68a56e6ae4d318d5e 195ef903da48457eb4403441b03e45001619a660 forever <huaxinlwm@163.com> 1588120436 +0800	commit: nav
+195ef903da48457eb4403441b03e45001619a660 7180b87e3e78e1b664b02acdcaec63f4f2d057b7 forever <huaxinlwm@163.com> 1588120607 +0800	checkout: moving from master to feature-mainVueAdmin-V1.0.0-20200420
+7180b87e3e78e1b664b02acdcaec63f4f2d057b7 195ef903da48457eb4403441b03e45001619a660 forever <huaxinlwm@163.com> 1588120622 +0800	merge master: Fast-forward

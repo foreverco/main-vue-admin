@@ -1,0 +1,139 @@
+<template>
+  <div>
+    <!-- <el-form :inline="true" class="demo-form-inline"> -->
+    <el-row :gutter="10">
+      <el-col :span="4">
+        <div class="label-wrap category">
+          <label for="">设备名称:</label>
+          <div class="warp-content">
+            <el-select v-model="value" placeholder="请选择" style="width:100%">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+      </el-col>
+      <el-col :span="5">
+        <div class="label-wrap date">
+          <label for="">领用时间:</label>
+          <div class="warp-content">
+            <el-date-picker
+              v-model="value2"
+              type="date"
+              placeholder="选择日期"
+              style="width:100%"
+            >
+            </el-date-picker>
+          </div>
+        </div>
+      </el-col>
+      <el-col :span="4">
+        <div class="label-wrap hadPer">
+          <label for="">责任人: </label>
+          <div class="warp-content">
+            <el-select v-model="value" style="width:100%">
+              <el-option
+                v-for="item in hadPer"
+                :key="item.value"
+                :value="item.value"
+                :label="item.name"
+              ></el-option>
+            </el-select>
+          </div>
+        </div>
+      </el-col>
+      <el-col :span="4">
+        <div class="label-wrap userPer">
+          <label for="">领用人: </label>
+          <div class="warp-content">
+            <el-input
+              v-model="userPer"
+              placeholder="领用人"
+              style="width:100%"
+            ></el-input>
+          </div>
+        </div>
+      </el-col>
+      <el-col :span="1" style="line-height:40px">
+        <el-button size="mini">搜索</el-button>
+      </el-col>
+      <el-col :span="5" :offset="1">
+        <el-button type="success" icon="el-icon-circle-plus-outline"
+          >添加</el-button
+        >
+        <el-button type="danger" icon="el-icon-delete">删除</el-button>
+      </el-col>
+    </el-row>
+    <!-- </el-form> -->
+    <el-row></el-row>
+  </div>
+</template>
+<script>
+import { reactive, ref, onMounted, computed } from "@vue/composition-api";
+export default {
+  name: "stock",
+  setup(props, { root }) {
+    const options = reactive([
+      {
+        value: "选项1",
+        label: "空气监测器"
+      },
+      {
+        value: "选项2",
+        label: "土壤监测器"
+      },
+      {
+        value: "选项3",
+        label: "湿度监测器"
+      },
+      {
+        value: "选项4",
+        label: "温度监测器"
+      }
+    ]);
+    // 责任人
+    const hadPer = reactive([
+      { value: "id1", name: "吴诗豪" },
+      { value: "id2", name: "张小艳" },
+      { value: "id3", name: "胡锐" }
+    ]);
+    const value = ref("");
+    const value2 = ref("");
+    const userPer = ref("");
+    return {
+      /* data数据 */
+      options,
+      // 责任人
+      hadPer,
+      // 设备名称
+      value,
+      // 领用日期
+      value2,
+      // 使用人
+      userPer
+    };
+  }
+};
+</script>
+<style lang="scss" scoped>
+@import "@/styles/config.scss";
+.label-wrap {
+  &.category {
+    @include babelDom(left, 70, 40);
+  }
+  &.date {
+    @include babelDom(left, 70, 40);
+  }
+  &.hadPer {
+    @include babelDom(left, 50, 40);
+  }
+  &.userPer {
+    @include babelDom(left, 50, 40);
+  }
+}
+</style>

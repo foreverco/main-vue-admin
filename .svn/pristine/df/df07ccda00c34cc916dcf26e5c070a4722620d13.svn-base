@@ -1,0 +1,33 @@
+// 后台框架尺寸
+// 菜单宽度
+$navMenuWidth: 220px;
+$navMenuWidthmini: 64px;
+$layoutHeader: 65px;
+// $headerHeight: 100px;
+/* 主色调 */
+$maincolor: #11966b;
+/* 辅助色 */
+/*标题高度*/
+$titleHeight: 20px;
+/*标题字号*/
+$titleFont:1.35rem;
+
+@mixin webkit($type, $value) {
+  -webkit-#{$type}: $value;
+  -moz-#{$type}: $value;
+  -o-#{$type}: $value;
+  -m-#{$type}: $value;
+  #{$type}: $value;
+}
+
+@mixin babelDom($algin, $width, $line-height: "nomal") {
+  label {
+    float: left;
+    line-height: $line-height + px;
+    width: $width + px;
+    text-align: $algin;
+  }
+  .warp-content {
+    margin-left: $width + px;
+  }
+}

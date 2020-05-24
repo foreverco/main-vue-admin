@@ -1,5 +1,5 @@
 .el-submenu .el-menu-item {
-  font-size: 12px;
+  font-size: 13px;
   padding-left: 50px !important;
   &.is-active {
     background: linear-gradient(
@@ -11,20 +11,30 @@
     border-left: 6px solid $maincolor;
   }
 }
+.el-submenu__title {
+  font-size: 15px;
+  color: #303133;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+  box-sizing: border-box;
+}
 .el-menu {
   border-right: 0;
 }
 /* 修改一级菜单样式 */
-li.el-submenu {
+li.el-submenu.fatherNav {
   &.is-active.is-opened .el-submenu__title {
     // background: linear-gradient(
     //   to right,
     //   rgba(17, 150, 107, 0.2),
     //   rgba(17, 150, 107, 0)
     // ) !important;
-    background: rgba(0, 0, 0, 0.2) !important;
-    // border-left: 6px solid #11966b;
+    // background: rgba(0, 0, 0, 0.2) !important;
   }
+}
+.threeNav {
+  background: transparent !important;
 }
 
 .el-badge__content.is-fixed {
@@ -46,7 +56,7 @@ li.el-submenu {
   border-radius: 10px;
   color: #fff;
   display: inline-block;
-  font-size: 12px;
+  font-size: 14px;
   height: 14px;
   line-height: 14px;
   padding: 2px;
@@ -73,4 +83,121 @@ li.el-submenu {
   .el-menu-item:hover {
     background: rgba(0, 0, 0, 0.2) !important;
   }
+}
+
+/* dialog样式 */
+.el-dialog {
+  width: 40%;
+  margin: 0 auto;
+  border-radius: 7px;
+  // margin-top: 40vh !important;
+  // position: absolute;
+  // transform: translate(-50%, -50%);
+  // top: 0;
+  // left: 0;
+  .el-dialog__header {
+    background: $navcolor;
+    padding: 10px 20px 10px;
+    position: relative;
+    border-radius: 7px 7px 0 0;
+    .el-dialog__title {
+      color: #fff !important;
+      font-size: 15px;
+    }
+    .el-dialog__headerbtn {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+    }
+  }
+  .el-form-item {
+    margin-bottom: 0;
+  }
+  .el-form-item__label {
+    text-align: left;
+    vertical-align: middle;
+    float: left;
+    font-size: 14px;
+    color: #606266;
+    line-height: 40px;
+    padding: 0 12px 0 0;
+    box-sizing: border-box;
+    width: 70px;
+    padding: 0;
+  }
+  .el-dialog__body {
+    padding: 10px 20px;
+  }
+}
+
+/* element开关样式 */
+.el-switch__label--left {
+  position: relative;
+  left: 46px;
+  color: #fff;
+  z-index: -1111;
+}
+.el-switch__label--right {
+  position: relative;
+  right: 46px;
+  color: #fff;
+  z-index: -1111;
+}
+.el-switch__label.is-active {
+  z-index: 1111;
+  color: #fff;
+}
+
+.el-switch__label--left {
+  position: relative;
+  left: 46px;
+  color: #fff;
+  z-index: -1111;
+}
+.el-switch__label--right {
+  position: relative;
+  right: 46px;
+  color: #fff;
+  z-index: -1111;
+}
+.el-switch__label--right.is-active {
+  z-index: 1111;
+  color: #fff !important;
+}
+.el-switch__label--left.is-active {
+  z-index: 1111;
+  color: #9c9c9c !important;
+}
+
+.el-table th,
+.el-table td {
+  text-align: center;
+  .cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /*可以显示的行数，超出部分用...表示 */
+    -webkit-box-orient: vertical;
+  }
+}
+
+.el-input__inner {
+  height: 30px;
+  line-height: 30px;
+}
+.el-input__icon {
+  line-height: 30px;
+}
+
+/* 按钮样式 */
+.el-button--success {
+  color: #fff;
+  background-color: #3abf94;
+  border-color: #3abf94;
+}
+.el-button--danger {
+  color: #fff;
+  background-color: #ca1c29;
+  border-color: #ca1c29;
 }

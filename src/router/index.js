@@ -40,35 +40,240 @@ const routes = [
         name: "Index",
         component: () => import("@/views/Home"),
         meta: {
-          title: "主页"
+          title: "主页",
+          icon: "navmenu"
         }
       }
     ]
   },
+  /* 监测中心 */
   {
-    path: "/info",
-    name: "Info",
+    path: "/monitoring",
+    name: "Monitoring",
     component: layout,
     meta: {
-      title: "信息管理",
+      title: "监测中心",
       icon: "jiance"
     },
     children: [
       {
-        path: "/infoIndex",
-        name: "InfoIndex",
-        component: () => import("@/views/Info"),
+        path: "/collect",
+        name: "Collect",
+        component: () => import("@/views/Monitoring/Collect"),
         meta: {
-          title: "信息列表"
+          title: "设备采集",
+          icon: "navmenu"
+        },
+        children: [
+          {
+            path: "/collect/type",
+            name: "Type",
+            component: () => import("@/views/Monitoring/Collect/Type"),
+            meta: {
+              title: "类别统计"
+              // icon: "navmenu"
+            }
+          },
+          {
+            path: "/collect/place",
+            name: "Place",
+            component: () => import("@/views/Monitoring/Collect/Place"),
+            meta: {
+              title: "区域统计"
+              // icon: "navmenu"
+            }
+          }
+        ]
+      },
+      {
+        path: "/mapView",
+        name: "MapView",
+        component: () => import("@/views/Monitoring/MapView"),
+        meta: {
+          title: "地图展示",
+          icon: "navmenu"
+        }
+      }
+    ]
+  },
+  /* 视频中心 */
+  {
+    path: "/video",
+    name: "Video",
+    component: layout,
+    meta: {
+      title: "视频中心",
+      icon: "video"
+    },
+    children: [
+      {
+        path: "/videoIndex",
+        name: "VideoIndex",
+        component: () => import("@/views/Video"),
+        meta: {
+          title: "视频中心",
+          icon: "navmenu"
+        }
+      }
+    ]
+  },
+
+  /* 控制中心 */
+  {
+    path: "/control",
+    name: "Control",
+    component: layout,
+    meta: {
+      title: "控制中心",
+      icon: "control"
+    },
+    children: [
+      {
+        path: "/control/manual",
+        name: "Manual",
+        component: () => import("@/views/Control/Manual"),
+        meta: {
+          title: "手动控制",
+          icon: "menu"
         }
       },
       {
-        path: "/infoCategory",
-        name: "InfoCategory",
-        component: () => import("@/views/Info/category"),
+        path: "/control/relay",
+        name: "Relay",
+        component: () => import("@/views/Control/Relay"),
         meta: {
-          title: "信息分类"
+          title: "模拟量控制",
+          icon: "menu"
         }
+      },
+      {
+        path: "/control/plan",
+        name: "Plan",
+        component: () => import("@/views/Control/Plan"),
+        meta: {
+          title: "计划任务控制",
+          icon: "menu"
+        }
+      }
+    ]
+  },
+  /* 预警中心 */
+  {
+    path: "/warning",
+    name: "Warning",
+    component: layout,
+    meta: {
+      title: "预警中心",
+      icon: "yujing"
+    },
+    children: [
+      {
+        path: "/warning/config",
+        name: "Config",
+        component: () => import("@/views/Warning/Config"),
+        meta: {
+          title: "预警设置",
+          icon: "menu"
+        }
+      },
+      {
+        path: "/warning/record",
+        name: "Record",
+        component: () => import("@/views/Warning/Record"),
+        meta: {
+          title: "预警日志",
+          icon: "menu"
+        }
+      }
+    ]
+  },
+
+  /* 配置中心 */
+  {
+    path: "/configcenter",
+    name: "Configcenter",
+    component: layout,
+    meta: {
+      title: "配置中心",
+      icon: "config"
+    },
+    children: [
+      {
+        path: "/plantingarea",
+        name: "Plantingarea",
+        component: () => import("@/views/ConfigCenter/Plantingarea"),
+        meta: {
+          title: "种植区域划分",
+          icon: "navmenu"
+        }
+      },
+      {
+        path: "/sensorconfig",
+        name: "Sensorconfig",
+        component: () => import("@/views/ConfigCenter/Sensorconfig"),
+        meta: {
+          title: "传感器配置",
+          icon: "navmenu"
+        }
+      },
+      {
+        path: "/controlconfig",
+        name: "Controlconfig",
+        component: () => import("@/views/ConfigCenter/Controlconfig"),
+        meta: {
+          title: "控制器配置",
+          icon: "navmenu"
+        }
+      },
+      {
+        path: "/relayconfig",
+        name: "Relayconfig",
+        component: () => import("@/views/ConfigCenter/Relayconfig"),
+        meta: {
+          title: "继电器配置",
+          icon: "navmenu"
+        }
+      },
+      {
+        path: "/stationconfig",
+        name: "Stationconfig",
+        component: () => import("@/views/ConfigCenter/Stationconfig"),
+        meta: {
+          title: "采集站配置",
+          icon: "navmenu"
+        }
+      },
+
+      {
+        path: "/agricultural",
+        name: "agricultural",
+        component: () => import("@/views/ConfigCenter/Agricultural"),
+        meta: {
+          title: "农机农具",
+          icon: "navmenu"
+        },
+        children: [
+          {
+            path: "/agricultural/stockList",
+            name: "StockList",
+            component: () =>
+              import("@/views/ConfigCenter/Agricultural/StockList"),
+            meta: {
+              title: "备案列表"
+              // icon: "navmenu"
+            }
+          },
+          {
+            path: "/agricultural/useList",
+            name: "UseList",
+            component: () =>
+              import("@/views/ConfigCenter/Agricultural/UseList"),
+            meta: {
+              title: "使用记录"
+              // icon: "navmenu"
+            }
+          }
+        ]
       }
     ]
   },
@@ -79,86 +284,92 @@ const routes = [
     component: layout,
     meta: {
       title: "用户管理",
-      icon: "menu"
+      icon: "user"
     },
     children: [
       {
         path: "/userIndex",
         name: "UserIndex",
-        component: () => import("@/views/User"),
+        component: () => import("@/views/User/Role"),
         meta: {
-          title: "用户列表"
+          title: "用户列表",
+          icon: "navmenu"
         }
       }
     ]
   },
-
-  /* 视频中心 */
+  /* 远程专家 */
   {
-    path: "/video",
-    name: "video",
+    path: "/remote",
+    name: "Remote",
     component: layout,
     meta: {
-      title: "视频中心",
-      icon: "menu"
+      title: "远程专家",
+      icon: "remote"
     },
     children: [
       {
-        path: "/video1",
-        name: "video1",
-        component: () => import("@/views/User"),
+        path: "/remoteIndex",
+        name: "RemoteIndex",
+        component: () => import("@/views/Remote"),
         meta: {
-          title: "视频中心"
-        }
-      },
-      {
-        path: "/video2",
-        name: "video2",
-        component: () => import("@/views/User"),
-        meta: {
-          title: "视频中心2"
-        },
-        children: [
-          {
-            path: "/video3",
-            name: "video3",
-            component: () => import("@/views/User"),
-            meta: {
-              title: "视频中心3"
-            }
-          },
-          {
-            path: "/video4",
-            name: "video4",
-            component: () => import("@/views/User"),
-            meta: {
-              title: "视频中心4"
-            }
-          }
-        ]
-      }
-    ]
-  },
-  /* 控制中心 */
-  {
-    path: "/control",
-    name: "control",
-    component: layout,
-    meta: {
-      title: "控制中心",
-      icon: "menu"
-    },
-    children: [
-      {
-        path: "/control1",
-        name: "control1",
-        component: () => import("@/views/User"),
-        meta: {
-          title: "控制中心"
+          title: "远程专家",
+          icon: "navmenu"
         }
       }
     ]
   }
+  /* 信息管理 */
+  // {
+  //   path: "/info",
+  //   name: "Info",
+  //   component: layout,
+  //   meta: {
+  //     title: "信息管理",
+  //     icon: "jiance"
+  //   },
+  //   children: [
+  //     {
+  //       path: "/infoIndex",
+  //       name: "InfoIndex",
+  //       component: () => import("@/views/Info"),
+  //       meta: {
+  //         title: "信息列表",
+  //         icon: "navmenu"
+  //       }
+  //     },
+  //     {
+  //       path: "/infoCategory",
+  //       name: "InfoCategory",
+  //       component: () => import("@/views/Info/category"),
+  //       meta: {
+  //         title: "信息分类",
+  //         icon: "navmenu"
+  //       }
+  //     }
+  //   ]
+  // }
+  // /* 新闻 */
+  // {
+  //   path: "",
+  //   name: "News",
+  //   component: layout,
+  //   meta: {
+  //     title: "新闻中心",
+  //     icon: "menu"
+  //   },
+  //   children: [
+  //     {
+  //       path: "/news",
+  //       name: "NewsList",
+  //       component: () => import("@/views/News"),
+  //       meta: {
+  //         title: "新闻列表",
+  //         icon: "menu"
+  //       }
+  //     }
+  //   ]
+  // }
 ];
 
 const router = new VueRouter({

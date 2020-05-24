@@ -1,3 +1,4 @@
+import { MessageBox, Message } from "element-ui";
 /**
  * 过滤特殊字符  */
 export function stripscript(s) {
@@ -17,4 +18,25 @@ export function stripscript(s) {
 export function validateEmail(value) {
   let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
   return !reg.test(value) ? true : false;
+}
+export function validatePhone(value) {
+  let reg = /^1[3456789]\d{9}$/;
+  return !reg.test(value) ? true : false;
+}
+
+/* 测试弹框确认 */
+export function confirm(params) {
+  MessageBox.confirm(params.content, params.tip || "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: params.type || "warning",
+    center: true
+  })
+    .then(() => {
+      params.fn && params.fn(params.id);
+      Message.success("删除成功");
+    })
+    .catch(() => {
+      Message.info("已取消删除");
+    });
 }

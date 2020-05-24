@@ -99,7 +99,7 @@ export default {
     const loginButtonStatus = ref(true);
     /* 表单绑定数据 */
     const ruleForm = reactive({
-      username: root.$store.state.app.username || "",
+      username: "",
       password: ""
     });
     /* 表单验证 */
@@ -116,8 +116,10 @@ export default {
           // alert("submit!");
           let loginParams = {
             username: ruleForm.username,
-            password: md5(ruleForm.password)
+            password: ruleForm.password
+            // password: md5(ruleForm.password)
           };
+          // let parapmsLogin = JSON.parse(JSON.stringify(loginParams));
           /* 登陆 */
           root.$store
             .dispatch("app/login", loginParams)

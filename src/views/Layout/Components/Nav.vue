@@ -10,7 +10,12 @@
       router
     >
       <template v-for="(item, index) in routers">
-        <el-submenu :index="index + ''" v-if="!item.hidden" :key="index">
+        <el-submenu
+          :index="index + ''"
+          v-if="!item.hidden"
+          :key="index"
+          class="fatherNav"
+        >
           <!-- 一级菜单 -->
           <template slot="title">
             <!-- <i class="el-icon-location"></i> -->
@@ -27,6 +32,10 @@
               :key="index"
               :index="subitem.path"
             >
+              <svg-icon
+                :iconClass="subitem.meta.icon"
+                :className="subitem.meta.icon"
+              ></svg-icon>
               {{ subitem.meta.title }}
             </el-menu-item>
           </template>
@@ -35,15 +44,27 @@
             <el-submenu
               v-if="subitem.children"
               :key="index"
-              :index="subitem.path"
               class="threeNav"
+              index="hhh"
             >
-              <span slot="title">{{ subitem.meta.title }}</span>
+              <span slot="title">
+                <svg-icon
+                  :iconClass="subitem.meta.icon"
+                  :className="subitem.meta.icon"
+                ></svg-icon
+                >{{ subitem.meta.title }}</span
+              >
               <el-menu-item
-                index="1-4-1"
+                :index="miniItem.path"
                 v-for="(miniItem, index) in subitem.children"
                 :key="index"
-                >{{ miniItem.meta.title }}</el-menu-item
+              >
+                <!-- <svg-icon
+                  :iconClass="subitem.meta.icon"
+                  :className="subitem.meta.icon"
+                ></svg-icon
+                > -->
+                {{ miniItem.meta.title }}</el-menu-item
               >
             </el-submenu>
           </template>
@@ -57,7 +78,7 @@ import { ref, reactive, computed } from "@vue/composition-api";
 export default {
   name: "navMenu",
   setup(props, { root }) {
-    console.log(root.$router.options.routes);
+    // console.log(root.$router.options.routes);
     /* data数据 */
     // const isCollapse = ref(false);
     const routers = reactive(root.$router.options.routes);
@@ -80,8 +101,12 @@ export default {
   left: 0;
   width: $navMenuWidth;
   height: calc(100vh - 65px);
-  background: #344a5f;
+  overflow-y: auto;
+  background: #262b40;
   @include webkit(transition, all 0.3s ease 0s);
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: auto;
@@ -92,7 +117,7 @@ export default {
   .threeNav {
     .el-submenu__title {
       span {
-        font-size: 12px;
+        font-size: 13px;
         margin-left: 8px;
       }
     }

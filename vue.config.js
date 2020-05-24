@@ -114,12 +114,36 @@ module.exports = {
     hot: true, // 开启热加载
     hotOnly: false,
     proxy: {
+      // "/qyq": {
+      //   // target: "http://192.168.1.142:8081", //API服务器的地址
+      //   target: "http://192.168.1.151:9000", //API服务器的地址
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     "^/qyq": ""
+      //   },
       "/api": {
         // target: "http://192.168.1.151:9001", //API服务器的地址
-        target: "http://localhost:9001", //API服务器的地址
+        // target: "http://192.168.1.151:9000", //API服务器的地址
+        target: "http://2449i4t062.zicp.vip:11770", //API服务器的地址
         changeOrigin: true,
         pathRewrite: {
           "^/api": ""
+        }
+      },
+      "/hr": {
+        // target: "http://192.168.1.142:8081", //API服务器的地址
+        target: "http://localhost:8081", //API服务器的地址
+        changeOrigin: true,
+        pathRewrite: {
+          "^/hr": ""
+        }
+      },
+      "/zxy": {
+        // target: "http://192.168.1.142:8081", //API服务器的地址
+        target: "http://localhost:8085", //API服务器的地址
+        changeOrigin: true,
+        pathRewrite: {
+          "^/zxy": ""
         }
       }
     },

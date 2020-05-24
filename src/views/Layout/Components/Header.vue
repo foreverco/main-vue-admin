@@ -60,7 +60,7 @@
   </div>
 </template>
 <script>
-import { computed } from "@vue/composition-api";
+import { computed, onMounted } from "@vue/composition-api";
 export default {
   name: "layoutHeader",
   setup(props, { root }) {
@@ -92,10 +92,20 @@ export default {
           });
         });
     };
+    const getUsername = () => {
+      root.$store.dispatch("app/getUser").then(res => {
+        console.log("2222222222222");
+        console.log(res);
+      });
+    };
+    // onMounted(() => {
+    // getUsername();
+    // });
     return {
       // colspseState,
       username,
-      loginOut
+      loginOut,
+      getUsername
     };
   }
 };
