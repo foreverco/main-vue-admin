@@ -10,8 +10,9 @@
         <el-row>
           <el-form-item prop="statitions">
             <SensorPicker
-              :sensorPickerLevel="['areas', 'statitions']"
               :sensorData.sync="data.sensorData"
+              :sensorPickerLevel="['largeArea', 'areas', 'statitions']"
+              :dialogShow="data.dialog_stock_flag"
             ></SensorPicker>
             <!-- {{ data.sensorData }} -->
           </el-form-item>
@@ -256,10 +257,15 @@ export default {
     const submit = formName => {
       refs[formName].validate(valid => {
         if (valid) {
+          console.log(data.sensorData);
           let requestParams = JSON.parse(JSON.stringify(data.form));
+          // if (!requestParams.areaId) {
+          // requestParams.areaId = data.sensorData.largeAreaValue;
           requestParams.areaId = data.sensorData.areasValue;
           requestParams.collectStationId = data.sensorData.statitionsValue;
-          console.log();
+          // }
+          // if (!requestParams.collectStationId) {
+          // }
           console.log(requestParams);
           addsensor(requestParams).then(res => {
             root.$message({
@@ -285,6 +291,16 @@ export default {
       data.dialog_stock_flag = false;
       resetForm();
       emit("update:flag", false);
+      // emit("update:editData", {});
+      data.dialogTitleName = "新增传感器";
+      data.form = {};
+      data.sensorData.largeAreaValue = "";
+      data.sensorData.areasValue = "";
+      data.sensorData.statitionsValue = "";
+
+      data.sensorData.largeareaName = "";
+      data.sensorData.areaName = "";
+      data.sensorData.statitionsName = "";
       // data.form.type = data.sbTypeSelect.init[0].value;
     };
     const closeDialog = () => {
@@ -294,11 +310,20 @@ export default {
     const openDialog = () => {
       console.log(data.form);
       // 初始值处理
-      console.log(props.editData);
       let editData = props.editData;
+      console.log(editData);
       if (editData.id) {
         data.dialogTitleName = "编辑传感器";
         data.form = editData;
+        data.sensorData.largeAreaValue = editData.regionId;
+        data.sensorData.areasValue = editData.areaId;
+        data.sensorData.statitionsValue = editData.collectStationId;
+
+        data.sensorData.largeareaName = editData.largeName;
+        data.sensorData.areaName = editData.areaName;
+        data.sensorData.statitionsName = editData.collectionName;
+
+        // data.sensorData.sensorsValue = editData.sensorsValue;
       }
       // data.form.areaId = props.editData.areaId;
       // data.form.collectStationId = props.editData.collectStationId;
@@ -366,7 +391,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/config.scss";
 .el-row {
-  margin: 20px 0;
+  margin: 10px 0;
 }
 .sb_map {
   // .el-form-item__content {

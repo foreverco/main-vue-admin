@@ -1,64 +1,38 @@
 <template>
   <div>
     <el-row :gutter="10">
-      <el-col :span="4">
+      <el-col :md="12" :sm="14">
         <div class="label-wrap category">
-          <label for="">设备名称:</label>
+          <label for="">关键字:</label>
           <div class="warp-content">
-            <SelectVue style="width:100%" :config="data.configSelect">
-            </SelectVue>
-            <!-- <el-select
-              v-model="data.sb_value"
-              placeholder="请选择"
-              style="width:100%"
-            >
-              <el-option
-                v-for="item in data.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select> -->
+            <el-row :gutter="16">
+              <el-col :span="8">
+                <SelectVue
+                  style="width:100%"
+                  :config="data.configSelect"
+                  :selectData.sync="data.selectData"
+                >
+                </SelectVue>
+              </el-col>
+              <el-col :span="8">
+                <el-input
+                  v-model="data.keyWord"
+                  placeholder="请输入关键字"
+                ></el-input>
+              </el-col>
+              <el-col :span="4">
+                <el-button size="mini" @click="search">搜索</el-button>
+              </el-col>
+            </el-row>
           </div>
         </div>
       </el-col>
-      <el-col :span="4">
-        <div class="label-wrap had_per">
-          <label for="">责任人: </label>
-          <div class="warp-content">
-            <el-select v-model="data.hadper_value" style="width:100%">
-              <el-option
-                v-for="item in data.had_per"
-                :key="item.value"
-                :value="item.value"
-                :label="item.name"
-              ></el-option>
-            </el-select>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="4">
-        <div class="label-wrap user_per">
-          <label for="">领用人: </label>
-          <div class="warp-content">
-            <el-input
-              v-model="data.user_per"
-              placeholder="领用人"
-              style="width:100%"
-            ></el-input>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="1" style="line-height:30px">
-        <el-button size="mini">搜索</el-button>
-      </el-col>
-      <el-col :span="5" :offset="6">
+      <el-col :md="{ span: 8, offset: 4 }" :sm="10">
         <el-button
           type="success"
           size="small"
           icon="el-icon-circle-plus-outline"
-          @click="data.dialog_stock = true"
+          @click="addDialogBox"
           >添加</el-button
         >
         <el-button
@@ -106,7 +80,7 @@
 import TableVue from "@/components/Table";
 import SelectVue from "@/components/Select";
 import DialogBox from "./dialog/stockList";
-import { reactive } from "@vue/composition-api";
+import { reactive, onBeforeMount } from "@vue/composition-api";
 import { delsensor } from "@/api/configCenter";
 import { global } from "../../../utils/global_V3.0";
 export default {
@@ -118,14 +92,31 @@ export default {
   setup(props, { root, refs }) {
     const { confirm } = global();
     const data = reactive({
+      configSelect: {
+        init: [
+          {
+            value: "name",
+            label: "控制站名称"
+          },
+          {
+            value: "principalPerson",
+            label: "负责人"
+          },
+          {
+            value: "type",
+            label: "设备名称"
+          }
+        ]
+      },
+      // 下拉框选中值
+      selectData: "",
+      // 关键字
+      keyWord: "",
       // table选择的数据
       tableRow: {},
       // 弹框状态
       dialog_stock: false,
       editData: {},
-      configSelect: {
-        init: ["name"]
-      },
       sb_value: "",
       hadper_value: "",
       user_per: "",
@@ -166,8 +157,10 @@ export default {
           { label: "设备名称", field: "name" },
           { label: "设备编号", field: "no" },
           { label: "设备类型", field: "type" },
-          { label: "区域ID", field: "areaId" },
-          { label: "采集站ID", field: "collectStationId" },
+          // { label: "区域ID", field: "areaId" },
+          { label: "区域名称", field: "areaName" },
+          // { label: "采集站ID", field: "collectStationId" },
+          { label: "采集站名称", field: "collectionName", width: "130" },
           { label: "安装时间", field: "installTime", width: "130" },
           // { label: "设备状态", field: "remark" },
           // { label: "安装时间", field: "remark" },
@@ -194,7 +187,7 @@ export default {
           method: "get",
           data: {
             page: 1,
-            pageSize: 5
+            pageSize: 6
           }
         },
         pagination: {
@@ -264,13 +257,29 @@ export default {
       // 子组件赋值
       data.editData = paramsData;
     };
+    const addDialogBox = () => {
+      data.editData = {};
+      console.log(data.editData);
+      data.dialog_stock = true;
+    };
+    const search = () => {
+      let requestData = {
+        [data.selectData]: data.keyWord
+      };
+      refs.sensorTable.paramsLoadData(requestData);
+    };
+    onBeforeMount(() => {
+      data.selectData = "name";
+    });
     return {
       data,
       batchDel,
       refresData,
       hanleDel,
       handleEdit,
-      Delfn
+      addDialogBox,
+      Delfn,
+      search
     };
   }
 };

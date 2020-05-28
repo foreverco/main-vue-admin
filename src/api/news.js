@@ -8,3 +8,11 @@ export function newsList() {
     baseURL: Config.proxy.hr
   });
 }
+
+export function gettq() {
+  return service.request({
+    method: "get",
+    url: "/news/newsList",
+    baseURL: Config.proxy.hr
+  });
+}

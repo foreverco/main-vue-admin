@@ -132,7 +132,7 @@ module.exports = {
       },
       "/hr": {
         // target: "http://192.168.1.142:8081", //API服务器的地址
-        target: "http://localhost:8081", //API服务器的地址
+        target: "http://wthrcdn.etouch.cn/weather_mini", //API服务器的地址
         changeOrigin: true,
         pathRewrite: {
           "^/hr": ""

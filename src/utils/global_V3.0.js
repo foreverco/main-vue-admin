@@ -3,8 +3,6 @@ import { MessageBox, Message } from "element-ui";
 export function global() {
   // const str = ref("4444444");
   const confirm = params => {
-    debugger;
-    console.log(params);
     MessageBox.confirm(params.content, params.tip || "提示", {
       confirmButtonText: "确定",
       cancelButtonText: "取消",
@@ -13,7 +11,6 @@ export function global() {
     })
       .then(() => {
         // str.value = "删除成功删除成功删除成功删除成功";
-        console.log("sssssssssssssssssssss");
         params.fn && params.fn(params.id);
         Message.success("删除成功");
       })

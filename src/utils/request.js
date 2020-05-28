@@ -54,7 +54,7 @@ service.interceptors.response.use(
     //业务需求
     // console.log(data);
     // debugger;
-    if (data.code != 200) {
+    if (data.code !== 200) {
       Message.error(data.msg);
       return Promise.reject(data);
     } else {

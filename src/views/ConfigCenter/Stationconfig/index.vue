@@ -1,130 +1,114 @@
 <template>
   <div>
     <el-row :gutter="10">
-      <el-col :span="4">
+      <el-col :md="12" :sm="14">
         <div class="label-wrap category">
-          <label for="">设备名称:</label>
+          <label for="">关键字:</label>
           <div class="warp-content">
-            <SelectVue style="width:100%" :config="data.configSelect">
-            </SelectVue>
-            <!-- <el-select
-              v-model="data.sb_value"
-              placeholder="请选择"
-              style="width:100%"
-            >
-              <el-option
-                v-for="item in data.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select> -->
+            <el-row :gutter="16">
+              <el-col :span="8">
+                <SelectVue
+                  style="width:100%"
+                  :config="data.configSelect"
+                  :selectData.sync="data.selectData"
+                >
+                </SelectVue>
+              </el-col>
+              <el-col :span="8">
+                <el-input
+                  v-model="data.keyWord"
+                  placeholder="请输入关键字"
+                ></el-input>
+              </el-col>
+              <el-col :span="4">
+                <el-button size="mini" @click="search">搜索</el-button>
+              </el-col>
+            </el-row>
           </div>
         </div>
       </el-col>
-      <el-col :span="4">
-        <div class="label-wrap had_per">
-          <label for="">责任人: </label>
-          <div class="warp-content">
-            <el-select v-model="data.hadper_value" style="width:100%">
-              <el-option
-                v-for="item in data.had_per"
-                :key="item.value"
-                :value="item.value"
-                :label="item.name"
-              ></el-option>
-            </el-select>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="4">
-        <div class="label-wrap user_per">
-          <label for="">领用人: </label>
-          <div class="warp-content">
-            <el-input
-              v-model="data.user_per"
-              placeholder="领用人"
-              style="width:100%"
-            ></el-input>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="1" style="line-height:30px">
-        <el-button size="mini">搜索</el-button>
-      </el-col>
-      <el-col :span="5" :offset="6">
+      <el-col :md="{ span: 8, offset: 4 }" :sm="10">
         <el-button
           type="success"
           size="small"
           icon="el-icon-circle-plus-outline"
-          @click="dialog_stock = true"
+          @click="addDialogBox"
           >添加</el-button
         >
-        <el-button type="danger" size="small" icon="el-icon-delete"
+        <!-- <el-button
+          type="danger"
+          size="small"
+          icon="el-icon-delete"
+          @click="batchDel"
           >删除</el-button
-        >
+        > -->
       </el-col>
     </el-row>
-    <TableVue :config="data.configTable">
+    <TableVue
+      :config="data.configTable"
+      :tableRow.sync="data.tableRow"
+      ref="stationTable"
+    >
       <template v-slot:status="slotData">
         <el-switch active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
         <span v-if="false">{{ slotData }}</span>
       </template>
       <template v-slot:operation="slotData">
-        <el-button size="mini" type="danger" @click="operation(slotData.data)"
+        <el-button size="mini" type="danger" @click="hanleDel(slotData.data)"
           >删除</el-button
         >
-        <el-button size="mini" type="success" @click="operation(slotData.data)"
+        <el-button size="mini" type="success" @click="handleEdit(slotData.data)"
           >编辑</el-button
         >
       </template>
     </TableVue>
+    <DialogBox
+      :flag.sync="data.dialog_stock"
+      :editData="data.editData"
+      @refresTaleData="refresData"
+    ></DialogBox>
   </div>
 </template>
 <script>
 import TableVue from "@/components/Table";
 import SelectVue from "@/components/Select";
-import { reactive } from "@vue/composition-api";
+import { reactive, onBeforeMount } from "@vue/composition-api";
+import DialogBox from "./dialog/stockList";
+import { delstation } from "@/api/configCenter";
+import { global } from "../../../utils/global_V3.0";
 export default {
   components: {
     TableVue,
-    SelectVue
+    SelectVue,
+    DialogBox
   },
-  setup(props, { root }) {
+  setup(props, { root, refs }) {
+    const { confirm } = global();
     const data = reactive({
       configSelect: {
-        init: ["name"]
+        init: [
+          {
+            value: "name",
+            label: "控制站名称"
+          },
+          {
+            value: "principalPerson",
+            label: "负责人"
+          },
+          {
+            value: "type",
+            label: "设备名称"
+          }
+        ]
       },
-      sb_value: "",
-      hadper_value: "",
-      user_per: "",
-      // 设备名称
-      options: [
-        {
-          value: "选项1",
-          label: "空气监测器"
-        },
-        {
-          value: "选项2",
-          label: "土壤监测器"
-        },
-        {
-          value: "选项3",
-          label: "湿度监测器"
-        },
-        {
-          value: "选项4",
-          label: "温度监测器"
-        }
-      ],
-      // 责任人
-      had_per: [
-        { value: "id1", name: "吴诗豪" },
-        { value: "id2", name: "张小艳" },
-        { value: "id3", name: "胡锐" }
-      ],
-
+      // 下拉框选中值
+      selectData: "",
+      // 关键字
+      keyWord: "",
+      // 弹框状态
+      dialog_stock: false,
+      editData: {},
+      tableRow: {},
       /* 表格参数 */
       configTable: {
         // 多选框
@@ -133,15 +117,13 @@ export default {
         recordCheckbox: true,
         // 表头
         tHead: [
-          { label: "ID", field: "id" },
-          { label: "设备名称", field: "identify" },
-          { label: "设备型号", field: "roleName" },
-          { label: "设备类型", field: "remark" },
-          { label: "设备状态", field: "remark" },
-          { label: "安装时间", field: "remark" },
-          { label: "生产产家", field: "remark" },
-          { label: "所在区域", field: "remark" },
-          { label: "负责人", field: "remark9" },
+          { label: "采集站名", field: "name" },
+          { label: "编号", field: "no" },
+          { label: "所属区域", field: "areaName" },
+          { label: "负责人", field: "principalPerson" },
+          { label: "联系电话", field: "contactNumber" },
+          { label: "数据传输方式", field: "transferMethod" },
+          { label: "厂家唯一标识", field: "originalId" },
           // {
           //   label: "状态",
           //   field: "status",
@@ -157,11 +139,11 @@ export default {
         ],
         // 请求接口参数
         requestData: {
-          url: "getGoodsList",
+          url: "getcollectStatitions",
           method: "get",
           data: {
             page: 1,
-            pageSize: 3
+            pageSize: 7
           }
         },
         pagination: {
@@ -176,9 +158,93 @@ export default {
     let operation = params => {
       console.log(params);
     };
+    /* methods 方法 */
+    // const batchDel = () => {
+    //   console.log(data.tableRow);
+    //   let id = data.tableRow.idItem;
+    //   if (!id || id.length === 0) {
+    //     root.$message({
+    //       message: "请选择需要删除的设备",
+    //       type: "warning"
+    //     });
+    //     return false;
+    //   }
+    //   confirm({
+    //     content: "确认删除选中数据,确认后无法恢复！",
+    //     tip: "警告",
+    //     fn: stationDel,
+    //     id: "222"
+    //   });
+    // };
+    // /* 批量删除采集站 */
+    // const stationDel = () => {
+    //   console.log(data.tableRow);
+    //   let stationId = data.tableRow.idItem;
+    //   console.log(stationId);
+    //   delstation(stationId).then(res => {
+    //     console.log(res);
+    //     refresData();
+    //   });
+    // };
+    /* 单条删除数据 */
+    let hanleDelId = "";
+    const hanleDel = params => {
+      hanleDelId = params;
+      confirm({
+        content: "确认删除选中数据,确认后无法恢复！",
+        tip: "警告",
+        fn: Delfn,
+        id: "222"
+      });
+    };
+    const Delfn = () => {
+      console.log(hanleDelId.id);
+      delstation({ id: hanleDelId.id })
+        .then(res => {
+          console.log(res);
+          refresData();
+        })
+        .catch(err => {
+          console.log(err);
+          return false;
+        });
+    };
+    // 重置表格数据
+    const refresData = () => {
+      refs.stationTable.refreshData();
+    };
+    /* 编辑数据 */
+    const handleEdit = params => {
+      console.log(123123123123);
+      data.dialog_stock = true;
+      let paramsData = JSON.parse(JSON.stringify(params));
+      // 子组件赋值
+      data.editData = paramsData;
+    };
+    const addDialogBox = () => {
+      data.editData = {};
+      console.log(data.editData);
+      data.dialog_stock = true;
+    };
+    const search = () => {
+      let requestData = {
+        [data.selectData]: data.keyWord
+      };
+      refs.stationTable.paramsLoadData(requestData);
+    };
+    onBeforeMount(() => {
+      data.selectData = "name";
+    });
     return {
       data,
-      operation
+      operation,
+      refresData,
+      // batchDel,
+      addDialogBox,
+      handleEdit,
+      hanleDel,
+      Delfn,
+      search
     };
   }
 };

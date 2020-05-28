@@ -208,20 +208,11 @@ const routes = [
         }
       },
       {
-        path: "/sensorconfig",
-        name: "Sensorconfig",
-        component: () => import("@/views/ConfigCenter/Sensorconfig"),
-        meta: {
-          title: "传感器配置",
-          icon: "navmenu"
-        }
-      },
-      {
         path: "/controlconfig",
         name: "Controlconfig",
         component: () => import("@/views/ConfigCenter/Controlconfig"),
         meta: {
-          title: "控制器配置",
+          title: "控制站配置",
           icon: "navmenu"
         }
       },
@@ -243,7 +234,15 @@ const routes = [
           icon: "navmenu"
         }
       },
-
+      {
+        path: "/sensorconfig",
+        name: "Sensorconfig",
+        component: () => import("@/views/ConfigCenter/Sensorconfig"),
+        meta: {
+          title: "传感器配置",
+          icon: "navmenu"
+        }
+      },
       {
         path: "/agricultural",
         name: "agricultural",
@@ -290,9 +289,27 @@ const routes = [
       {
         path: "/userIndex",
         name: "UserIndex",
-        component: () => import("@/views/User/Role"),
+        component: () => import("@/views/User/UserList"),
         meta: {
           title: "用户列表",
+          icon: "navmenu"
+        }
+      },
+      {
+        path: "/userIndex",
+        name: "UserIndex",
+        component: () => import("@/views/User/Role"),
+        meta: {
+          title: "角色列表",
+          icon: "navmenu"
+        }
+      },
+      {
+        path: "/menuIndex",
+        name: "MenuIndex",
+        component: () => import("@/views/User/Menu"),
+        meta: {
+          title: "菜单列表",
           icon: "navmenu"
         }
       }

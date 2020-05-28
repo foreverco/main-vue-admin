@@ -1,101 +1,123 @@
 <template>
   <div>
-    <el-row :gutter="10">
-      <el-col :span="4">
+    <el-row :gutter="10" justify="space-between">
+      <el-col :md="12" :sm="14">
         <div class="label-wrap category">
-          <label for="">设备名称:</label>
+          <label for="">关键字:</label>
           <div class="warp-content">
-            <SelectVue style="width:100%" :config="data.configSelect">
-            </SelectVue>
-            <!-- <el-select
-              v-model="data.sb_value"
-              placeholder="请选择"
-              style="width:100%"
-            >
-              <el-option
-                v-for="item in data.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select> -->
+            <el-row :gutter="16">
+              <el-col :span="8">
+                <SelectVue
+                  style="width:100%"
+                  :config="data.configSelect"
+                  :selectData.sync="data.selectData"
+                >
+                </SelectVue>
+              </el-col>
+              <el-col :span="8">
+                <el-input
+                  v-model="data.keyWord"
+                  placeholder="请输入关键字"
+                ></el-input>
+              </el-col>
+              <el-col :span="4">
+                <el-button size="mini" @click="search">搜索</el-button>
+              </el-col>
+            </el-row>
           </div>
         </div>
       </el-col>
-      <el-col :span="4">
-        <div class="label-wrap had_per">
-          <label for="">责任人: </label>
-          <div class="warp-content">
-            <el-select v-model="data.hadper_value" style="width:100%">
-              <el-option
-                v-for="item in data.had_per"
-                :key="item.value"
-                :value="item.value"
-                :label="item.name"
-              ></el-option>
-            </el-select>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="4">
-        <div class="label-wrap user_per">
-          <label for="">领用人: </label>
-          <div class="warp-content">
-            <el-input
-              v-model="data.user_per"
-              placeholder="领用人"
-              style="width:100%"
-            ></el-input>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="1" style="line-height:30px">
-        <el-button size="mini">搜索</el-button>
-      </el-col>
-      <el-col :span="5" :offset="6">
+      <el-col :md="{ span: 8, offset: 4 }" :sm="10">
         <el-button
           type="success"
           size="small"
           icon="el-icon-circle-plus-outline"
-          @click="dialog_stock = true"
+          @click="addDialogBox"
           >添加</el-button
         >
-        <el-button type="danger" size="small" icon="el-icon-delete"
-          >删除</el-button
+        <el-button
+          type="danger"
+          size="small"
+          icon="el-icon-delete"
+          @click="batchDel()"
+          >批量删除</el-button
         >
       </el-col>
     </el-row>
-    <TableVue :config="data.configTable">
+    <TableVue
+      :config="data.configTable"
+      :tableRow.sync="data.tableRow"
+      ref="sensorTable"
+    >
       <template v-slot:status="slotData">
-        <el-switch active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
-        <span v-if="false">{{ slotData }}</span>
+        <el-switch
+          v-model="slotData.data.switchStatus"
+          active-color="#13ce66"
+          inactive-color="#ff4949"
+          active-value="true"
+          inactive-value="false"
+        >
+        </el-switch>
+        <span v-if="false">{{ slotData.data.switchStatus }}</span>
       </template>
       <template v-slot:operation="slotData">
-        <el-button size="mini" type="danger" @click="operation(slotData.data)"
-          >删除</el-button
-        >
-        <el-button size="mini" type="success" @click="operation(slotData.data)"
+        <el-button size="mini" type="success" @click="handleEdit(slotData.data)"
           >编辑</el-button
+        >
+        <el-button size="mini" type="danger" @click="hanleDel(slotData.data)"
+          >删除</el-button
         >
       </template>
     </TableVue>
+    <DialogBox
+      :flag.sync="data.dialog_stock"
+      :editData.sync="data.editData"
+      @refresTaleData="refresData"
+    ></DialogBox>
   </div>
 </template>
 <script>
 import TableVue from "@/components/Table";
 import SelectVue from "@/components/Select";
-import { reactive } from "@vue/composition-api";
+import DialogBox from "./dialog/stockList";
+import { reactive, onBeforeMount } from "@vue/composition-api";
+import { delrelay } from "@/api/configCenter";
+import { global } from "../../../utils/global_V3.0";
 export default {
   components: {
     TableVue,
-    SelectVue
+    SelectVue,
+    DialogBox
   },
-  setup(props, { root }) {
+  setup(props, { root, refs }) {
+    const { confirm } = global();
     const data = reactive({
       configSelect: {
-        init: ["name"]
+        init: [
+          {
+            value: "name",
+            label: "控制站名称"
+          },
+          {
+            value: "principalPerson",
+            label: "负责人"
+          },
+          {
+            value: "type",
+            label: "设备名称"
+          }
+        ]
       },
+      // 下拉框选中值
+      selectData: "",
+      // 关键字
+      keyWord: "",
+      // table选择的数据
+      tableRow: {},
+      // 弹框状态
+      dialog_stock: false,
+      editData: {},
+
       sb_value: "",
       hadper_value: "",
       user_per: "",
@@ -133,21 +155,20 @@ export default {
         recordCheckbox: true,
         // 表头
         tHead: [
-          { label: "ID", field: "id" },
-          { label: "设备名称", field: "identify" },
-          { label: "设备型号", field: "roleName" },
-          { label: "设备类型", field: "remark" },
-          { label: "设备状态", field: "remark" },
-          { label: "安装时间", field: "remark" },
-          { label: "生产产家", field: "remark" },
-          { label: "所在区域", field: "remark" },
-          { label: "负责人", field: "remark9" },
-          // {
-          //   label: "状态",
-          //   field: "status",
-          //   columnType: "slot",
-          //   slotname: "status"
-          // },
+          { label: "设备名称", field: "name" },
+          { label: "设备编号", field: "no" },
+          { label: "发送格式", field: "sendFormat" },
+          { label: "区域名称", field: "areaName" },
+          { label: "控制站名称", field: "controlName", width: "130" },
+          { label: "厂家唯一标识", field: "originalId", width: "130" },
+          { label: "负责人", field: "principalPerson" },
+          { label: "负责人电话", field: "contactNumber", width: "130" },
+          {
+            label: "状态",
+            field: "switchStatus",
+            columnType: "slot",
+            slotname: "status"
+          },
           {
             label: "操作",
             columnType: "slot",
@@ -157,11 +178,11 @@ export default {
         ],
         // 请求接口参数
         requestData: {
-          url: "getGoodsList",
+          url: "getRelaysList",
           method: "get",
           data: {
             page: 1,
-            pageSize: 3
+            pageSize: 6
           }
         },
         pagination: {
@@ -173,12 +194,87 @@ export default {
       }
     });
     /* methods 方法 */
-    let operation = params => {
-      console.log(params);
+    const batchDel = () => {
+      console.log(data.tableRow);
+      let id = data.tableRow.idItem;
+      if (!id || id.length === 0) {
+        root.$message({
+          message: "请选择需要删除的设备",
+          type: "warning"
+        });
+        return false;
+      }
+      confirm({
+        content: "确认删除选中数据,确认后无法恢复！",
+        tip: "警告",
+        fn: sensorDel,
+        id: "222"
+      });
     };
+    // 删除传感器
+    const sensorDel = () => {
+      // let sensorId = data.tableRow.idItem.toString();
+      let sensorId = data.tableRow.idItem;
+      console.log(sensorId);
+      delrelay(sensorId).then(res => {
+        console.log(res);
+        refresData();
+      });
+    };
+    const refresData = () => {
+      refs.sensorTable.refreshData();
+    };
+    /* 单条删除数据 */
+    let hanleDelId = "";
+    const hanleDel = params => {
+      hanleDelId = params;
+      confirm({
+        content: "确认删除选中数据,确认后无法恢复！",
+        tip: "警告",
+        fn: Delfn,
+        id: "222"
+      });
+    };
+    const Delfn = () => {
+      let relaysId = [];
+      relaysId.push(hanleDelId.id);
+      console.log(relaysId);
+      delrelay(relaysId).then(res => {
+        console.log(res);
+        refresData();
+      });
+    };
+    /* 编辑数据 */
+    const handleEdit = params => {
+      // console.log(params);
+      data.dialog_stock = true;
+      let paramsData = JSON.parse(JSON.stringify(params));
+      // 子组件赋值
+      data.editData = paramsData;
+    };
+    const addDialogBox = () => {
+      data.editData = {};
+      console.log(data.editData);
+      data.dialog_stock = true;
+    };
+    const search = () => {
+      let requestData = {
+        [data.selectData]: data.keyWord
+      };
+      refs.sensorTable.paramsLoadData(requestData);
+    };
+    onBeforeMount(() => {
+      data.selectData = "name";
+    });
     return {
       data,
-      operation
+      batchDel,
+      refresData,
+      hanleDel,
+      handleEdit,
+      addDialogBox,
+      Delfn,
+      search
     };
   }
 };

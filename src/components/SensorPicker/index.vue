@@ -1,7 +1,23 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="11" v-if="init.areas">
+      <el-col :span="11" v-if="init.largeArea">
+        <el-form-item label="大区域">
+          <el-select
+            v-model="data.largeAreaValue"
+            @change="handlelargeArea"
+            style="width:60%"
+          >
+            <el-option
+              v-for="item in data.largeArea"
+              :key="item.id"
+              :value="item.id"
+              :label="item.name"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </el-col>
+      <el-col :span="11" :offset="1" v-if="init.areas">
         <el-form-item label="区域">
           <el-select
             v-model="data.areasValue"
@@ -17,7 +33,9 @@
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col :span="11" :offset="2" v-if="init.statitions">
+    </el-row>
+    <el-row v-if="init.statitions || init.sensors">
+      <el-col :span="11" v-if="init.statitions">
         <el-form-item label="采集站">
           <el-select
             v-model="data.statitionsValue"
@@ -33,7 +51,7 @@
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col :span="11" v-if="init.sensors">
+      <el-col :span="11" :offset="1" v-if="init.sensors">
         <el-form-item label="传感器">
           <el-select
             v-model="data.sensorsValue"
@@ -55,7 +73,13 @@
 
 <script>
 // import { reqareas, reqStatitions, reqSensors } from "../../api/common";
-import { watch, onBeforeMount, reactive } from "@vue/composition-api";
+import {
+  watch,
+  onBeforeMount,
+  reactive,
+  onUpdated,
+  onMounted
+} from "@vue/composition-api";
 import { sensorPicker } from "./sensorPicker";
 export default {
   name: "Sensorpicker",
@@ -67,20 +91,27 @@ export default {
     sensorData: {
       type: Object,
       default: () => {}
+    },
+    dialogShow: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props, { root, emit }) {
     console.log(props.sensorData);
     // 初始化省市区联动
     const init = reactive({
+      largeArea: false,
       areas: false,
       statitions: false,
       sensors: false
     });
     const {
       // 事件
-      getareas,
+      getlargeArea,
+      // getareas,
       handleAreas,
+      handlelargeArea,
       handleStatitions,
       handleSensors,
       // 数据集合
@@ -112,13 +143,27 @@ export default {
     };
     watch(
       [
+        () => resultData.largeAreaValue,
         () => resultData.areasValue,
         () => resultData.statitionsValue,
         () => resultData.sensorsValue
       ],
-      ([areas, statitions, sensors]) => {
+      ([largeArea, areas, statitions, sensors]) => {
+        console.log(props.sensorData);
         emit("update:sensorData", resultData);
         console.log(resultData);
+      }
+    );
+    watch(
+      () => props.dialogShow,
+      (newVale, oldvalue) => {
+        console.log(newVale);
+        setTimeout(() => {
+          data.largeAreaValue = resultData.largeareaName;
+          data.areasValue = resultData.areaName;
+          data.statitionsValue = resultData.statitionsName;
+          // data.sensorsValue = "123";
+        }, 500);
       }
     );
     // const data = reactive({
@@ -163,8 +208,16 @@ export default {
     onBeforeMount(() => {
       // 初始化
       initSensorpicker();
-      // 获取省份
-      getareas();
+      // 获取区域
+      getlargeArea();
+      // console.log("=============");
+      // console.log(props.sensorData);
+      // console.log(resultData.areaName);
+      // // data.largeAreaValue = "123";
+      // // data.areasValue = resultData.areaName;
+      // // data.statitionsValue = "123";
+      // // data.sensorsValue = "123";
+      console.log(resultData);
     });
     return {
       init,
@@ -178,7 +231,9 @@ export default {
       // statitionsValue,
       // sensorsValue,
       // 事件
-      getareas,
+      getlargeArea,
+      // getareas,
+      handlelargeArea,
       handleAreas,
       handleStatitions,
       handleSensors
@@ -186,4 +241,8 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-row {
+  margin-top: 10px;
+}
+</style>

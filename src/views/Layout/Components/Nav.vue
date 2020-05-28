@@ -105,7 +105,10 @@ export default {
   background: #262b40;
   @include webkit(transition, all 0.3s ease 0s);
   &::-webkit-scrollbar {
-    display: none;
+    display: block;
+    // &:hover {
+    //   display: block;
+    // }
   }
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {

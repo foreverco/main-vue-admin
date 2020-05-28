@@ -1,13 +1,21 @@
-import { reqareas, reqStatitions, reqSensors } from "../../api/common";
+import {
+  reqareas,
+  reqStatitions,
+  reqSensors,
+  reqlargeArea
+} from "../../api/common";
 import { reactive, toRefs } from "@vue/composition-api";
 export function sensorPicker() {
   const data = reactive({
+    largeArea: [],
     // 区域列表
     areas: [],
     // 采集站列表
     statitions: [],
     // 传感器
     sensors: [],
+    // 选中大区域
+    largeAreaValue: "",
     // 选中区域
     areasValue: "",
     // 选中采集站
@@ -17,6 +25,7 @@ export function sensorPicker() {
   });
 
   const resultData = reactive({
+    largeAreaValue: "",
     areasValue: "",
     // 选中采集站
     statitionsValue: "",
@@ -24,13 +33,19 @@ export function sensorPicker() {
     sensorsValue: ""
   });
 
-  // 获取区域
-  const getareas = () => {
-    reqareas().then(res => {
+  const getlargeArea = () => {
+    reqlargeArea().then(res => {
       console.log(res.data.data);
-      data.areas = res.data.data;
+      data.largeArea = res.data.data;
     });
   };
+  // 获取区域
+  // const getareas = () => {
+  //   reqareas().then(res => {
+  //     console.log(res.data.data);
+  //     data.areas = res.data.data;
+  //   });
+  // };
   // 获取采集站
   // const getStatitions = () => {
   //   reqStatitions().then(res => {
@@ -45,6 +60,17 @@ export function sensorPicker() {
   //     data.sensors = res.data.data;
   //   });
   // };
+
+  // 选择大区域获取小区域
+  let largeAreaValue = "";
+  const handlelargeArea = val => {
+    largeAreaValue = val;
+    resetValue({ type: "largeArea" });
+    reqareas({ regionId: val }).then(res => {
+      console.log(res);
+      data.areas = res.data.data;
+    });
+  };
 
   // 选择区域获取采集站
   let areaVal = "";
@@ -70,6 +96,7 @@ export function sensorPicker() {
   /* 重置选项 */
   const resetValue = params => {
     const typeObj = {
+      largeArea: ["areasValue", "statitionsValue", "sensorsValue"],
       areas: ["statitionsValue", "sensorsValue"],
       statitions: ["sensorsValue"]
     };
@@ -93,7 +120,8 @@ export function sensorPicker() {
     // ...toRefs(data), //把对象类型转换为基础数据类型，可进行解构响应
     data,
     resultData,
-    getareas,
+    getlargeArea,
+    handlelargeArea,
     handleAreas,
     handleStatitions,
     handleSensors

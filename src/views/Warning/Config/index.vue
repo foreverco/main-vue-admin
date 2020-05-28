@@ -51,8 +51,8 @@
       ref="warningconfigTable"
     >
       <template v-slot:alarm="slotData">
-        {{ slotData.data.ALARM_TERM === "2" ? ">" : "=" }}
-        {{ slotData.data.alarm_value }}
+        {{ slotData.data.alarmTerm === "2" ? ">" : "=" }}
+        {{ slotData.data.alarmValue }}
       </template>
       <template v-slot:status="slotData">
         <el-switch
@@ -64,6 +64,12 @@
         >
         </el-switch>
         <span v-if="false">{{ slotData.data.SENSORSTATUS }}</span>
+      </template>
+      <template v-slot:status="slotData">
+        {{ slotData.data.alertMessage === "1" ? "开启" : "关闭" }}
+      </template>
+      <template v-slot:status="slotData">
+        {{ slotData.data.alertinForm === "1" ? "开启" : "关闭" }}
       </template>
       <template v-slot:operation="slotData">
         <el-button size="mini" type="success" @click="handleEdit(slotData.data)"
@@ -128,10 +134,20 @@ export default {
             columnType: "slot",
             slotname: "alarm"
           },
-          { label: "阈值超限间隔", field: "threshold_Gap", width: "150" },
-          { label: "告警短信", field: "alert_message" },
-          { label: "告警通知", field: "alertin_form" },
-          // { label: "责任人", field: "duty_user" },
+          { label: "阈值超限间隔", field: "thresholdGap", width: "150" },
+          {
+            label: "告警短信",
+            field: "alertMessage",
+            columnType: "slot",
+            slotname: "status"
+          },
+          {
+            label: "告警短信",
+            field: "alertinForm",
+            columnType: "slot",
+            slotname: "status"
+          },
+          // { label: "告警通知", field: "alertinForm" },
           {
             label: "操作",
             columnType: "slot",

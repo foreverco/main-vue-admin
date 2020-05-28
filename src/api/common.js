@@ -46,14 +46,22 @@ export function loadTableData(params) {
 
  
  */
-
-export function reqareas() {
+export function reqlargeArea() {
   return service.request({
     method: "get",
-    url: "/device/common/areas"
+    url: "/device/common/largeArea"
   });
 }
 
+export function reqareas(params) {
+  return service.request({
+    method: "get",
+    url: "/device/common/areas",
+    params: params
+  });
+}
+
+// 采集站下拉数据
 export function reqStatitions(params) {
   return service.request({
     method: "get",
@@ -61,7 +69,7 @@ export function reqStatitions(params) {
     params: params
   });
 }
-
+// 传感器下拉数据
 export function reqSensors(params) {
   return service.request({
     method: "get",
@@ -77,6 +85,35 @@ export function reqSensorsMsg(params) {
   return service.request({
     method: "get",
     url: `/device/sensor/sensor/${params}`,
+    params: params
+  });
+}
+
+/* 根据id获取继电器信息 */
+
+export function reqRelaysMsg(params) {
+  console.log(params);
+  return service.request({
+    method: "get",
+    url: `/device/relay/relay/${params}`,
+    params: params
+  });
+}
+
+// 采集站下拉数据
+export function reqControls(params) {
+  return service.request({
+    method: "get",
+    url: "/device/common/controlStations",
+    params: params
+  });
+}
+
+// 传感器下拉数据
+export function reqRelays(params) {
+  return service.request({
+    method: "get",
+    url: "/device/common/relays",
     params: params
   });
 }
