@@ -9,10 +9,9 @@ import {
 } from "../../utils/app";
 const state = {
   isCollapse: JSON.parse(sessionStorage.getItem("isCollapse")) || false,
-  // isCollapse: JSON.parse(localStorage.getItem("isCollapse")) || false
-  // isCollapse: JSON.parse(Cookie.get("isCollapse")) || false
   to_ken: "",
-  username: getUserName() || ""
+  username: getUserName() || "",
+  roles: []
 };
 const getters = {
   username: state => state.username

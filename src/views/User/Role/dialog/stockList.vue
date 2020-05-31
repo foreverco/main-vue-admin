@@ -9,22 +9,19 @@
       <el-form :model="data.form" ref="addSensorForm" :rules="formRules">
         <el-row>
           <el-col :span="11">
-            <el-form-item label="设备名称">
+            <el-form-item label="角色名称" prop="roleName">
               <el-input
-                v-model="data.sbname"
-                placeholder="设备名称"
-                :disabled="true"
-                autocomplete="off"
+                v-model="data.form.roleName"
+                placeholder="角色名称"
                 style="width:60%"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="11" :offset="1">
-            <el-form-item label="设备编号">
+            <el-form-item label="角色编码" prop="roleCode">
               <el-input
-                v-model="data.sbno"
-                placeholder="设备编号"
-                :disabled="true"
+                v-model="data.form.roleCode"
+                placeholder="角色编码"
                 autocomplete="off"
                 style="width:60%"
               ></el-input>
@@ -33,15 +30,16 @@
         </el-row>
         <el-row>
           <el-col :span="11">
-            <el-form-item label="预警条件" prop="alarmTerm">
-              <SelectVue
+            <el-form-item label="角色描述" prop="roleDesc">
+              <el-input
+                v-model="data.form.roleDesc"
+                placeholder="角色描述"
+                autocomplete="off"
                 style="width:60%"
-                :config="data.termSelect"
-                :selectData.sync="data.form.alarmTerm"
-              ></SelectVue>
+              ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="11" :offset="1">
+          <!-- <el-col :span="11" :offset="1">
             <el-form-item label="预警值" prop="alarmValue">
               <el-input
                 v-model="data.form.alarmValue"
@@ -50,57 +48,22 @@
                 style="width:60%"
               ></el-input>
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-row>
           <el-col :span="11">
-            <el-form-item label="离线间隔" prop="offlineGap">
-              <el-input
-                v-model="data.form.offlineGap"
-                autocomplete="off"
-                style="width:60%"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="11" :offset="1">
-            <el-form-item label="阈值超限" prop="thresholdGap">
-              <el-input
-                v-model="data.form.thresholdGap"
-                autocomplete="off"
-                style="width:60%"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="11">
-            <el-form-item label="告警短信" class="sb_status">
+            <el-form-item label="角色状态">
               <el-switch
-                style="display: block;"
-                v-model="data.form.alertMessage"
+                v-model="data.form.status"
                 active-color="#3abf94"
                 inactive-color="#cccccc"
                 active-text="开启"
                 inactive-text="关闭"
-                active-value="1"
-                inactive-value="2"
+                :active-value="1"
+                :inactive-value="0"
               >
               </el-switch>
-            </el-form-item>
-          </el-col>
-          <el-col :span="11" :offset="1">
-            <el-form-item label="告警通知" class="sb_status">
-              <el-switch
-                style="display: block;"
-                v-model="data.form.alertinForm"
-                active-color="#3abf94"
-                inactive-color="#cccccc"
-                active-text="开启"
-                inactive-text="关闭"
-                active-value="1"
-                inactive-value="2"
-              >
-              </el-switch>
+              <!-- {{ data.form.status }} -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -125,12 +88,12 @@ import SelectVue from "@/components/Select";
 import { validatePhone } from "@/utils/validate";
 import { addsensor, placeSelect, reqcollectSelect } from "@/api/configCenter";
 import { reqSensorsMsg } from "@/api/common";
-import { addwarningConfig } from "@/api/warning";
+import { addRole } from "@/api/user";
 
 export default {
   name: "dialogStock",
   components: {
-    SelectVue
+    // SelectVue
   },
   props: {
     flag: {
@@ -145,23 +108,16 @@ export default {
 
   setup(props, { root, emit, refs }) {
     const formRules = {
-      alarmTerm: [
-        { required: true, message: "请选择预警条件", trigger: "change" }
+      roleName: [{ required: true, message: "请输入角色名", trigger: "blur" }],
+      roleCode: [
+        { required: true, message: "请输入角色编码", trigger: "blur" }
       ],
-      alarmValue: [
-        { required: true, message: "请选择预警值", trigger: "change" }
-      ],
-      offlineGap: [
-        { required: true, message: "请输入离线间隔时间", trigger: "blur" }
-      ],
-      thresholdGap: [
-        { required: true, message: "请输入阈值超限间隔", trigger: "blur" }
-      ]
+      roleDesc: [{ required: true, message: "请输入角色描述", trigger: "blur" }]
     };
     /* data数据 */
     const data = reactive({
       // 弹框标题
-      dialogTitleName: "新增设备预警",
+      dialogTitleName: "新增角色信息",
       // 传感器数据
       sensorData: {},
       // 弹框状态
@@ -175,24 +131,15 @@ export default {
           { value: "3", label: "等于" }
         ]
       },
-      sbname: "",
+      roleName: "",
       sbno: "",
       // 表单数据
       form: {
-        // 设备ID
-        settingId: "",
-        // 预警条件
-        alarmTerm: "",
-        // 预警值
-        alarmValue: "",
-        // 离线间隔时间
-        offlineGap: "",
-        //阈值超限间隔
-        thresholdGap: "",
+        roleName: "",
+        roleCode: "",
+        roleDesc: "",
         // 告警短信
-        alertMessage: "1",
-        // 告警通知
-        alertinForm: "2"
+        status: 1
       }
     });
     watch(
@@ -210,7 +157,7 @@ export default {
           let requestParams = JSON.parse(JSON.stringify(data.form));
           requestParams.settingId = data.sensorData.sensorsValue;
           // console.log(requestParams);
-          addwarningConfig(requestParams).then(res => {
+          addRole(requestParams).then(res => {
             root.$message({
               message: res.data.msg,
               type: "success"
@@ -231,7 +178,7 @@ export default {
       data.dialog_stock_flag = false;
       resetForm();
       emit("update:flag", false);
-      data.form.SENSORID = "";
+      data.form = {};
       for (let key in data.sensorData) {
         data.sensorData[key] = "";
       }
@@ -244,8 +191,9 @@ export default {
       // 初始值处理
       console.log(props.editData);
       let editData = props.editData;
-      if (editData.SENSORID) {
-        data.dialogTitleName = "编辑设备预警";
+      console.log(editData);
+      if (editData.id) {
+        data.dialogTitleName = "编辑角色信息";
         data.form = editData;
       }
     };

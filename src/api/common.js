@@ -117,3 +117,20 @@ export function reqRelays(params) {
     params: params
   });
 }
+/* 手动控制 */
+export function edithandle(data) {
+  console.log(data);
+  return service.request({
+    method: "PUT",
+    url: "/setting/log",
+    data: data
+  });
+}
+/* 根据id获取继电器详情 */
+export function sengetrelay(params) {
+  return service.request({
+    method: "get",
+    url: "/device/relay/getRelayBySensorid",
+    params: params
+  });
+}

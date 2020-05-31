@@ -56,6 +56,7 @@
           inactive-color="#ff4949"
           active-value="true"
           inactive-value="false"
+          @change="changeStatus(slotData.data)"
         >
         </el-switch>
         <span v-if="false">{{ slotData.data.switchStatus }}</span>
@@ -82,7 +83,8 @@ import SelectVue from "@/components/Select";
 import DialogBox from "./dialog/stockList";
 import { reactive, onBeforeMount } from "@vue/composition-api";
 import { delrelay } from "@/api/configCenter";
-import { global } from "../../../utils/global_V3.0";
+import { edithandle } from "@/api/common";
+import { global } from "@/utils/global_V3.0";
 export default {
   components: {
     TableVue,
@@ -257,6 +259,33 @@ export default {
       console.log(data.editData);
       data.dialog_stock = true;
     };
+
+    let handleParams = {};
+    const changeStatus = val => {
+      handleParams.settingId = val.regionId;
+      handleParams.settingOnoff = val.regionId;
+      confirm({
+        content: `确认${
+          val.switchStatus === true ? "关闭" : "打开"
+        }删除选中数据`,
+        tip: "警告",
+        fn: handleStatus,
+        failfn: () => {
+          console.log(val.switchStatus);
+          val.switchStatus = !val.switchStatus;
+          console.log(val.switchStatus);
+          refresData();
+        },
+        id: "222"
+      });
+    };
+    const handleStatus = () => {
+      console.log(handleParams);
+      edithandle(handleParams).then(res => {
+        console.log(res);
+      });
+    };
+
     const search = () => {
       let requestData = {
         [data.selectData]: data.keyWord
@@ -274,6 +303,8 @@ export default {
       handleEdit,
       addDialogBox,
       Delfn,
+      changeStatus,
+      handleStatus,
       search
     };
   }

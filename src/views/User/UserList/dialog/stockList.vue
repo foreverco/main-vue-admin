@@ -9,22 +9,20 @@
       <el-form :model="data.form" ref="addSensorForm" :rules="formRules">
         <el-row>
           <el-col :span="11">
-            <el-form-item label="设备名称">
+            <el-form-item label="姓名">
               <el-input
-                v-model="data.sbname"
-                placeholder="设备名称"
-                :disabled="true"
+                v-model="data.name"
+                placeholder="姓名"
                 autocomplete="off"
                 style="width:60%"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="11" :offset="1">
-            <el-form-item label="设备编号">
+            <el-form-item label="昵称">
               <el-input
-                v-model="data.sbno"
-                placeholder="设备编号"
-                :disabled="true"
+                v-model="data.nickname"
+                placeholder="昵称"
                 autocomplete="off"
                 style="width:60%"
               ></el-input>
@@ -32,6 +30,28 @@
           </el-col>
         </el-row>
         <el-row>
+          <el-col :span="11">
+            <el-form-item label="邮件">
+              <el-input
+                v-model="data.mail"
+                placeholder="邮件"
+                autocomplete="off"
+                style="width:60%"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="11" :offset="1">
+            <el-form-item label="手机号">
+              <el-input
+                v-model="data.mobile"
+                placeholder="手机号"
+                autocomplete="off"
+                style="width:60%"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!-- <el-row>
           <el-col :span="11">
             <el-form-item label="预警条件" prop="alarmTerm">
               <SelectVue
@@ -51,28 +71,28 @@
               ></el-input>
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row>
           <el-col :span="11">
-            <el-form-item label="离线间隔" prop="offlineGap">
+            <el-form-item label="账号" prop="account">
               <el-input
-                v-model="data.form.offlineGap"
+                v-model="data.form.account"
                 autocomplete="off"
                 style="width:60%"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="11" :offset="1">
-            <el-form-item label="阈值超限" prop="thresholdGap">
+            <el-form-item label="密码" prop="password">
               <el-input
-                v-model="data.form.thresholdGap"
+                v-model="data.form.password"
                 autocomplete="off"
                 style="width:60%"
               ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <!-- <el-row>
           <el-col :span="11">
             <el-form-item label="告警短信" class="sb_status">
               <el-switch
@@ -103,7 +123,7 @@
               </el-switch>
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="success" size="mini" @click="submit('addSensorForm')"
@@ -130,7 +150,7 @@ import { addwarningConfig } from "@/api/warning";
 export default {
   name: "dialogStock",
   components: {
-    SelectVue
+    // SelectVue
   },
   props: {
     flag: {
@@ -151,12 +171,8 @@ export default {
       alarmValue: [
         { required: true, message: "请选择预警值", trigger: "change" }
       ],
-      offlineGap: [
-        { required: true, message: "请输入离线间隔时间", trigger: "blur" }
-      ],
-      thresholdGap: [
-        { required: true, message: "请输入阈值超限间隔", trigger: "blur" }
-      ]
+      account: [{ required: true, message: "请输入账号时间", trigger: "blur" }],
+      password: [{ required: true, message: "请输入密码间隔", trigger: "blur" }]
     };
     /* data数据 */
     const data = reactive({
@@ -175,24 +191,22 @@ export default {
           { value: "3", label: "等于" }
         ]
       },
-      sbname: "",
-      sbno: "",
+      name: "",
+      nickname: "",
       // 表单数据
       form: {
-        // 设备ID
-        settingId: "",
-        // 预警条件
-        alarmTerm: "",
-        // 预警值
-        alarmValue: "",
-        // 离线间隔时间
-        offlineGap: "",
-        //阈值超限间隔
-        thresholdGap: "",
-        // 告警短信
-        alertMessage: "1",
-        // 告警通知
-        alertinForm: "2"
+        // 姓名
+        name: "",
+        // 昵称
+        nickname: "",
+        // 账号
+        account: "",
+        //密码
+        password: "",
+        // 邮件
+        mail: "",
+        //手机号
+        mobile: ""
       }
     });
     watch(

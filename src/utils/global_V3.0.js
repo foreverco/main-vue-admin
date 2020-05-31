@@ -12,10 +12,14 @@ export function global() {
       .then(() => {
         // str.value = "删除成功删除成功删除成功删除成功";
         params.fn && params.fn(params.id);
-        Message.success("删除成功");
+        params.status
+          ? Message.success(params.status)
+          : Message.success("删除成功");
       })
       .catch(() => {
         console.log(123);
+        // console.log(params.failfn);
+        params.failfn && params.failfn();
         Message.info("已取消删除");
       });
   };

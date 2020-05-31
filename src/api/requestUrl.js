@@ -17,6 +17,8 @@ const requestUrl = {
 
   // 获取计划任务列表
   getPlancontrolList: "/setting/control/controlList",
+  // 获取模拟量列表
+  getRelayscontrolList: "/setting/simulate",
 
   // 角色表格
   getRoleList: "/auth/role",

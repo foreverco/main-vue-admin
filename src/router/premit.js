@@ -16,6 +16,11 @@ router.beforeEach((to, from, next) => {
       // store.commit("app/SET_USERNAME", "");
       next();
     } else {
+      // 获取用户角色
+      // 动态分配路由权限
+      /**
+       * 何时处理路由
+       * 以什么条件处理路由 */
       next();
     }
     /* 路由动态添加 每个角色分配不同菜单 */

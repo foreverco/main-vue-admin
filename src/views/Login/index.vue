@@ -1,8 +1,9 @@
 <template>
   <div id="login">
+    <p class="loginTitle">国草园智慧农业监控系统</p>
     <div class="login-card">
-      <img src="../../assets/logo.png" alt="" />
-      <div class="login-wrap">国草园后台管理系统</div>
+      <!-- <img src="../../assets/logo.png" alt="" /> -->
+      <div class="login-wrap">用户管理后台系统</div>
       <!-- 表单 -->
       <el-form
         :model="ruleForm"
@@ -12,40 +13,67 @@
         label-width="0"
         class="demo-ruleForm"
       >
-        <el-form-item label="" prop="username">
-          <el-input
-            type="text"
-            prefix-icon="el-icon-s-custom"
-            v-model="ruleForm.username"
-            autocomplete="off"
-            @input="putPassword"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="" prop="password">
-          <el-input
-            type="password"
-            prefix-icon="el-icon-s-goods"
-            v-model="ruleForm.password"
-            autocomplete="off"
-            maxlength="40"
-            minlength="6"
-            @input="putPassword"
-          ></el-input>
-        </el-form-item>
+        <el-row>
+          <el-col :span="24">
+            <div class="label-wrap sb_name">
+              <label for="" class="iconlabel">
+                <!-- <svg-icon iconClass="user" className="user"></svg-icon> -->
+                <i class="el-icon-user-solid"></i>
+                账户
+              </label>
+              <div class="warp-content">
+                <el-form-item label="" prop="username">
+                  <el-input
+                    type="text"
+                    v-model="ruleForm.username"
+                    autocomplete="off"
+                    @input="putPassword"
+                  ></el-input>
+                </el-form-item>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <div class="label-wrap sb_name">
+              <label for="" class="iconlabel">
+                <i class="el-icon-s-goods"></i>
+                密码
+              </label>
+              <div class="warp-content">
+                <el-form-item label="" prop="password">
+                  <el-input
+                    type="password"
+                    v-model="ruleForm.password"
+                    autocomplete="off"
+                    maxlength="40"
+                    minlength="6"
+                    @input="putPassword"
+                  ></el-input>
+                </el-form-item>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
         <!-- <el-form-item label="" prop="age">
           <el-input v-model.number="ruleForm.age"></el-input>
         </el-form-item> -->
-        <el-form-item>
-          <el-button
-            size="medium"
-            type="primary"
-            style="width:100%"
-            :disabled="loginButtonStatus"
-            @click="submitForm('ruleForm')"
-            >登录</el-button
-          >
-          <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
-        </el-form-item>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item>
+              <el-button
+                size="medium"
+                type="success"
+                style="width:100%"
+                :disabled="loginButtonStatus"
+                @click="submitForm('ruleForm')"
+                >登录</el-button
+              >
+              <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
     </div>
   </div>
@@ -189,29 +217,91 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+#login {
+  .el-input__inner {
+    border: 0;
+    border-radius: 0px;
+    border-bottom: 1px solid black;
+    background: transparent;
+  }
+}
+</style>
 <style lang="scss" scoped>
+@import "@/styles/config.scss";
+.el-row {
+  margin: 0;
+}
+.label-wrap {
+  &.sb_name {
+    @include babelDom(left, 65, 35);
+  }
+}
 #login {
   height: 100vh;
-  background: #344a5f;
+  background: url("../../assets/loginbg.png") no-repeat;
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.login-card {
-  width: 500px;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 20px 50px;
-  border-radius: 10px;
-  // border: 1px solid red;
-}
-.login-card img {
-  width: 40%;
-}
-.login-wrap {
-  // width: 33px;
-  margin: 20px auto;
-  font-size: 20px;
-  letter-spacing: 5px;
-  color: #fff;
+  position: relative;
+  .loginTitle {
+    position: absolute;
+    top: 0;
+    left: 3%;
+    // width: 669px;
+    // height: 49px;
+    font-size: 2vw;
+    letter-spacing: 6px;
+    // font-family: BigruixianBoldkGBV1.0;
+    font-weight: bold;
+    // border: 1px solid red;
+    color: rgba(255, 255, 255, 1);
+  }
+  .login-card {
+    width: 20vw;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px 50px;
+    border-radius: 10px;
+    // border: 1px solid red;
+    // .login-card img {
+    //   width: 40%;
+    // }
+    .login-wrap {
+      // width: 33px;
+      margin: 20px auto;
+      font-size: 20px;
+      letter-spacing: 5px;
+      color: black;
+      font-weight: bold;
+    }
+    .iconlabel {
+      // outline: 1px solid red;
+      display: flex;
+      align-items: center;
+      margin-top: 7px;
+      color: #888;
+      .el-icon-user-solid {
+        margin-right: 5px;
+        // fill: currentColor;
+        color: #333;
+        font-size: 16px;
+        margin-top: -2px;
+      }
+      .el-icon-s-goods {
+        margin-right: 5px;
+        color: #333;
+        font-size: 16px;
+        margin-top: -2px;
+      }
+    }
+    .el-input__inner {
+      border: 1px solid red !important;
+      background: blue;
+    }
+    .el-button--success {
+      border-radius: 50px !important;
+    }
+  }
 }
 </style>
