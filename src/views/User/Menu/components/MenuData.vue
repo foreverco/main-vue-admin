@@ -14,7 +14,7 @@
           label-width="100px"
         >
           <el-row>
-            <el-col :span="10">
+            <el-col :span="11">
               <el-form-item :label="formLabel.status" prop="status">
                 <el-switch
                   v-model="menuData.status"
@@ -25,7 +25,7 @@
                 ></el-switch>
               </el-form-item>
             </el-col>
-            <el-col :span="11">
+            <el-col :span="11" :offset="1">
               <el-form-item :label="formLabel.show" prop="show">
                 <el-switch
                   v-model="menuData.show"
@@ -38,7 +38,7 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="12">
+            <el-col :span="11">
               <el-form-item :label="formLabel.menuName" prop="menuName">
                 <el-input
                   v-model="menuData.menuName"
@@ -47,18 +47,27 @@
                 ></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
-              <el-form-item :label="formLabel.name" prop="name">
+            <el-col :span="11" :offset="1">
+              <el-form-item :label="formLabel.menuCode" prop="menuCode">
                 <el-input
-                  v-model="menuData.name"
+                  v-model="menuData.menuCode"
                   clearable
-                  :placeholder="formLabel.name"
+                  :placeholder="formLabel.menuCode"
                 ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="20">
+            <el-col :span="11">
+              <el-form-item :label="formLabel.scheme" prop="scheme">
+                <el-input
+                  v-model="menuData.scheme"
+                  clearable
+                  :placeholder="formLabel.scheme"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11" :offset="1">
               <el-form-item :label="formLabel.path" prop="path">
                 <el-input
                   v-model="menuData.path"
@@ -68,8 +77,37 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row v-show="menuData.type == 'PAGE'">
-            <el-col :span="20">
+
+          <el-row>
+            <el-col :span="11">
+              <el-form-item :label="formLabel.menuType" prop="menuType">
+                <el-select
+                  v-model="menuData.menuType"
+                  @change="selectChange"
+                  :placeholder="formLabel.menuType"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="item of menuTypeList"
+                    :key="item.type"
+                    :label="item.name"
+                    :value="item.type"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11" :offset="1">
+              <el-form-item :label="formLabel.icon" prop="icon">
+                <el-input
+                  v-model="menuData.icon"
+                  clearable
+                  :placeholder="formLabel.icon"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row v-show="menuData.menuType == 'PAGE'">
+            <el-col :span="23">
               <el-form-item :label="formLabel.componentUri" prop="componentUri">
                 <el-input
                   v-model="menuData.componentUri"
@@ -80,16 +118,26 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="12">
-              <el-form-item :label="formLabel.type" prop="type">
+            <el-col :span="11">
+              <el-form-item :label="formLabel.priority" prop="priority">
+                <el-input
+                  v-model="menuData.priority"
+                  clearable
+                  disabled
+                  :placeholder="formLabel.priority"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11" :offset="1">
+              <el-form-item :label="formLabel.target" prop="target">
                 <el-select
-                  v-model="menuData.type"
+                  v-model="menuData.target"
                   @change="selectChange"
-                  :placeholder="formLabel.type"
+                  :placeholder="formLabel.target"
                   style="width: 100%"
                 >
                   <el-option
-                    v-for="item of menuType"
+                    v-for="item of targeteList"
                     :key="item.type"
                     :label="item.name"
                     :value="item.type"
@@ -97,36 +145,15 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
-              <el-form-item :label="formLabel.icon" prop="icon">
-                <el-input
-                  v-model="menuData.icon"
-                  clearable
-                  :placeholder="formLabel.icon"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="10">
-              <el-form-item :label="formLabel.sort" prop="sort">
-                <el-input
-                  v-model="menuData.sort"
-                  clearable
-                  disabled
-                  :placeholder="formLabel.sort"
-                ></el-input>
-              </el-form-item>
-            </el-col>
           </el-row>
           <el-row>
             <el-col :span="24">
-              <el-form-item :label="formLabel.remark" prop="remark">
+              <el-form-item :label="formLabel.menuDesc" prop="menuDesc">
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 3, maxRows: 5 }"
-                  v-model="menuData.remark"
-                  :placeholder="formLabel.remark"
+                  v-model="menuData.menuDesc"
+                  :placeholder="formLabel.menuDesc"
                 ></el-input>
               </el-form-item>
             </el-col>
@@ -160,18 +187,28 @@ export default {
     return {
       formLabel: {
         show: "导航栏显示",
-        status: "状态",
+        status: "菜单状态",
         menuName: "页面标题",
+        scheme: "路径前缀",
         path: "路由URL",
-        name: "名称标识",
+        menuCode: "名称标识",
         componentUri: "视图URI",
-        icon: "图标",
-        type: "类型",
-        sort: "排序值",
-        remark: "备注"
+        icon: "菜单图标",
+        menuType: "菜单类型",
+        priority: "排序值",
+        menuDesc: "菜单描述",
+        target: "打开方式"
       },
       //菜单栏类型
-      menuType: [],
+      menuTypeList: [
+        { type: "DOCUMENT", name: "目录" },
+        { type: "PAGE", name: "页面" }
+      ],
+      // 打开方式
+      targeteList: [
+        { type: "SELF", name: "窗口内打开" },
+        { type: "BLANK", name: "新窗口打开" }
+      ],
       URL: {
         //获取菜单类型接口
         getMenuType: "/mgmt/menu/menuType"
@@ -216,7 +253,7 @@ export default {
           }
         ]
       };
-      if (this.menuData.type === "PAGE") {
+      if (this.menuData.menuType === "PAGE") {
         rule.componentUri = [{ validator: validateUriStart, trigger: "blur" }];
         // rule.componentUri = [{required: true, message: `${this.formLabel.componentUri}不能为空`, trigger: 'blur'}]
       }
@@ -233,7 +270,7 @@ export default {
             type: "warning"
           })
             .then(() => {
-              if (this.menuData.type === "DIRECTORY") {
+              if (this.menuData.menuType === "DOCUMENT") {
                 this.menuData.componentUri = "";
               }
               this.$emit("saveData", this.menuData);

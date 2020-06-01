@@ -5,7 +5,7 @@
       <el-button
         style="float: right; padding: 3px 0 ; margin-left: 20px"
         type="text"
-        :permission="'sort'"
+        :permission="'priority'"
         @click="saveMenuChange"
         >保存排序
       </el-button>
@@ -133,6 +133,7 @@ export default {
     },
     //新增菜单按钮
     appendMenu(data) {
+      console.log(data);
       if (this.hasAddMenu) {
         this.$notify.error({
           title: "错误",
@@ -144,8 +145,8 @@ export default {
       const newChild = {
         id: "add",
         status: 1,
-        hidden: 1,
-        type: "PAGE",
+        show: 1,
+        menuType: "PAGE",
         menuName: "新增栏目**",
         parentId: data.id == "root" ? "ROOT" : data.id,
         children: []
@@ -167,6 +168,7 @@ export default {
         type: "warning"
       })
         .then(() => {
+          console.log(data);
           if (data.id === "add") {
             this.$emit("change-add-status", false);
           } else {
@@ -218,7 +220,7 @@ export default {
     //重置排序值
     resetSort(children) {
       if (children) {
-        children.forEach((item, index) => (item.sort = index + 1));
+        children.forEach((item, index) => (item.priority = index + 1));
       }
     }
   }

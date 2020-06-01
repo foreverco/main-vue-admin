@@ -198,6 +198,7 @@ export default {
           let editData = props.editData;
           if (editData.id) {
             requestParams.settingId = editData.sensorId;
+            requestParams.id = editData.id;
             console.log("编辑");
             console.log(requestParams);
             editsimulate(requestParams).then(res => {

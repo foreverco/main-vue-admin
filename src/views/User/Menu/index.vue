@@ -22,7 +22,9 @@
 </template>
 <script>
 import { MenuTree, MenuData } from "./components";
-import { getMenuList } from "@/api/user.js";
+import { getMenuList, addMenu, delmenu, priorityMenu } from "@/api/user.js";
+import { global } from "@/utils/global_V3.0";
+const { confirm } = global();
 export default {
   name: "Menu",
   components: {
@@ -52,27 +54,17 @@ export default {
     },
     //删除菜单
     deleteMenuNode(data) {
-      this.$axios(this.URL.baseMenu, data, this.METHOD.DELETE).then(res => {
-        if (res.code == 200) {
-          this.$message({
-            message: "删除成功",
-            type: "success"
-          });
-        }
+      console.log(data);
+      delmenu(data).then(res => {
+        console.log(res);
       });
     },
     //保存排序改变
     saveChangeMenu(data) {
-      this.$axios(this.URL.baseMenu + "/batch", data, this.METHOD.POST).then(
-        res => {
-          if (res.code == 200) {
-            this.$message({
-              message: "保存成功",
-              type: "success"
-            });
-          }
-        }
-      );
+      console.log(data);
+      priorityMenu(data).then(res => {
+        console.log(res);
+      });
     },
     //保存菜单
     saveData(data) {
@@ -80,19 +72,27 @@ export default {
       if (d.id == "add") {
         d.id = null;
       }
-      this.$axios(this.URL.baseMenu, d, this.METHOD.POST).then(res => {
-        if (res.code == 200) {
-          let callData = res.data;
-          data.id = callData.id;
-          if (!d.id) {
-            this.hasAddMenu = false;
-          }
-          this.$message({
-            message: "保存成功",
-            type: "success"
-          });
+      addMenu(d).then(res => {
+        console.log(res);
+        let callData = res.data;
+        data.id = callData.id;
+        if (!d.id) {
+          this.hasAddMenu = false;
         }
       });
+      // this.$axios(this.URL.baseMenu, d, this.METHOD.POST).then(res => {
+      //   if (res.code == 200) {
+      //     let callData = res.data;
+      //     data.id = callData.id;
+      //     if (!d.id) {
+      //       this.hasAddMenu = false;
+      //     }
+      //     this.$message({
+      //       message: "保存成功",
+      //       type: "success"
+      //     });
+      //   }
+      // });
     },
     //获取菜单树
     getMenuTree() {

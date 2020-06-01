@@ -1,6 +1,9 @@
 <template>
   <div id="login">
-    <p class="loginTitle">国草园智慧农业监控系统</p>
+    <p class="loginTitle">
+      <img src="../../assets/loginlogo.png" />
+      国草园智慧农业监控系统
+    </p>
     <div class="login-card">
       <!-- <img src="../../assets/logo.png" alt="" /> -->
       <div class="login-wrap">用户管理后台系统</div>
@@ -251,12 +254,19 @@ export default {
     left: 3%;
     // width: 669px;
     // height: 49px;
-    font-size: 2vw;
+    font-size: 2.5vw;
     letter-spacing: 6px;
     // font-family: BigruixianBoldkGBV1.0;
     font-weight: bold;
     // border: 1px solid red;
-    color: rgba(255, 255, 255, 1);
+    height: 3.5vw;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    img {
+      height: 100%;
+      margin-right: 10px;
+    }
   }
   .login-card {
     width: 20vw;
