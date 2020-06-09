@@ -1,72 +1,80 @@
 <template>
   <div>
-    <el-row :gutter="10" justify="space-between">
-      <el-col :md="12" :sm="14">
-        <div class="label-wrap category">
-          <label for="">关键字:</label>
-          <div class="warp-content">
-            <el-row :gutter="16">
-              <el-col :span="8">
-                <SelectVue
-                  style="width:100%"
-                  :config="data.configSelect"
-                  :selectData.sync="data.selectData"
-                >
-                </SelectVue>
-              </el-col>
-              <el-col :span="8">
-                <el-input
-                  v-model="data.keyWord"
-                  placeholder="请输入关键字"
-                ></el-input>
-              </el-col>
-              <el-col :span="4">
-                <el-button size="mini" @click="search">搜索</el-button>
-              </el-col>
-            </el-row>
-          </div>
-        </div>
-      </el-col>
-      <el-col :md="{ span: 8, offset: 4 }" :sm="10">
-        <el-button
-          type="success"
-          size="small"
-          icon="el-icon-circle-plus-outline"
-          @click="addDialogBox"
-          >添加</el-button
-        >
-        <el-button
-          type="danger"
-          size="small"
-          icon="el-icon-delete"
-          @click="batchDel()"
-          >批量删除</el-button
-        >
-      </el-col>
+    <el-row>
+      <BaseTitle :moduleTitle="$route.meta.title" />
     </el-row>
-    <TableVue
-      :config="data.configTable"
-      :tableRow.sync="data.tableRow"
-      ref="sensorTable"
-    >
-      <template v-slot:operation="slotData">
-        <el-button size="mini" type="success" @click="handleEdit(slotData.data)"
-          >编辑</el-button
-        >
-        <el-button size="mini" type="danger" @click="hanleDel(slotData.data)"
-          >删除</el-button
-        >
-        <el-button
-          size="mini"
-          type="primary"
-          :disabled="slotData.data.status !== '0'"
-          @click="handleborrow(slotData.data)"
-          >{{
-            slotData.data.status === "0" ? "我要用" : slotData.data.statusName
-          }}</el-button
-        >
-      </template>
-    </TableVue>
+    <div class="box_content">
+      <el-row :gutter="10" justify="space-between">
+        <el-col :md="12" :sm="14">
+          <div class="label-wrap category">
+            <label for="">关键字:</label>
+            <div class="warp-content">
+              <el-row :gutter="16">
+                <el-col :span="8">
+                  <SelectVue
+                    style="width:100%"
+                    :config="data.configSelect"
+                    :selectData.sync="data.selectData"
+                  >
+                  </SelectVue>
+                </el-col>
+                <el-col :span="8">
+                  <el-input
+                    v-model="data.keyWord"
+                    placeholder="请输入关键字"
+                  ></el-input>
+                </el-col>
+                <el-col :span="4">
+                  <el-button size="mini" @click="search">搜索</el-button>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+        </el-col>
+        <el-col :md="{ span: 8, offset: 4 }" :sm="10">
+          <el-button
+            type="success"
+            size="small"
+            icon="el-icon-circle-plus-outline"
+            @click="addDialogBox"
+            >添加</el-button
+          >
+          <el-button
+            type="danger"
+            size="small"
+            icon="el-icon-delete"
+            @click="batchDel()"
+            >批量删除</el-button
+          >
+        </el-col>
+      </el-row>
+      <TableVue
+        :config="data.configTable"
+        :tableRow.sync="data.tableRow"
+        ref="sensorTable"
+      >
+        <template v-slot:operation="slotData">
+          <el-button
+            size="mini"
+            type="success"
+            @click="handleEdit(slotData.data)"
+            >编辑</el-button
+          >
+          <el-button size="mini" type="danger" @click="hanleDel(slotData.data)"
+            >删除</el-button
+          >
+          <el-button
+            size="mini"
+            type="primary"
+            :disabled="slotData.data.status !== '0'"
+            @click="handleborrow(slotData.data)"
+            >{{
+              slotData.data.status === "0" ? "我要用" : slotData.data.statusName
+            }}</el-button
+          >
+        </template>
+      </TableVue>
+    </div>
     <DialogBox
       :flag.sync="data.dialog_stock"
       :editData.sync="data.editData"
@@ -80,6 +88,7 @@
   </div>
 </template>
 <script>
+import BaseTitle from "@/components/common/BaseTitle";
 import TableVue from "@/components/Table";
 import SelectVue from "@/components/Select";
 import DialogBox from "./dialog/stockList";
@@ -89,6 +98,7 @@ import { delStock } from "@/api/configCenter";
 import { global } from "@/utils/global_V3.0";
 export default {
   components: {
+    BaseTitle,
     TableVue,
     SelectVue,
     DialogBox,

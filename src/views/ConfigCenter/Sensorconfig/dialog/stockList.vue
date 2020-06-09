@@ -115,7 +115,7 @@
               <el-button size="small" type="success">打开地图</el-button>
             </el-form-item>
           </el-col>
-          <el-col :span="11" :offset="1">
+          <!-- <el-col :span="11" :offset="1">
             <el-form-item label="设备状态: " class="sb_status">
               <el-switch
                 style="display: block;"
@@ -127,7 +127,7 @@
               >
               </el-switch>
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -241,8 +241,8 @@ export default {
         no: "",
         originalId: "",
         principalPerson: "",
-        contactNumber: "",
-        status: "1"
+        contactNumber: ""
+        // status: "1"
       }
     });
     watch(
@@ -363,7 +363,7 @@ export default {
         data.sbTypeSelect.init = [];
         res.data.data.map(item => {
           let obj = {};
-          obj.value = item.id;
+          obj.value = item.value;
           obj.label = item.name;
           data.sbTypeSelect.init.push(obj);
         });

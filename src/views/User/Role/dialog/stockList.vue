@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="pmsdialog">
     <el-dialog
       :title="data.dialogTitleName"
       :visible.sync="data.dialog_stock_flag"
@@ -76,21 +76,51 @@
                   <el-table
                     :data="data.tableData"
                     style="width: 100%;margin-bottom: 20px;"
+                    ref="table"
                     row-key="id"
                     :indent="30"
                     height="300"
+                    :select-on-indeterminate="false"
+                    @select="select"
+                    @select-all="selectAll"
+                    @selection-change="selectionChange"
                     border
                     :tree-props="{
                       children: 'children',
                       hasChildren: 'hasChildren'
                     }"
                   >
+                    <el-table-column type="selection" width="55">
+                    </el-table-column>
                     <el-table-column prop="menuName" label="菜单" sortable>
                     </el-table-column>
                     <el-table-column prop="name" label="操作" sortable>
                       <template slot-scope="scope">
-                        <el-checkbox v-model="data.checked">查看</el-checkbox>
-                        <el-checkbox v-model="data.checked1">编辑</el-checkbox>
+                        <el-checkbox
+                          v-if="scope.row.children.length === 0"
+                          v-model="data.checked"
+                          >查看</el-checkbox
+                        >
+                        <el-checkbox
+                          v-if="scope.row.children.length === 0"
+                          v-model="data.checked1"
+                          >编辑</el-checkbox
+                        >
+                        <!-- <el-form-item
+                          label=""
+                          v-if="scope.row.children.length === 0"
+                          prop="returnTime"
+                        > -->
+                        <el-date-picker
+                          v-model="data.form.returnTime"
+                          v-if="scope.row.children.length === 0"
+                          type="date"
+                          placeholder="到期日期"
+                          value-format="yyyy-MM-dd"
+                          style="width:50%"
+                        >
+                        </el-date-picker>
+                        <!-- </el-form-item> -->
                         <span v-if="false">{{ scope.row }}</span>
                       </template>
                     </el-table-column>
@@ -174,6 +204,8 @@ export default {
 
       /* 权限相关 */
       tableData: [],
+      selectArr: [],
+      paramsArr: [],
       checked: true,
       checked1: true,
       authForm: {
@@ -184,8 +216,21 @@ export default {
       () => props.flag,
       (newVale, oldvalue) => (data.dialog_stock_flag = newVale)
     );
+    watch(
+      () => data.selectArr,
+      (newVale, oldvalue) => {
+        console.log(newVale);
+        console.log(root);
+        console.log(getparamsId);
+        getparamsId && getparamsId();
+        // getparamsId();
+      }
+    );
     /* methods */
     // 清空表数据
+    const getparamsId = () => {
+      console.log(111);
+    };
     const resetForm = () => {
       refs.addSensorForm.resetFields();
     };
@@ -244,12 +289,81 @@ export default {
         // 获取菜单权限
       }
     };
+
     const getauthmenu = () => {
       console.log(444);
       getauthoritymenu().then(res => {
         console.log(res);
         data.tableData = res.data.data;
       });
+    };
+    const select = (selection, row) => {
+      console.log(selection);
+      console.log(row);
+      if (
+        selection.some(el => {
+          return row.id === el.id;
+        })
+      ) {
+        if (row.children) {
+          clickVal(row.children, true);
+        }
+      } else {
+        if (row.children) {
+          clickVal(row.children, false);
+        }
+      }
+    };
+    const selectAll = selection => {
+      // tabledata第一层只要有在selection里面就是全选
+      const isSelect = selection.some(el => {
+        const tableDataIds = data.tableData.map(j => j.id);
+        // console.log(tableDataIds.includes(el.id));
+        return tableDataIds.includes(el.id);
+      });
+      // tableDate第一层只要有不在selection里面就是全不选
+      const isCancel = !data.tableData.every(el => {
+        const selectIds = selection.map(j => j.id);
+        // console.log(selectIds.includes(el.id));
+        return selectIds.includes(el.id);
+      });
+      console.log(isSelect);
+      console.log(isCancel);
+      if (isSelect) {
+        clickVal(data.tableData, true);
+      }
+      if (isCancel) {
+        clickVal(data.tableData, false);
+      }
+    };
+    const clickVal = (arr, clicked) => {
+      if (arr.length == 0) return;
+      arr.forEach(ar => {
+        // console.log(ar);
+        toggleSelection(ar, clicked);
+        if (ar.children) clickVal(ar.children);
+      });
+    };
+    const selectionChange = selection => {
+      data.selectArr = selection;
+      // getpmsId(selection);
+      // console.log(data.selectArr);
+    };
+    const getpmsId = arr => {
+      if (arr.length == 0) return;
+      arr.forEach(ar => {
+        // toggleSelection(ar);
+        let obj = {};
+        obj.authorityId = ar.id;
+        data.selectArr.push(obj);
+      });
+    };
+    const toggleSelection = (row, select) => {
+      if (row) {
+        root.$nextTick(() => {
+          refs.table && refs.table.toggleRowSelection(row, select);
+        });
+      }
     };
     return {
       formRules,
@@ -261,11 +375,22 @@ export default {
       handleClick,
       closeDialog,
       // 获取菜单权限列表
-      getauthmenu
+      getauthmenu,
+      toggleSelection,
+      select,
+      selectAll,
+      selectionChange,
+      clickVal,
+      getparamsId
     };
   }
 };
 </script>
+<style lang="scss">
+#pmsdialog .el-dialog {
+  width: 60%;
+}
+</style>
 <style lang="scss" scoped>
 @import "@/styles/config.scss";
 .el-row {

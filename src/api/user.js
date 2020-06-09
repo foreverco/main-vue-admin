@@ -46,6 +46,34 @@ export function getauthoritymenu() {
   });
 }
 
+/* 新增或修改菜单操作 */
+export function addaction(data) {
+  console.log("新增修改菜单");
+  console.log(data);
+  return service.request({
+    method: "post",
+    url: "/auth/action",
+    data: data
+  });
+}
+/* 删除菜单操作 */
+export function delaction(data) {
+  console.log(data);
+  return service.request({
+    method: "DELETE",
+    url: "/auth/action",
+    data: data
+  });
+}
+/* 获取所有接口api */
+
+export function getallApi() {
+  return service.request({
+    method: "get",
+    url: "/auth/authority/api"
+  });
+}
+
 /* 添加用户 */
 export function addUser(data) {
   console.log(data);

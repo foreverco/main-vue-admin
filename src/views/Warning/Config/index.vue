@@ -1,85 +1,93 @@
 <template>
   <div>
-    <el-row :gutter="10">
-      <el-col :span="6">
-        <div class="label-wrap category">
-          <label for="">区域:</label>
-          <div class="warp-content">
-            <SelectVue style="width:70%" :config="data.configSelect">
-            </SelectVue>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="label-wrap had_per">
-          <label for="">采集站: </label>
-          <div class="warp-content">
-            <el-select v-model="data.hadper_value" style="width:70%">
-              <el-option
-                v-for="item in data.had_per"
-                :key="item.value"
-                :value="item.value"
-                :label="item.name"
-              ></el-option>
-            </el-select>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="1" style="line-height:30px">
-        <el-button size="mini">搜索</el-button>
-      </el-col>
-      <el-col :span="5" :offset="6">
-        <el-button
-          type="success"
-          size="small"
-          icon="el-icon-circle-plus-outline"
-          @click="data.dialog_stock = true"
-          >添加</el-button
-        >
-        <el-button
-          type="danger"
-          size="small"
-          icon="el-icon-delete"
-          @click="batchDel()"
-          >批量删除</el-button
-        >
-      </el-col>
+    <el-row>
+      <BaseTitle moduleTitle="预警设置" />
     </el-row>
-    <TableVue
-      :config="data.configTable"
-      :tableRow.sync="data.tableRow"
-      ref="warningconfigTable"
-    >
-      <template v-slot:alarm="slotData">
-        {{ slotData.data.alarmTerm === "2" ? ">" : "=" }}
-        {{ slotData.data.alarmValue }}
-      </template>
-      <template v-slot:status="slotData">
-        <el-switch
-          v-model="slotData.data.SENSORSTATUS"
-          active-color="#13ce66"
-          inactive-color="#ff4949"
-          active-value="1"
-          inactive-value="2"
-        >
-        </el-switch>
-        <span v-if="false">{{ slotData.data.SENSORSTATUS }}</span>
-      </template>
-      <template v-slot:status="slotData">
-        {{ slotData.data.alertMessage === "1" ? "开启" : "关闭" }}
-      </template>
-      <template v-slot:status="slotData">
-        {{ slotData.data.alertinForm === "1" ? "开启" : "关闭" }}
-      </template>
-      <template v-slot:operation="slotData">
-        <el-button size="mini" type="success" @click="handleEdit(slotData.data)"
-          >编辑</el-button
-        >
-        <el-button size="mini" type="danger" @click="hanleDel(slotData.data)"
-          >删除</el-button
-        >
-      </template>
-    </TableVue>
+    <div class="box_content">
+      <el-row :gutter="10">
+        <el-col :span="6">
+          <div class="label-wrap category">
+            <label for="">区域:</label>
+            <div class="warp-content">
+              <SelectVue style="width:70%" :config="data.configSelect">
+              </SelectVue>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="label-wrap had_per">
+            <label for="">采集站: </label>
+            <div class="warp-content">
+              <el-select v-model="data.hadper_value" style="width:70%">
+                <el-option
+                  v-for="item in data.had_per"
+                  :key="item.value"
+                  :value="item.value"
+                  :label="item.name"
+                ></el-option>
+              </el-select>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="1" style="line-height:30px">
+          <el-button size="mini">搜索</el-button>
+        </el-col>
+        <el-col :span="5" :offset="6">
+          <el-button
+            type="success"
+            size="small"
+            icon="el-icon-circle-plus-outline"
+            @click="data.dialog_stock = true"
+            >添加</el-button
+          >
+          <el-button
+            type="danger"
+            size="small"
+            icon="el-icon-delete"
+            @click="batchDel()"
+            >批量删除</el-button
+          >
+        </el-col>
+      </el-row>
+      <TableVue
+        :config="data.configTable"
+        :tableRow.sync="data.tableRow"
+        ref="warningconfigTable"
+      >
+        <template v-slot:alarm="slotData">
+          {{ slotData.data.alarmTerm === "2" ? ">" : "=" }}
+          {{ slotData.data.alarmValue }}
+        </template>
+        <template v-slot:statusa="slotData">
+          <el-switch
+            v-model="slotData.data.SENSORSTATUS"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-value="1"
+            inactive-value="2"
+          >
+          </el-switch>
+          <span v-if="false">{{ slotData.data.SENSORSTATUS }}</span>
+        </template>
+        <template v-slot:status="slotData">
+          {{ slotData.data.alertMessage === "1" ? "开启" : "关闭" }}
+        </template>
+        <template v-slot:status="slotData">
+          {{ slotData.data.alertinForm === "1" ? "开启" : "关闭" }}
+        </template>
+        <template v-slot:operation="slotData">
+          <el-button
+            size="mini"
+            type="success"
+            @click="handleEdit(slotData.data)"
+            >编辑</el-button
+          >
+          <el-button size="mini" type="danger" @click="hanleDel(slotData.data)"
+            >删除</el-button
+          >
+        </template>
+      </TableVue>
+    </div>
     <DialogBox
       :flag.sync="data.dialog_stock"
       :editData="data.editData"
@@ -88,15 +96,17 @@
   </div>
 </template>
 <script>
+import BaseTitle from "@/components/common/BaseTitle";
 import TableVue from "@/components/Table";
 import SelectVue from "@/components/Select";
 import DialogBox from "./dialog/stockList";
 import { global } from "../../../utils/global_V3.0";
 import { reactive } from "@vue/composition-api";
-import { delwarningConfig } from "../../../api/warning";
+import { delwarningConfig } from "@/api/warning";
 export default {
   name: "WaarningConfig",
   components: {
+    BaseTitle,
     TableVue,
     DialogBox,
     SelectVue
@@ -123,10 +133,10 @@ export default {
           { label: "设备地址", field: "areaName" },
           { label: "采集站", field: "stationName" },
           {
-            label: "设备状态",
+            label: "是否启用",
             field: "SENSORSTATUS",
             columnType: "slot",
-            slotname: "status"
+            slotname: "statusa"
           },
           {
             label: "预警条件",
@@ -142,7 +152,7 @@ export default {
             slotname: "status"
           },
           {
-            label: "告警短信",
+            label: "告警通知",
             field: "alertinForm",
             columnType: "slot",
             slotname: "status"

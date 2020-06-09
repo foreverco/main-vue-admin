@@ -1,0 +1,386 @@
+<template>
+  <!--配置种植区域页面-->
+  <div>
+    <button @click="hiddenArea">隐藏所有小区域</button>
+    <div id="map" ref="rootmap">
+      <div
+        id="map_button"
+        @click="begin_draw"
+        title="手绘区域"
+        v-if="this.$route.path == '/plantingarea' ? true : false"
+      >
+        <i class="iconfont iconditu"></i>
+      </div>
+      <div
+        id="map_button1"
+        title="删除区域"
+        @click="del_area"
+        v-if="this.$route.path == '/plantingarea' ? true : false"
+      >
+        <i class="iconfont iconditu"></i>
+      </div>
+      <!--监测中心详情-->
+      <deveiceMonitoringMsg v-if="false" />
+      <!--配置中心详情-->
+      <areaDetail :areaDetailList="areaDetailList" ref="areadetail">
+      </areaDetail>
+    </div>
+    <!--新增弹框-->
+    <DialogStock
+      :flag.sync="dialog_stock"
+      :points="points"
+      :selectList="init"
+    ></DialogStock>
+  </div>
+</template>
+<script>
+import { Map, View } from "ol";
+import TileLayer from "ol/layer/Tile";
+import OSM from "ol/source/OSM";
+import { defaults } from "ol/control";
+import Control from "ol/control/Control";
+import Source from "ol/source/Vector";
+import Vector from "ol/layer/Vector";
+import { Draw, Modify, Snap, Select } from "ol/interaction";
+import Feature from "ol/Feature";
+import Polygon from "ol/geom/Polygon";
+import { Style, Icon, Text, Fill, Stroke, Circle } from "ol/style";
+
+import { analyticPoint, reverseResolutionPoint } from "../../utils/mapUtil";
+import DialogStock from "../../views/ConfigCenter/Plantingarea/dialog/addDrawAlert2.0";
+import deveiceMonitoringMsg from "../../views/Monitoring/MapView/components/DeveiceMonitoring";
+import areaDetail from "../../views/ConfigCenter/Plantingarea/dialog/AreaDetail";
+import { Message } from "element-ui";
+import { mapActions } from "vuex";
+import { reqAreaDetail, delArea } from "../../api/monitoring";
+import "ol/ol.css";
+export default {
+  props: {
+    // 操作类型,添加/删除
+    modify: {
+      type: String,
+      default: ""
+    }
+  },
+  components: {
+    DialogStock,
+    deveiceMonitoringMsg,
+    areaDetail
+  },
+  mounted() {
+    this.createMap();
+    this.areaDrawLayer();
+    this.areaShowLayer();
+    // this.getAreaDetail({ id: "0da2362f242edca3945fbdecb7254f91" });
+    this.createButton();
+    this.featureClick();
+  },
+  inject: ["reload"],
+  data() {
+    return {
+      map: null,
+      shapeType: "None",
+      dialog_stock: false, // 添加弹框
+      init: [], // 下拉框初始化
+      areaDetailList: {}, // 种植区域详情
+      // 区域绘制实例
+      drawInstance: {
+        source: "",
+        layer: "",
+        draw: "",
+        snap: "",
+        select: ""
+      },
+      // 展示图层实例
+      areaInstance: {
+        source: "",
+        layer: ""
+      },
+      points: ""
+    };
+  },
+  watch: {
+    shapeType(val) {
+      this.createRouteDraw(val);
+    }
+  },
+  methods: {
+    ...mapActions(["getAreaList", "getMonitoringAreaList", "getAreaDetail"]),
+    // 地图初始化
+    createMap() {
+      this.map = new Map({
+        target: "map",
+        layers: [
+          new TileLayer({
+            source: new OSM()
+          })
+        ],
+        view: new View({
+          projection: "EPSG:4326", //使用这个坐标系
+          center: [114.064839, 22.548857], //深圳
+          zoom: 12
+        }),
+        controls: defaults({
+          zoom: false,
+          attribution: false
+        })
+      });
+    },
+    // 初始化展示图层
+    areaShowLayer() {
+      this.areaInstance.source = new Source({ wrapX: false });
+      this.areaInstance.layer = new Vector({
+        visible: true,
+        name: "areaShowLayer",
+        source: this.areaInstance.source
+      });
+      this.showPlantArea();
+      this.map.addLayer(this.areaInstance.layer);
+    },
+    // 初始化绘制图层
+    areaDrawLayer() {
+      this.drawInstance.source = new Source({ wrapX: false });
+      this.drawInstance.layer = new Vector({
+        visible: true,
+        name: "areaDrawLayer",
+        source: this.drawInstance.source
+      });
+      this.map.addLayer(this.drawInstance.layer);
+    },
+    // 地图控件按钮
+    createButton() {
+      if (this.$route == "/plantingarea") {
+        let map_button = document.getElementById("map_button");
+        let ButtonControl = new Control({
+          //定义一个控件
+          element: map_button
+        });
+        //然后添加到地图上
+        this.map.addControl(ButtonControl);
+      }
+    },
+    // 开始绘制
+    begin_draw() {
+      this.shapeType = "Polygon";
+    },
+    //回显区域
+    showPlantArea() {
+      this.getAreaList().then(res => {
+        // console.log(res);
+        res.forEach(res => {
+          // console.log(res);
+          let _points = [reverseResolutionPoint(res.points)];
+          if (_points != -1) {
+            this.createArea(res.id, _points, res);
+          }
+        });
+        // console.log(this.areaInstance.source.getFeatures());
+      });
+    },
+    // 创建区域
+    createArea(area_id, _points, data) {
+      var polygonFeature = new Feature({
+        geometry: new Polygon(_points)
+      });
+      polygonFeature.id_ = area_id;
+      polygonFeature.values_.areaData = data;
+      if (data.regionId == null) {
+        // 大区域
+        polygonFeature.setStyle(
+          new Style({
+            stroke: new Stroke({
+              color: "red",
+              lineDash: [4],
+              width: 3
+            }),
+            fill: new Fill({
+              color: "rgba(255, 0,0 , 0.1)"
+            }),
+            text: new Text({
+              text: data.name,
+              fill: new Fill({
+                color: "#fff"
+              })
+            })
+          })
+        );
+        // this.areaInstance.source.addFeature(polygonFeature);
+      }
+      this.areaInstance.source.addFeature(polygonFeature);
+      // console.log(polygonFeature);
+    },
+    //区域创建画笔
+    createRouteDraw(shapeType) {
+      // debugger;
+      let value = shapeType;
+      let draw, snap;
+
+      if (shapeType === "None") {
+        this.map.removeInteraction(this.drawInstance.draw);
+        this.map.removeInteraction(this.drawInstance.snap);
+      }
+
+      if (shapeType !== "None") {
+        draw = new Draw({
+          source: this.drawInstance.source,
+          type: value
+        });
+        snap = new Snap({
+          source: this.drawInstance.source
+        });
+        this.drawInstance.draw = draw;
+        this.drawInstance.snap = snap;
+
+        this.map.addInteraction(this.drawInstance.draw);
+        this.map.addInteraction(this.drawInstance.snap);
+
+        // 添加监听
+        this.drawInstance.draw.on("drawend", event => {
+          this.shapeType = "None";
+          this.dialog_stock = true;
+          let geometry = event.feature.getGeometry();
+          let points = geometry.getCoordinates();
+          this.points = analyticPoint(points[0]);
+          console.log(this.points);
+          // var wgs = transform(points, "EPSG:3857", "EPSG:4326");
+          // var out = format(points[0][0], "{x},{y}", 2);
+          // console.log(out);
+        });
+      }
+    },
+    // 获取详情
+    getAreaDetail(area_id) {
+      reqAreaDetail(area_id).then(res => {
+        this.areaDetailList = res.data.data;
+        console.log(this.areaDetailList);
+        this.$emit("detail", this.areaDetailList);
+      });
+    },
+    // 删除区域
+    delArea(area_id) {
+      this.$confirm("是否删除区域xxx?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          delArea(area_id).then(res => {
+            this.$message({
+              message: "删除成功",
+              type: "success"
+            });
+            // 刷新
+            this.reload();
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    // 隐藏所有小区域
+    hiddenArea() {
+      console.log(this.areaInstance.source.getFeatures());
+      let features = this.areaInstance.source.getFeatures().filter(feature => {
+        return feature.values_.areaData.regionId;
+      });
+      features.forEach(res => {
+        this.areaInstance.source.removeFeature(res);
+      });
+      console.log(features);
+    },
+    // 区域点击
+    featureClick() {
+      this.map.on("click", e => {
+        let feature = this.map.forEachFeatureAtPixel(e.pixel, feature => {
+          return feature;
+        });
+        this.areaDetailList = {};
+        if (feature) {
+          console.log(feature);
+          // 大区域
+          if (!feature.values_.areaData.regionId) {
+            console.log(feature.id_);
+            this.getAreaDetail({ id: feature.id_ });
+          } else {
+            if (this.areaDetailList) {
+              this.areaDetailList = {};
+            }
+          }
+        }
+      });
+    },
+    del_area() {
+      this.$message("请选择要删除的区域");
+      this.featureSingle();
+    },
+    // 区域高亮
+    featureSingle(isDel) {
+      let selectSingleClick = new Select();
+      this.drawInstance.select = selectSingleClick;
+      this.map.addInteraction(this.drawInstance.select);
+      selectSingleClick.on("select", e => {
+        var features = e.target
+          .getFeatures()
+          .getArray()
+          .filter(feature => {
+            return feature.id_;
+          });
+        // // 大区域
+        // if (!features[0].values_.areaData.regionId) {
+        //   console.log(features[0].id_);
+        //   this.getAreaDetail({ id: features[0].id_ });
+        // } else {
+        //   if (this.areaDetailList) {
+        //     this.areaDetailList = {};
+        //   }
+        // }
+        console.log(features[0].id_);
+        this.delArea({ id: features[0].id_ });
+      });
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+#map {
+  height: 75vh;
+  width: 100%;
+  position: relative;
+}
+
+/*隐藏ol的一些自带元素*/
+.ol-attribution,
+.ol-zoom {
+  display: none;
+}
+/*按钮控件*/
+#map_button,
+#map_button1 {
+  background-color: rgb(38, 43, 64);
+  width: 25px;
+  color: #fff;
+  position: absolute;
+  z-index: 10;
+}
+#map_button1 {
+  top: 25px;
+}
+#map_button {
+  /* x=0代表移回原位置 */
+  transform: translateX(0);
+  /* 移回也需要0.4s时间过渡 */
+  transition: transform 0.4s;
+}
+
+/* hover样式 */
+#map_button:hover {
+  /* x=-10px代表左移10px */
+  transform: translateX(-10px);
+  /* 0.4s完成transform移动效果*/
+  transition: transform 0.4s;
+}
+</style>

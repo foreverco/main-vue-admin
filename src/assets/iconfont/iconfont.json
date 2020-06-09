@@ -6,6 +6,146 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "8640426",
+      "name": "排版编辑-两端对齐",
+      "font_class": "paibanbianji-liangduanduiqi",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "11695020",
+      "name": "icon-竖排版-未选中",
+      "font_class": "icon-shupaiban-weixuanzhong",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "12255060",
+      "name": "排版管理",
+      "font_class": "paibanguanli",
+      "unicode": "e721",
+      "unicode_decimal": 59169
+    },
+    {
+      "icon_id": "13174646",
+      "name": "球机",
+      "font_class": "qiuji",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "5226401",
+      "name": "放大",
+      "font_class": "fangda",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "6376276",
+      "name": "枪机",
+      "font_class": "qiangji",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "12488683",
+      "name": "垃圾桶",
+      "font_class": "lajitong",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "12943187",
+      "name": "修 改",
+      "font_class": "xiugai1",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "15089290",
+      "name": "bingbao ",
+      "font_class": "bingbao",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "15089291",
+      "name": "lei",
+      "font_class": "lei",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "15089292",
+      "name": "xue",
+      "font_class": "xue",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "15089293",
+      "name": "yu",
+      "font_class": "yu",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "15089294",
+      "name": "yintian",
+      "font_class": "yintian",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "15089295",
+      "name": "qing",
+      "font_class": "qing",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "15089296",
+      "name": "shachen",
+      "font_class": "shachen",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "15089297",
+      "name": "yun",
+      "font_class": "yun",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "15089298",
+      "name": "wu",
+      "font_class": "wu",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "9862704",
+      "name": "配置—前端设备配置",
+      "font_class": "peizhiqianduanshebeipeizhi",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "10709957",
+      "name": "农机农具",
+      "font_class": "nongjinongju",
+      "unicode": "e65b",
+      "unicode_decimal": 58971
+    },
+    {
+      "icon_id": "11762162",
+      "name": "气压",
+      "font_class": "qiya",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
       "icon_id": "3440393",
       "name": "视频",
       "font_class": "shipin",

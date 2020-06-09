@@ -35,8 +35,12 @@ export function sensorPicker() {
 
   const getlargeArea = () => {
     reqlargeArea().then(res => {
+      // debugger;
       console.log(res.data.data);
       data.largeArea = res.data.data;
+      console.log(data.largeArea);
+      // data.largeAreaValue = res.data.data[0];
+      data.largeAreaValue = data.largeArea[0];
     });
   };
   // 获取区域
@@ -64,6 +68,8 @@ export function sensorPicker() {
   // 选择大区域获取小区域
   let largeAreaValue = "";
   const handlelargeArea = val => {
+    console.log(444);
+    console.log(val);
     largeAreaValue = val;
     resetValue({ type: "largeArea" });
     reqareas({ regionId: val }).then(res => {

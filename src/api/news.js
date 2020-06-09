@@ -16,3 +16,11 @@ export function gettq() {
     baseURL: Config.proxy.hr
   });
 }
+
+export function getVideo() {
+  return service.request({
+    method: "get",
+    url: "/video/video",
+    baseURL: Config.proxy.hr
+  });
+}

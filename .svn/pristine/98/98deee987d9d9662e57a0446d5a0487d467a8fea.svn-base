@@ -1,0 +1,456 @@
+<template>
+  <div class="mainPage">
+    <div class="layout_top">
+      <div class="layout_top_left">
+        <div>
+          <BaseTitle moduleTitle="设备在线情况" />
+          <div class="equipment_online">
+            <EquipmentCard />
+          </div>
+        </div>
+        <div class="monitor">
+          <div class="monitor_left">
+            <BaseTitle moduleTitle="环境监控" />
+            <div class="huanjing_monitor">
+              <div>
+                <Player />
+              </div>
+              <div>
+                <EquipmentMsg />
+              </div>
+            </div>
+          </div>
+          <div class="monitor_right">
+            <BaseTitle moduleTitle="视频监控" />
+            <div class="video_monitor">
+              <div><Player /></div>
+              <div><Player /></div>
+              <div><Player /></div>
+              <div><Player /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layout_top_right">
+        <BaseTitle moduleTitle="今日天气状况" />
+        <div class="today_weather">
+          <div class="today_weather_header">
+            <span>
+              <i class="iconfont icondizhi"></i>
+              <span>{{ weather.city }}</span>
+            </span>
+            <span>{{ weather.date }}</span>
+            <span>{{ weather.week }}</span>
+          </div>
+          <div class="today_weather_panel">
+            <el-progress
+              type="dashboard"
+              :percentage="percentage"
+            ></el-progress>
+            <!-- <img src="../../assets/mainpage/云.png" /> -->
+            <i
+              class="iconfont"
+              :class="weather.wea_img"
+              style="color:#ffffff;font-size=16px;"
+            ></i>
+            <div class="teather_desc">
+              <p>{{ weather.tem }}°</p>
+              <p>{{ weather.wea }}/{{ weather.win }}</p>
+            </div>
+          </div>
+          <div class="weather_msg">
+            <WeatherMsg :weather="weather" />
+          </div>
+          <div class="weather_chart">
+            <Echars :option="weatherOption" :chartType="weather_msg" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layout_bottom">
+      <div class="layout_bottom_left">
+        <BaseTitle moduleTitle="设备采集趋势">
+          <el-form slot="right" class="option_deveice_type">
+            <SensorPicker
+              :sensorPickerLevel="['largeArea', 'areas']"
+              :sensorData="sensorData"
+              :config="config"
+              v-on:update:sensorData="sensorData = $event"
+            ></SensorPicker>
+            <!-- {{ sensorData }} -->
+          </el-form>
+        </BaseTitle>
+        <div class="device_acquisition_trend">
+          <DeviceAcquisitionTrend :areasValue="sensorData.areasValue" />
+        </div>
+      </div>
+      <div class="layout_bottom_right">
+        <BaseTitle moduleTitle="今日告警信息">
+          <div slot="right" class="warning_count">
+            <span>告警数量</span>
+            <i class="iconfont iconyujing1"></i>
+            <span v-on:update:total="warningTotal = $event" class="total">
+              {{ warningTotal }}
+            </span>
+          </div>
+        </BaseTitle>
+        <div class="warning">
+          <WarningList :total.sync="warningTotal" ref="warning_list" />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import BaseTitle from "../../components/common/BaseTitle.vue";
+import EquipmentCard from "./components/EquipmentCard.vue";
+import EquipmentMsg from "./components/EquipmentMsg.vue";
+import Player from "../../components/common/video.vue";
+import Echars from "../../components/echarts/Echars.vue";
+import DeviceAcquisitionTrend from "./components/DeviceAcquisitionTrend.vue";
+import SensorPicker from "../../components/SensorPicker/index";
+import WarningList from "./components/WarningList.vue";
+import WeatherMsg from "./components/WeatherMsg.vue";
+import {
+  ref,
+  reactive,
+  onMounted,
+  onBeforeMount,
+  computed,
+  watch
+} from "@vue/composition-api";
+export default {
+  name: "home",
+  setup(props, { refs, root }) {
+    const weatherOption = reactive({
+      grid: {
+        top: "30%",
+        right: "5%",
+        left: "5%",
+        bottom: "30%"
+      },
+      xAxis: [
+        {
+          type: "category",
+          show: false
+        }
+      ],
+      yAxis: [
+        {
+          show: false
+        }
+      ],
+      tooltip: {
+        trigger: "axis"
+      },
+      series: [
+        {
+          type: "line",
+          smooth: true,
+          name: "天气",
+          color: "#fff",
+          symbol: "circle",
+          symbolSize: 6,
+          itemStyle: {
+            borderColor: "#F1C15F",
+            borderWidth: 2,
+            shadowColor: "rgba(0, 0, 0, .3)"
+          },
+          label: {
+            normal: {
+              offset: [0, 35],
+              show: true,
+              formatter: "{b}\n\n\n{c}°",
+              color: "#fff"
+            }
+          }
+        }
+      ]
+    });
+    const config = reactive({
+      init: 7
+    });
+    const percentage = ref("");
+    const sensorData = reactive({});
+    const weather = computed(() => root.$store.state.home.weather);
+    const warningTotal = ref(0);
+    const weather_msg = ref("weather");
+    const deveice = ref("deveice");
+    onMounted(() => {
+      console.log(refs.warning_list);
+      console.log(warningTotal);
+      console.log(refs.warning_list.warningTotal);
+    });
+    watch(warningTotal, (newval, oldval) => {
+      console.log("=============");
+      console.log(warningTotal);
+    });
+    return {
+      weatherOption,
+      weather,
+      config,
+      weather_msg,
+      deveice,
+      sensorData,
+      warningTotal
+    };
+  },
+  components: {
+    BaseTitle,
+    EquipmentCard,
+    EquipmentMsg,
+    Player,
+    WeatherMsg,
+    Echars,
+    DeviceAcquisitionTrend,
+    SensorPicker,
+    WarningList
+  }
+};
+</script>
+<style lang="scss">
+@import "@/styles/homeselect.scss";
+</style>
+<style lang="scss" scoped>
+@import "@/styles/reset.scss";
+.mainPage {
+  width: 100%;
+  background-color: #f4f4f4;
+  // border: 1px solid red;
+}
+.layout_top,
+.layout_bottom {
+  // border: 1px solid green;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.layout_bottom {
+  margin-top: 2.7vh;
+}
+
+.layout_top_left {
+  // width: 66.25vw;
+  width: 73%;
+  // border: 1px solid pink;
+  // margin-right: 1.7%;
+}
+
+.layout_top_right {
+  // width: 19.7vw;
+  width: 25%;
+  position: relative;
+  // border: 1px solid blue;
+}
+
+.equipment_online {
+  // border: 1px solid red;
+  // margin-top: 1.2%;
+  margin-top: 14px;
+}
+
+/*监控开始*/
+.monitor {
+  // border: 1px solid blue;
+  margin-top: 2.3%;
+  display: flex;
+  justify-content: space-between;
+}
+
+// .monitor_left,
+// .monitor_right {
+// border: 1px solid red;
+// }
+
+.monitor_left {
+  width: 46%;
+}
+.huanjing_monitor {
+  margin-top: 20px;
+  height: 100%;
+  // border: 1px solid red;
+}
+.huanjing_monitor > div:nth-child(1) {
+  // border: 1px solid red;
+  // height: 305px;
+  // height: 28vh;
+}
+.huanjing_monitor > div:nth-child(2) {
+  // border: 1px solid red;
+  // height: 80px;
+  height: 7.4vh;
+}
+.monitor_right {
+  width: 52%;
+  // border: 1px solid red;
+  position: relative;
+}
+.video_monitor {
+  margin-top: 3%;
+  // display: grid;
+  // grid-template-columns: 48% 48%;
+  // grid-template-rows: 50% 50% auto;
+  // grid-column-gap: 4%;
+  // // grid-row-gap: 8%;
+  // grid-row-gap: 17px;
+  // border: 1px solid green;
+}
+.video_monitor > div {
+  width: 48%;
+  float: left;
+  position: absolute;
+}
+.video_monitor > div:nth-child(even) {
+  margin-left: 4%;
+}
+.video_monitor > div:nth-child(1) {
+  left: 0;
+}
+.video_monitor > div:nth-child(2) {
+  right: 0;
+}
+.video_monitor > div:nth-child(3) {
+  bottom: 0;
+  left: 0;
+}
+.video_monitor > div:nth-child(4) {
+  bottom: 0;
+  right: 0;
+}
+/*监控结束*/
+
+/*天气开始*/
+.today_weather {
+  // height: 54.2vh;
+  // height: 576px;
+  width: 100%;
+  margin-top: 17px;
+  // position: absolute;
+  // bottom: 0;
+  background-color: #262b40;
+  border-radius: 8px;
+  background-image: url(../../assets/mainpage/cloudbg.png);
+  background-repeat: no-repeat;
+  background-position: 98% 18%;
+}
+.today_weather_header {
+  // border: 1px solid red;
+  color: rgb(255, 255, 255, 1);
+  display: flex;
+  padding: 4.2vh 2.5vw 4.9vh 2.5vw;
+  // padding: 7.64% 14.56% 4.31% 15.32%;
+  font-size: 14px;
+}
+.icondizhi {
+  font-size: 12px;
+  margin-right: 0.2vw;
+}
+.today_weather_header > span:first-child {
+  flex: 1;
+  text-align: left;
+}
+.today_weather_header > span:last-child {
+  flex: 1;
+  text-align: right;
+}
+.today_weather_panel {
+  // border: 1px solid red;
+  height: 25%;
+  position: relative;
+}
+.today_weather_panel ::v-deep .el-progress-circle {
+  width: 7.8vw !important;
+  height: 12vh !important;
+}
+.today_weather_panel ::v-deep .el-progress__text {
+  display: none;
+}
+.today_weather_panel > i {
+  // width: 3.1vw;
+  width: 60px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.teather_desc {
+  color: #fff;
+  // border: 1px solid red;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+.teather_desc > p:first-child {
+  // font-size: 1.41vw;
+  font-size: 27px;
+  line-height: 27px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+}
+.teather_desc > p:last-child {
+  // font-size: 0.95vw;
+  margin-top: 1vh;
+  font-size: 18px;
+  color: #e6b757;
+}
+.weather_msg {
+  // border: 1px solid red;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 14%;
+}
+.weather_chart {
+  // border: 1px solid red;
+  // height: 28.98%;
+  height: 15.456vh;
+  margin-top: 3.57%;
+}
+/*天气结束*/
+/*设备采集趋势*/
+.layout_bottom_left {
+  width: 66%;
+  margin-right: 1.7%;
+}
+.device_acquisition_trend {
+  // width: 57vw;
+  width: 100%;
+  height: 38vh;
+  // height: 403px;
+  margin-top: 16px;
+  position: relative;
+  background: rgba(255, 255, 255, 1);
+  // border: 1px solid red;
+}
+/*今日告警信息*/
+.layout_bottom_right {
+  width: 31.5%;
+}
+.warning_count {
+  float: right;
+  margin-right: 8px;
+  line-height: 21px;
+}
+.warning_count > span:nth-child(1) {
+  font-size: 12px;
+}
+.total {
+  font-size: 14px;
+}
+.iconyujing1 {
+  color: #ca1c29;
+  margin-left: 17px;
+  margin-right: 3px;
+  font-size: 14px;
+}
+.warning {
+  margin-top: 15px;
+  // height: 403px;
+  height: 38vh;
+  // border: 1px solid red;
+  overflow: auto;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 1px 8px 0px rgba(208, 208, 208, 0.35);
+  border-radius: 6px;
+}
+</style>

@@ -17,10 +17,15 @@ export function loadData() {
     // console.log(requestParams);
     loadTableData(requestParams)
       .then(response => {
-        let responseData = response.data.data.records;
-        tableData.item = responseData;
-        tableData.total =
-          responseData.length === 0 ? 0 : response.data.data.total;
+        if (response.data.data.records) {
+          let responseData = response.data.data.records;
+          tableData.item = responseData;
+          tableData.total =
+            responseData.length === 0 ? 0 : response.data.data.total;
+        } else {
+          let responseData = response.data.data;
+          tableData.item = responseData;
+        }
 
         // console.log(tableData.item);
         // if (responseData && responseData.length > 0) {

@@ -1,0 +1,89 @@
+.option_deveice_type > div > .el-row {
+  margin-top: 0px !important;
+  height: 21px;
+  width: 80%;
+  float: right;
+  position: relative;
+}
+.option_deveice_type > div > .el-row > .el-col {
+  height: 100%;
+  float: left;
+}
+.option_deveice_type > div > .el-row > .el-col:nth-child(1) {
+  position: absolute;
+  // right: 168px;
+  right: 8.75vw;
+  // border: 1px solid red;
+}
+.option_deveice_type > div > .el-row > .el-col:nth-child(2) {
+  position: absolute;
+  right: 0;
+  // border: 1px solid blue;
+}
+.option_deveice_type > div > .el-row > .el-col > .el-form-item {
+  height: 100%;
+}
+.option_deveice_type > div > .el-row > .el-col:nth-child(2) > .el-form-item >.el-form-item__label {
+    display: none;
+  }
+.option_deveice_type
+  > div
+  > .el-row
+  > .el-col
+  > .el-form-item
+  > .el-form-item__label,
+.option_deveice_type
+  > div
+  > .el-row
+  > .el-col
+  > .el-form-item
+  > .el-form-item__content {
+  line-height: 20px;
+  font-size: 14px;
+  color: $navcolor;
+  height: 100%;
+}
+.option_deveice_type
+  > div
+  > .el-row
+  > .el-col
+  > .el-form-item
+  > .el-form-item__content
+  > .el-select {
+  float: right;
+  //   right: 60px;
+  // right: 10px;
+}
+.option_deveice_type
+  > div
+  > .el-row
+  > .el-col
+  > .el-form-item
+  > .el-form-item__content
+  > .el-select
+  > .el-input--suffix,
+.option_deveice_type
+  > div
+  > .el-row
+  > .el-col
+  > .el-form-item
+  > .el-form-item__content
+  > .el-select
+  > .el-input--suffix
+  > .el-input__inner {
+  height: 20px;
+  //   width: 161px;
+  // width: 111px;
+  // border: 1px solid red;
+}
+.option_deveice_type
+> div
+> .el-row
+> .el-col
+> .el-form-item
+> .el-form-item__content
+> .el-select
+> .el-input--suffix
+> .el-input__suffix {
+    top: 5px;
+}

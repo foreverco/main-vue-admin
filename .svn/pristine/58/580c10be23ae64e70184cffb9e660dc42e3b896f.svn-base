@@ -1,0 +1,15 @@
+<template>
+  <div>
+    远程专家
+    <remoteList />
+  </div>
+</template>
+<script>
+import remoteList from "./components/remoteList";
+export default {
+  components: {
+    remoteList
+  }
+};
+</script>
+<style lang="scss" scoped></style>

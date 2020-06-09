@@ -50,14 +50,16 @@ export default {
 				preload: 'auto',
 				language: 'zh-CN',
 				// 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
-				aspectRatio: '2:1',
+				aspectRatio: '16:9',
 				// 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
 				fluid: true,
 				sources: [{
 					//类型
-					type: "video/mp4",
+					type: "video/ogg",
+					// type: 'rtmp/flv',
 					// //url地址
-					src: 'http://img.yopoo.cn/banner_video.mp4'
+					// src: 'http://192.168.1.163:15580/34020000001320000004'
+					src: 'http://192.168.1.163:6011/34020000002000000003'
 					// src: 'http://10.38.70.50/group1/M00/00/00/CiZGMl4j93KACi_vCKPcgVNano0455.mov'
 					// type: "application/x-mpegURL",
 					// src: "http://192.168.1.187/group1/M00/00/01/wKgBu14S7CaAJUhlAPV56sSGOuc742.avi"

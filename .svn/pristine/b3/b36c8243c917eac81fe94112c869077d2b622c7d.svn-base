@@ -1,0 +1,58 @@
+<template>
+  <div>
+    <!-- {{ sensorData.aa }} -->
+    <BaseTitle moduleTitle="地图展示" />
+    <span @click="changeShowWay(0)">地图</span>
+    <span @click="changeShowWay(1)">列表</span>
+    <!-- <button @click="begin_draw('CREATE')">
+      点击开始画大区域
+    </button>
+    <button @click="begin_draw('DELETE')">
+      点击删除区域
+    </button>-->
+    <Map v-if="showWay == 0" ref="map" :modify="modify" />
+    <div v-if="showWay == 1">
+      <MapShowList />
+    </div>
+  </div>
+</template>
+<script>
+import BaseTitle from "../../../components/common/BaseTitle.vue";
+// import SensorPicker from "../../../components/SensorPicker/index";
+// import Map from "./components/MapDrawer.vue";
+import Map from "../../../components/mapView/MapInfo";
+import MapShowList from "./components/MapShowList.vue";
+export default {
+  components: {
+    BaseTitle,
+    // SensorPicker,
+    Map,
+    MapShowList
+  },
+  data() {
+    return {
+      showWay: 0,
+      modify: ""
+      // sensorData: {}
+    };
+  },
+  mounted() {
+    // setTimeout(() => {
+    //   console.log(this.$store.state.map.deveiceAreaList);
+    // }, 1000);
+    // console.log(this.$refs["map"].map);
+    // console.log(this.$refs["draw"].shapeType);
+  },
+  methods: {
+    // 地图/列表展示
+    changeShowWay(val) {
+      this.showWay = val;
+    },
+    updateSensorData(data) {
+      alert("111");
+      console.log(data);
+    }
+  }
+};
+</script>
+<style lang="scss" scoped></style>

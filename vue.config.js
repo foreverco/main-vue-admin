@@ -123,7 +123,7 @@ module.exports = {
       //   },
       "/api": {
         // target: "http://192.168.1.151:9001", //API服务器的地址
-        // target: "http://192.168.1.151:9000", //API服务器的地址
+        // target: "http://192.168.1.205:9000", //API服务器的地址
         target: "http://2449i4t062.zicp.vip:11770", //API服务器的地址
         changeOrigin: true,
         pathRewrite: {
@@ -132,7 +132,7 @@ module.exports = {
       },
       "/hr": {
         // target: "http://192.168.1.142:8081", //API服务器的地址
-        target: "http://wthrcdn.etouch.cn/weather_mini", //API服务器的地址
+        target: "http://192.168.1.198:8091", //API服务器的地址
         changeOrigin: true,
         pathRewrite: {
           "^/hr": ""

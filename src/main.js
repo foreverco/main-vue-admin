@@ -13,6 +13,10 @@ Vue.prototype.$echarts = echarts;
 
 // 自定义全局组件
 import "./icons";
+/* 视频测试 */
+import Video from "video.js";
+// import 'video.js/dist/video-js.css'
+Vue.prototype.$video = Video;
 
 // vue-video-player
 import VideoPlayer from "vue-video-player";
@@ -22,6 +26,9 @@ import "video.js/dist/video-js.css";
 import "videojs-flash";
 
 import "./assets/iconfont/iconfont.css";
+
+// main.js
+// require('./mock');
 
 Vue.use(VideoPlayer);
 

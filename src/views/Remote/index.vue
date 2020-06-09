@@ -1,9 +1,17 @@
 <template>
   <div>
-    远程专家
+    <BaseTitle moduleTitle="远程专家" />
+    <remoteList />
   </div>
 </template>
 <script>
-export default {};
+import remoteList from "./components/remoteList";
+import BaseTitle from "@/components/common/BaseTitle";
+export default {
+  components: {
+    remoteList,
+    BaseTitle
+  }
+};
 </script>
 <style lang="scss" scoped></style>

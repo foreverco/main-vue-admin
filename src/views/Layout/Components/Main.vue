@@ -68,7 +68,7 @@ export default {
   // border: 1px solid red;
   box-sizing: border-box;
   .mainHeader {
-    border-bottom: 1px solid #ccc;
+    // border-bottom: 1px solid #ccc;
     margin-bottom: 10px;
     height: 30px;
     display: flex;

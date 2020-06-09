@@ -106,7 +106,8 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row v-show="menuData.menuType == 'PAGE'">
+          <!-- <el-row v-show="menuData.menuType == 'PAGE'"> -->
+          <el-row>
             <el-col :span="23">
               <el-form-item :label="formLabel.componentUri" prop="componentUri">
                 <el-input
@@ -270,9 +271,9 @@ export default {
             type: "warning"
           })
             .then(() => {
-              if (this.menuData.menuType === "DOCUMENT") {
-                this.menuData.componentUri = "";
-              }
+              // if (this.menuData.menuType === "DOCUMENT") {
+              //   this.menuData.componentUri = "";
+              // }
               this.$emit("saveData", this.menuData);
             })
             .catch(() => {});
@@ -316,6 +317,12 @@ export default {
 </script>
 
 <style scoped>
+.el-col {
+  /* border: 1px solid red;
+  padding: 0;
+  margin: 0; */
+  /* margin-bottom: 5px; */
+}
 .menu-tree {
   min-width: 400px;
 }
@@ -350,6 +357,6 @@ export default {
 
 .item {
   float: left;
-  margin-bottom: 18px;
+  /* margin-bottom: 18px; */
 }
 </style>

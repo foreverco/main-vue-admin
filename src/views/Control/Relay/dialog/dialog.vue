@@ -260,15 +260,16 @@ export default {
         data.form.settingOnoff = editData.settingOnoff;
         data.form.settingThreshold = editData.settingThreshold;
         // data.form.settingId = editData.sensorId;
-        editData.relayList.forEach(item => {
-          let obj = {};
-          obj.settingRelayID = item.settingRelayID;
-          obj.settingRelayName = item.settingRelayName;
-          data.form.relayList.push(obj);
-        });
+        if (editData.relayList.length != 0) {
+          editData.relayList.forEach(item => {
+            let obj = {};
+            obj.settingRelayID = item.settingRelayID;
+            obj.settingRelayName = item.settingRelayName;
+            data.form.relayList.push(obj);
+          });
+        }
 
         data.sensorData.sensorsValue = editData.relayId;
-
         data.sensorData.largeareaName = editData.pareaName;
         data.sensorData.areaName = editData.areaName;
         data.sensorData.statitionsName = editData.stationName;
@@ -286,6 +287,9 @@ export default {
         let checkarr = [];
         let checkobj = {};
         checkarr = res.data.data;
+        if (checkarr.length == 0) {
+          return root.$message.warning("此区域暂无传感器信息");
+        }
         checkarr.forEach(item => {
           checkobj.name = item.name;
           checkobj.value = item.id;

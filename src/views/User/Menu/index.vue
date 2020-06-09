@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="10">
+      <el-col :span="7">
         <!-- <el-card> -->
         <MenuTree
           :menus="menus"
@@ -14,14 +14,17 @@
         ></MenuTree>
         <!-- </el-card> -->
       </el-col>
-      <el-col :offset="1" :span="12">
+      <el-col :span="10" style="margin-left:1vw">
         <menu-data :menuData="clickMenu" @saveData="saveData" />
+      </el-col>
+      <el-col :span="6" style="margin-left:1vw">
+        <menu-btn :menuData="clickMenu" @saveData="saveData" />
       </el-col>
     </el-row>
   </div>
 </template>
 <script>
-import { MenuTree, MenuData } from "./components";
+import { MenuTree, MenuData, MenuBtn } from "./components";
 import { getMenuList, addMenu, delmenu, priorityMenu } from "@/api/user.js";
 import { global } from "@/utils/global_V3.0";
 const { confirm } = global();
@@ -29,7 +32,8 @@ export default {
   name: "Menu",
   components: {
     MenuData,
-    MenuTree
+    MenuTree,
+    MenuBtn
   },
   data() {
     return {

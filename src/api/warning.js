@@ -59,3 +59,13 @@ export function delwarningConfig(data) {
     data: data
   });
 }
+
+/* 修改预警日志 */
+export function delrecord(data) {
+  console.log(data);
+  return service.request({
+    method: "post",
+    url: "/alert/alertLog",
+    data: data
+  });
+}

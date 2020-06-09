@@ -106,6 +106,8 @@ export default {
       tableConfig: {
         // 多选框
         selection: true,
+        //初始化是否加载
+        isLoadingData: true,
         // 翻页记录
         recordCheckbox: false,
         // 请求接口参数
@@ -132,11 +134,18 @@ export default {
     //   () => tableData.item,
     //   (newValue, oldValue) => (data.tableData = newValue)
     // );
+    watch(
+      () => {
+        props;
+      },
+      (newValue, oldValue) => console.log(newValue)
+    );
     // 数据渲染
     watch(
       [() => tableData.item, () => tableData.total],
       ([tableData, totalCountnum]) => {
         data.tableData = tableData;
+        // console.log(data.tableData);
         totalCount(totalCountnum);
       }
     );
@@ -200,7 +209,9 @@ export default {
     /* onBeforeMount */
     onBeforeMount(() => {
       initTaleConfig();
-      tableLoadData(data.tableConfig.requestData);
+      if (data.tableConfig.isLoadingData) {
+        tableLoadData(data.tableConfig.requestData);
+      }
     });
     onMounted(() => {
       console.log(data);

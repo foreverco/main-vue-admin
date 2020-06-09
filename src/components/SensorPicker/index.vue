@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="11" v-if="init.largeArea">
+      <el-col :span="configData.spanWidth.init" v-if="init.largeArea">
         <el-form-item label="大区域">
           <el-select
             v-model="data.largeAreaValue"
@@ -17,7 +17,7 @@
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col :span="11" :offset="1" v-if="init.areas">
+      <el-col :span="configData.spanWidth.init" :offset="1" v-if="init.areas">
         <el-form-item label="区域">
           <el-select
             v-model="data.areasValue"
@@ -35,7 +35,7 @@
       </el-col>
     </el-row>
     <el-row v-if="init.statitions || init.sensors">
-      <el-col :span="11" v-if="init.statitions">
+      <el-col :span="configData.spanWidth.init" v-if="init.statitions">
         <el-form-item label="采集站">
           <el-select
             v-model="data.statitionsValue"
@@ -51,7 +51,7 @@
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col :span="11" :offset="1" v-if="init.sensors">
+      <el-col :span="configData.spanWidth.init" :offset="1" v-if="init.sensors">
         <el-form-item label="传感器">
           <el-select
             v-model="data.sensorsValue"
@@ -84,6 +84,10 @@ import { sensorPicker } from "./sensorPicker";
 export default {
   name: "Sensorpicker",
   props: {
+    config: {
+      type: Object,
+      default: () => {}
+    },
     sensorPickerLevel: {
       type: Array,
       default: () => []
@@ -106,6 +110,11 @@ export default {
       statitions: false,
       sensors: false
     });
+    const configData = reactive({
+      spanWidth: {
+        init: 11
+      }
+    });
     const {
       // 事件
       getlargeArea,
@@ -117,18 +126,12 @@ export default {
       // 数据集合
       data,
       resultData
-
-      // 下拉赋值
-      // areas,
-      // statitions,
-      // sensors,
-      // // 数据绑定
-      // areasValue,
-      // statitionsValue,
-      // sensorsValue
     } = sensorPicker();
     /* 初始化 */
     const initSensorpicker = () => {
+      if (props.config) {
+        configData.spanWidth = props.config;
+      }
       console.log(props.sensorPickerLevel);
       let initData = props.sensorPickerLevel;
       if (initData.length === 0) {
@@ -157,6 +160,7 @@ export default {
     watch(
       () => props.dialogShow,
       (newVale, oldvalue) => {
+        console.log(123123);
         console.log(newVale);
         setTimeout(() => {
           data.largeAreaValue = resultData.largeareaName;
@@ -166,70 +170,17 @@ export default {
         }, 500);
       }
     );
-    // const data = reactive({
-    //   // 区域列表
-    //   areas: [],
-    //   // 选中区域
-    //   areasValue: "",
-    //   // 采集站列表
-    //   statitions: [],
-    //   // 选中区域
-    //   statitionsValue: "",
-    //   sensors: [],
-    //   sensorsValue: ""
-    // });
-    // 获取区域
-    // const getareas = () => {
-    //   reqareas().then(res => {
-    //     console.log(res.data);
-    //     data.areas = res.data.data;
-    //   });
-    // };
-    // 选择区域获取采集站
-    // const handleAreas = val => {
-    //   reqStatitions().then(res => {
-    //     console.log(res);
-    //     data.statitions = res.data.data;
-    //   });
-    // };
-    // 选择采集站获取传感器
-    // const handleStatitions = () => {
-    //   reqSensors().then(res => {
-    //     console.log(res);
-    //     data.sensors = res.data.data;
-    //   });
-    // };
-    // watch(
-    //   () => areasValue.value,
-    //   newValue => {
-    //     console.log(newValue);
-    //   }
-    // );
     onBeforeMount(() => {
       // 初始化
       initSensorpicker();
       // 获取区域
       getlargeArea();
-      // console.log("=============");
-      // console.log(props.sensorData);
-      // console.log(resultData.areaName);
-      // // data.largeAreaValue = "123";
-      // // data.areasValue = resultData.areaName;
-      // // data.statitionsValue = "123";
-      // // data.sensorsValue = "123";
       console.log(resultData);
     });
     return {
       init,
       data,
-      // 下拉赋值
-      // areas,
-      // statitions,
-      // sensors,
-      // // 数据绑定
-      // areasValue,
-      // statitionsValue,
-      // sensorsValue,
+      configData,
       // 事件
       getlargeArea,
       // getareas,

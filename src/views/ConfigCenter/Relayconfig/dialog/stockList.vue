@@ -149,7 +149,7 @@ import {
   placeSelect,
   reqcollectSelect,
   reqsbtypeSelect
-} from "../../../../api/configCenter";
+} from "@/api/configCenter";
 import { validatePhone } from "@/utils/validate";
 export default {
   name: "dialogStock",
@@ -251,15 +251,12 @@ export default {
       refs.addSensorForm.resetFields();
     };
     const submit = formName => {
+      console.log(formName);
       refs[formName].validate(valid => {
         if (valid) {
           let requestParams = JSON.parse(JSON.stringify(data.form));
-          // if (!requestParams.areaId) {
           requestParams.areaId = data.relaysData.areasValue;
-          // }
-          // if (!requestParams.controlId) {
           requestParams.controlId = data.relaysData.controlsValue;
-          // }
           console.log(requestParams);
           addrelays(requestParams).then(res => {
             root.$message({
@@ -356,7 +353,7 @@ export default {
         data.sbTypeSelect.init = [];
         res.data.data.map(item => {
           let obj = {};
-          obj.value = item.id;
+          obj.value = item.value;
           obj.label = item.name;
           data.sbTypeSelect.init.push(obj);
         });

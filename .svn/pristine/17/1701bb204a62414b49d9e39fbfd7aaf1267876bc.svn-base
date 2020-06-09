@@ -1,0 +1,13 @@
+import service from "@/utils/request.js";
+/**
+ * 远程专家接口
+ */
+
+// 远程专家列表
+export function reqDeveice(areasValue, factor) {
+  return service.request({
+    method: "get",
+    url: "/monitor/monitor/sortInfo/" + areasValue,
+    params: factor
+  });
+}

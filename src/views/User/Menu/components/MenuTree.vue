@@ -37,7 +37,7 @@
           }}</span>
           <span>
             <el-button
-              v-if="data.type != 'PAGE'"
+              v-if="data.menuType != 'PAGE'"
               :permission="'add'"
               type="text"
               size="mini"
@@ -229,7 +229,7 @@ export default {
 
 <style lang="scss" scoped>
 .menu-tree {
-  min-width: 350px;
+  min-width: 280px;
 }
 
 .custom-tree-node {

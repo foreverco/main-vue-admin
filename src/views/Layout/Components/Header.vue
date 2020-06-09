@@ -5,7 +5,7 @@
       <!-- <div class="header-icon pull-left" @click="colspseState">
         <svg-icon iconClass="menu" className="menu"></svg-icon>
       </div> -->
-      <img src="@/assets/logo.png" alt="" />
+      <img src="@/assets/gcylogo.png" alt="" />
       <p>国草园智慧农业监控平台</p>
     </div>
     <div class="pull-right header-icon">

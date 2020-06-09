@@ -1,0 +1,93 @@
+<template>
+  <div>
+    <Table :config="data.tableConfig" ref="mapTable">
+      <el-button
+        type="success"
+        slot="operation"
+        slot-scope="props"
+        @click="test(props.data)"
+      >
+        查看
+      </el-button>
+    </Table>
+  </div>
+</template>
+
+<script>
+import Table from "../../../components/Table/index.vue";
+import { watch, reactive, onMounted } from "@vue/composition-api";
+import { mapActions } from "vuex";
+export default {
+  name: "mapShowList",
+  components: {
+    Table
+  },
+  data() {
+    return {
+      sensorData: {},
+      data: {
+        tableConfig: {
+          // 多选框
+          selection: true,
+          // 翻页记录
+          recordCheckbox: true,
+          // 请求接口参数
+          requestData: {
+            url: "getRemoteList", // 替换地图接口
+            method: "get",
+            data: {
+              page: 1,
+              pageSize: 5
+            }
+          },
+          // 表头
+          tHead: [
+            {
+              label: "标题",
+              field: "title"
+            },
+            {
+              label: "发送时间",
+              field: "updateDate"
+            },
+            {
+              label: "发送人",
+              field: "updateUser"
+            },
+            {
+              label: "消息类型",
+              field: "messageType"
+            },
+            {
+              label: "消息状态",
+              field: "status"
+            },
+            {
+              label: "详情",
+              columnType: "slot",
+              slotname: "operation"
+            }
+          ],
+          pagination: {
+            show: true
+          },
+          paginationLayout: {
+            layout: "prev, pager, next, jumper,total, sizes"
+          }
+        }
+      }
+    };
+  },
+  watch: {
+    "sensorData.largeAreaValue": {
+      handler: function(val) {
+        // console.log(val);
+        this.$refs.mapTable.paramsLoadData({ areaId: val });
+      },
+      deep: true
+    }
+  }
+};
+</script>
+
+<style></style>

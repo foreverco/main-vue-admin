@@ -1,0 +1,75 @@
+<template>
+  <div class="weather_msg_box">
+    <span class="guide_item">
+      <i class="iconfont iconshidu"></i>
+      <span>
+        {{ weather.humidity }}
+      </span>
+      <span>湿度</span>
+    </span>
+    <span class="guide_item">
+      <i class="iconfont iconfengsu"></i>
+      <span>
+        {{ weather.win_meter }}
+      </span>
+      <span>风速</span>
+    </span>
+    <span class="guide_item">
+      <i class="iconfont iconziwaixian"></i>
+      <span>
+        {{ weather.pressure }}
+      </span>
+      <span>气压</span>
+    </span>
+    <span class="guide_item">
+      <i class="iconfont iconnengjiandu"></i>
+      <span>
+        {{ weather.visibility }}
+      </span>
+      <span>能见度</span>
+    </span>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "footer_guide",
+  props: {
+    weather: {
+      type: Object
+    }
+  },
+  setup(props, { refs, root }) {
+    return {};
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.weather_msg_box {
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  // border: 1px solid red;
+}
+
+.weather_msg_box .guide_item {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  // border: 1px solid red;
+}
+.guide_item > span {
+  margin-top: 17px;
+  font-size: 1.3vh;
+}
+.guide_item > span:last-child {
+  color: #e6b757;
+  font-size: 1vh;
+}
+.guide_item > i {
+  font-size: 1.5vh;
+}
+</style>

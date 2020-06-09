@@ -1,0 +1,60 @@
+<template>
+  <keep-alive>
+    <!--配置中心添加区域-->
+    <div id="map" ref="rootmap"></div>
+  </keep-alive>
+</template>
+
+<script>
+// import "ol/ol.css";
+import { Map, View } from "ol";
+import TileLayer from "ol/layer/Tile";
+import OSM from "ol/source/OSM";
+import { defaults } from "ol/control";
+export default {
+  data() {
+    return {
+      map: null
+    };
+  },
+  mounted() {
+    this.createMap();
+  },
+  methods: {
+    // 地图初始化
+    createMap() {
+      this.map = new Map({
+        target: "map",
+        layers: [
+          new TileLayer({
+            source: new OSM()
+          })
+        ],
+        view: new View({
+          projection: "EPSG:4326", //使用这个坐标系
+          center: [114.064839, 22.548857], //深圳
+          zoom: 12
+        }),
+        controls: defaults({
+          zoom: false,
+          attribution: false
+        })
+      });
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+#map {
+  height: 70vh;
+  width: 100%;
+  border: 1px solid red;
+}
+
+/*隐藏ol的一些自带元素*/
+.ol-attribution,
+.ol-zoom {
+  display: none;
+}
+</style>

@@ -1,77 +1,85 @@
 <template>
   <div>
-    <!-- <svg-icon iconClass="info" className="info font50"></svg-icon> -->
     <el-row>
-      <el-col :md="12" :sm="14">
-        <div class="label-wrap category">
-          <label for="">关键字:</label>
-          <div class="warp-content">
-            <el-row :gutter="16">
-              <el-col :span="8">
-                <SelectVue
-                  style="width:100%"
-                  :config="data.configSelect"
-                  :selectData.sync="data.selectData"
-                >
-                </SelectVue>
-              </el-col>
-              <el-col :span="8">
-                <el-input
-                  v-model="data.keyWord"
-                  placeholder="请输入关键字"
-                ></el-input>
-              </el-col>
-              <el-col :span="4">
-                <el-button size="mini" @click="search">搜索</el-button>
-              </el-col>
-            </el-row>
-          </div>
-        </div>
-      </el-col>
-      <el-col :md="{ span: 8, offset: 4 }" :sm="10">
-        <el-button
-          type="success"
-          size="small"
-          icon="el-icon-circle-plus-outline"
-          @click="data.dialog_stock = true"
-          >添加</el-button
-        >
-        <el-button
-          type="danger"
-          size="small"
-          icon="el-icon-delete"
-          @click="batchDel()"
-          >批量删除</el-button
-        >
-      </el-col>
+      <BaseTitle moduleTitle="用户列表" />
     </el-row>
-    <TableVue
-      :config="data.configTable"
-      :tableRow.sync="data.tableRow"
-      ref="userTable"
-    >
-      <template v-slot:status="slotData">
-        <el-switch
-          v-model="slotData.data.status"
-          active-color="#13ce66"
-          inactive-color="#ff4949"
-          active-text="开启"
-          inactive-text="禁用"
-          :active-value="1"
-          :inactive-value="2"
-        >
-        </el-switch>
-        <span v-if="false">{{ slotData.data.SENSORSTATUS }}</span>
-      </template>
-      <template v-slot:operation="slotData">
-        <el-button size="mini" type="success" @click="handleEdit(slotData.data)"
-          >编辑</el-button
-        >
-        <el-button size="mini" type="danger" @click="hanleDel(slotData.data)"
-          >删除</el-button
-        >
-      </template>
-    </TableVue>
+    <div class="box_content">
+      <!-- <svg-icon iconClass="info" className="info font50"></svg-icon> -->
+      <el-row>
+        <el-col :md="12" :sm="14">
+          <div class="label-wrap category">
+            <label for="">关键字:</label>
+            <div class="warp-content">
+              <el-row :gutter="16">
+                <el-col :span="8">
+                  <SelectVue
+                    style="width:100%"
+                    :config="data.configSelect"
+                    :selectData.sync="data.selectData"
+                  >
+                  </SelectVue>
+                </el-col>
+                <el-col :span="8">
+                  <el-input
+                    v-model="data.keyWord"
+                    placeholder="请输入关键字"
+                  ></el-input>
+                </el-col>
+                <el-col :span="4">
+                  <el-button size="mini" @click="search">搜索</el-button>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+        </el-col>
+        <el-col :md="{ span: 8, offset: 4 }" :sm="10">
+          <el-button
+            type="success"
+            size="small"
+            icon="el-icon-circle-plus-outline"
+            @click="data.dialog_stock = true"
+            >添加</el-button
+          >
+          <el-button
+            type="danger"
+            size="small"
+            icon="el-icon-delete"
+            @click="batchDel()"
+            >批量删除</el-button
+          >
+        </el-col>
+      </el-row>
+      <TableVue
+        :config="data.configTable"
+        :tableRow.sync="data.tableRow"
+        ref="userTable"
+      >
+        <template v-slot:status="slotData">
+          <el-switch
+            v-model="slotData.data.status"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-text="开启"
+            inactive-text="禁用"
+            :active-value="1"
+            :inactive-value="2"
+          >
+          </el-switch>
+          <span v-if="false">{{ slotData.data.SENSORSTATUS }}</span>
+        </template>
+        <template v-slot:operation="slotData">
+          <el-button
+            size="mini"
+            type="success"
+            @click="handleEdit(slotData.data)"
+            >编辑</el-button
+          >
+          <el-button size="mini" type="danger" @click="hanleDel(slotData.data)"
+            >删除</el-button
+          >
+        </template>
+      </TableVue>
+    </div>
     <DialogBox
       :flag.sync="data.dialog_stock"
       :editData="data.editData"
@@ -80,6 +88,7 @@
   </div>
 </template>
 <script>
+import BaseTitle from "@/components/common/BaseTitle";
 import { reactive, onBeforeMount } from "@vue/composition-api";
 import TableVue from "@/components/Table";
 import SelectVue from "@/components/Select";
@@ -87,6 +96,7 @@ import DialogBox from "./dialog/stockList";
 export default {
   name: "UserList",
   components: {
+    BaseTitle,
     TableVue,
     SelectVue,
     DialogBox

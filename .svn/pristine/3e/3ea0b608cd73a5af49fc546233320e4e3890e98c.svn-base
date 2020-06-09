@@ -1,0 +1,81 @@
+<template>
+  <div class="layout_chart">
+    <div id="myChart" ref="chart"></div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    chartType: {
+      type: String
+    },
+    option: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  watch: {
+    option(option) {
+      this.drawLine(option);
+    }
+  },
+  mounted() {
+    this.init();
+  },
+  methods: {
+    // 初始化
+    init() {
+      let myChart = this.$echarts.init(this.$refs.chart);
+      this.myChart = myChart;
+      this.drawLine();
+      window.addEventListener("resize", () => {
+        this.myChart.resize();
+      });
+    },
+    drawLine() {
+      // 绘制图表
+      this.myChart.setOption(this.option);
+      this.myChart.showLoading({
+        text: "loading",
+        effectOption: { backgroundColor: "rgba(255, 255, 255, 0)" }
+      });
+      if (this.chartType == "weather") {
+        this.$store.dispatch("getWeatherMsg").then(res => {
+          let optionTemp = {
+            date: [],
+            tem: []
+          };
+          res.hours.forEach(item => {
+            let date = item.day.substring(item.day.length - 3);
+            optionTemp.date.push(date);
+            let tem = item.tem.substring(0, item.tem.length - 1);
+            optionTemp.tem.push(tem);
+          });
+          console.log(optionTemp);
+          this.myChart.hideLoading();
+          this.myChart.setOption({
+            xAxis: { data: optionTemp.date },
+            series: [
+              {
+                data: optionTemp.tem
+              }
+            ]
+          });
+        });
+      }
+    }
+  }
+};
+</script>
+<style lang="scss" scoped>
+.layout_chart {
+  width: 100%;
+  height: 100%;
+  // background-color: #0000ff;
+}
+#myChart {
+  width: 100%;
+  height: 100%;
+}
+</style>

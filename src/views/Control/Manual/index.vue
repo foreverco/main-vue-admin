@@ -1,34 +1,38 @@
 <template>
   <div>
-    <el-row :gutter="10" justify="space-between">
-      <el-col :md="12" :sm="14">
-        <div class="label-wrap category">
-          <label for="">关键字:</label>
-          <div class="warp-content">
-            <el-row :gutter="16">
-              <el-col :span="8">
-                <SelectVue
-                  style="width:100%"
-                  :config="data.configSelect"
-                  :selectData.sync="data.selectData"
-                >
-                </SelectVue>
-              </el-col>
-              <el-col :span="8">
-                <el-input
-                  v-model="data.keyWord"
-                  placeholder="请输入关键字"
-                ></el-input>
-              </el-col>
-              <el-col :span="4">
-                <el-button size="mini" @click="search">搜索</el-button>
-              </el-col>
-            </el-row>
+    <el-row>
+      <BaseTitle :moduleTitle="$route.meta.title" />
+    </el-row>
+    <div class="box_content">
+      <el-row :gutter="10" justify="space-between">
+        <el-col :md="12" :sm="14">
+          <div class="label-wrap category">
+            <label for="">关键字:</label>
+            <div class="warp-content">
+              <el-row :gutter="16">
+                <el-col :span="8">
+                  <SelectVue
+                    style="width:100%"
+                    :config="data.configSelect"
+                    :selectData.sync="data.selectData"
+                  >
+                  </SelectVue>
+                </el-col>
+                <el-col :span="8">
+                  <el-input
+                    v-model="data.keyWord"
+                    placeholder="请输入关键字"
+                  ></el-input>
+                </el-col>
+                <el-col :span="4">
+                  <el-button size="mini" @click="search">搜索</el-button>
+                </el-col>
+              </el-row>
+            </div>
           </div>
-        </div>
-      </el-col>
-      <el-col :md="{ span: 8, offset: 4 }" :sm="10">
-        <!-- <el-button
+        </el-col>
+        <el-col :md="{ span: 8, offset: 4 }" :sm="10">
+          <!-- <el-button
           type="success"
           size="small"
           icon="el-icon-circle-plus-outline"
@@ -42,26 +46,28 @@
           @click="batchDel()"
           >批量删除</el-button
         > -->
-      </el-col>
-    </el-row>
-    <TableVue
-      :config="data.configTable"
-      :tableRow.sync="data.tableRow"
-      ref="sensorTable"
-    >
-      <template v-slot:status="slotData">
-        <el-switch
-          v-model="slotData.data.switchStatus"
-          active-color="#13ce66"
-          inactive-color="#ff4949"
-          active-value="true"
-          inactive-value="false"
-          @change="changeStatus(slotData.data)"
-        >
-        </el-switch>
-        <span v-if="false">{{ slotData.data.switchStatus }}</span>
-      </template>
-    </TableVue>
+        </el-col>
+      </el-row>
+      <TableVue
+        :config="data.configTable"
+        :tableRow.sync="data.tableRow"
+        ref="sensorTable"
+      >
+        <template v-slot:status="slotData">
+          <el-switch
+            v-model="slotData.data.switchStatus"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-value="true"
+            inactive-value="false"
+            @change="changeStatus(slotData.data)"
+          >
+          </el-switch>
+          <span v-if="false">{{ slotData.data.switchStatus }}</span>
+        </template>
+      </TableVue>
+    </div>
+
     <DialogBox
       :flag.sync="data.dialog_stock"
       :editData.sync="data.editData"
@@ -70,6 +76,7 @@
   </div>
 </template>
 <script>
+import BaseTitle from "@/components/common/BaseTitle";
 import TableVue from "@/components/Table";
 import SelectVue from "@/components/Select";
 import DialogBox from "./dialog/stockList";
@@ -79,6 +86,7 @@ import { edithandle } from "@/api/common";
 import { global } from "@/utils/global_V3.0";
 export default {
   components: {
+    BaseTitle,
     TableVue,
     SelectVue,
     DialogBox
@@ -129,7 +137,7 @@ export default {
           { label: "负责人", field: "principalPerson" },
           { label: "负责人电话", field: "contactNumber", width: "130" },
           {
-            label: "状态",
+            label: "开关操作",
             field: "switchStatus",
             columnType: "slot",
             slotname: "status"
@@ -161,9 +169,7 @@ export default {
       handleParams.settingId = val.id;
       handleParams.settingOnoff = val.switchStatus;
       confirm({
-        content: `确认${
-          val.switchStatus === true ? "关闭" : "打开"
-        }删除选中数据`,
+        content: `确认${val.switchStatus === true ? "打开" : "关闭"}此设备`,
         tip: "警告",
         status: "状态修改成功",
         fn: handleStatus,

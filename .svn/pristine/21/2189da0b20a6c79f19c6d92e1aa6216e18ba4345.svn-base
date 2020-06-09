@@ -1,0 +1,96 @@
+<template>
+  <ul class="equi_msg">
+    <li class="guide_item">
+      <div>
+        <span>
+          <i class="iconfont iconshidu"></i>
+          13°C
+        </span>
+        <span>空气湿度</span>
+      </div>
+    </li>
+    <li class="guide_item">
+      <div>
+        <span>
+          <i class="iconfont iconshidu"></i>
+          13°C
+        </span>
+        <span>空气湿度</span>
+      </div>
+    </li>
+    <li class="guide_item">
+      <div>
+        <span>
+          <i class="iconfont iconshidu"></i>
+          13°C
+        </span>
+        <span>空气湿度</span>
+      </div>
+    </li>
+    <li class="guide_item">
+      <div>
+        <span>
+          <i class="iconfont iconshidu"></i>
+          13°C
+        </span>
+        <span>空气湿度</span>
+      </div>
+    </li>
+    <li class="guide_item">
+      <div>
+        <span>
+          <i class="iconfont iconshidu"></i>
+          13°C
+        </span>
+        <span>空气湿度</span>
+      </div>
+    </li>
+  </ul>
+</template>
+
+<script>
+export default {
+  name: "footer_guide",
+  data() {
+    return {};
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+@import "@/styles/reset.scss";
+@import "@/styles/config.scss";
+.equi_msg {
+  z-index: 100;
+  display: flex;
+  padding-top: 12px;
+  font-size: 12px;
+  justify-content: space-between;
+  // border: 1px solid blue;
+}
+
+.guide_item {
+  // border: 1px solid red;
+  // width: 15%;
+  width: 73px;
+  height: 44px;
+  text-align: center;
+  color: $navcolor;
+  background: #ffffff;
+}
+.guide_item > div {
+  // border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+}
+.guide_item > div > span > i {
+  color: #11966b;
+  font-size: 1.5vh;
+}
+.guide_item > span {
+  font-size: 0.75vw;
+}
+.guide_item > span:last-child {
+  font-size: 1vh;
+}
+</style>
